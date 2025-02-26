@@ -1,0 +1,16 @@
+{
+	"id": "kh_jokers",
+	"name": "KHJokers",
+	"display_name": "KHJokers",
+	"author": ["cloudzXIII"],
+	"description": "Very cool mod by yours truly, cloudzXIII! Based on the hit video game series, Kingdom Hearts.",
+	"prefix": "cloudz",
+	"main_file": "KHJokers.lua",
+	"priority": 0,
+	"badge_colour": "A96751",
+	"badge_text_colour": "FFFFFF",
+	"version": "0.0.1~beta",
+	"dependencies": [
+		"Steamodded (>=1.0.0~ALPHA-1324a)"
+	]
+}
