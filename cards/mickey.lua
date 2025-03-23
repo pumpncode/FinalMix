@@ -11,7 +11,7 @@ SMODS.Joker {
 		}
 	},
 
-	config = { extra = { repetitions = 1, odds = 6} },
+	config = { extra = { repetitions = 1, odds = 7} },
 	rarity = 2,
 	atlas = 'KHJokers',
 	pos = { x = 2, y = 0 },
@@ -74,7 +74,7 @@ SMODS.Joker {
 				}
 			else
 				return {
-					message = 'Ha!'
+					message = 'Hot Dog!'
 				}
 			end
 		end
