@@ -7,6 +7,7 @@ Kingdom Hearts Themed Jokers!
 
 # Features
 Currently Adds the following Jokers:
+![KHJokers](assets/2x/KHJokers.png)
 1. Sora
 2. Keyblade
 3. Meeska Mooska
