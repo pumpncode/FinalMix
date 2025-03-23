@@ -14,10 +14,10 @@ SMODS.Joker {
 		return {vars = { card.ability.extra.mult } }
 	end,
 	
-	rarity = 3,
+	rarity = 1,
 	atlas = 'KHJokers',
 	pos = { x = 0, y = 0},
-	cost = 5,
+	cost = 4,
 	blueprint_compat = true,
 	
 	calculate = function(self, card, context)

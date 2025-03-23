@@ -6,7 +6,8 @@ SMODS.Joker {
 		text = {
 			"Retrigger all",
 			"played {C:hearts}heart{} cards",
-			"{C:green}#1# in #2#{} dies"
+			"{C:green}#1# in #2#{} chance this card is",
+			"destroyed at the end of the round",
 		}
 	},
 
@@ -26,6 +27,18 @@ SMODS.Joker {
 		-- Checks that the current cardarea is G.play, or the cards that have been played, then checks to see if it's time to check for repetition.
 		-- The "not context.repetition_only" is there to keep it separate from seals.
 		
+		if context.cardarea == G.play and context.repetition and not context.repetition_only then
+			-- context.other_card is something that's used when either context.individual or context.repetition is true
+			-- It is each card 1 by 1, but in other cases, you'd need to iterate over the scoring hand to check which cards are there.
+			if context.other_card:is_suit("Hearts") then
+				return {
+					message = 'Again!',
+					repetitions = card.ability.extra.repetitions,
+					-- The card the repetitions are applying to is context.other_card
+					card = card
+				}
+			end
+		end
 		
 		-- Checks to see if it's end of round, and if context.game_over is false.
 		-- Also, not context.repetition ensures it doesn't get called during repetitions.
@@ -55,30 +68,13 @@ SMODS.Joker {
 						return true
 					end
 				}))
-				-- Sets the pool flag to true, meaning Gros Michel 2 doesn't spawn, and Cavendish 2 does.
+				-- Extinct/Survival Message
 				return {
 					message = 'Gawrsh!'
 				}
 			else
 				return {
 					message = 'Ha!'
-				}
-			end
-		end
-		
-		
-		
-		
-		
-		if context.cardarea == G.play and context.repetition and not context.repetition_only then
-			-- context.other_card is something that's used when either context.individual or context.repetition is true
-			-- It is each card 1 by 1, but in other cases, you'd need to iterate over the scoring hand to check which cards are there.
-			if context.other_card:is_suit("Hearts") then
-				return {
-					message = 'Again!',
-					repetitions = card.ability.extra.repetitions,
-					-- The card the repetitions are applying to is context.other_card
-					card = context.other_card
 				}
 			end
 		end
