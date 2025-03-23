@@ -11,11 +11,11 @@ Get the latest version from  [here](https://github.com/cloudzXIII/KHJokers/archi
 # Features
 Currently Adds the following:<br>
 ![KHJokers](assets/2x/KHJokers.png)
-| Jokers:          |
-|------------------|
-| Keyblade         |
-| Sora             |
-| Meeska Mooska    |
-| Retrolas         |
+| Jokers:          | Rarity | Ability|
+|------------------|--------|--------|
+| Keyblade         | Common | currently todo |
+| Sora             | Uncommon | Gives 3x mult |
+| Meeska Mooska    | Uncommon |Retriggers all played heart cards. 1 in 6 chance of being destroyed at the end of the round |
+| Retrolas         | Common |Gives 1.5x Mult, and that's no cap!|
 
 and more to come...
