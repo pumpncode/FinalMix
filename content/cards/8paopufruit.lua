@@ -5,7 +5,6 @@ SMODS.Joker {
 		name = 'Paopu Fruit',
 		text = {
 			"Retrigger all played {C:diamonds}Diamond{} cards",
-			--"",
 			"{C:green,E:1}#1# in #2#{} chance this card is",
 			"eaten at the end of the round",
 			"{C:inactive,s:0.8} the winner gets to share a Paopu with Kairi."
@@ -18,7 +17,7 @@ SMODS.Joker {
 	
 	rarity = 2,
 	atlas = 'KHJokers',
-	pos = { x = 0, y = 1 },
+	pos = { x = 2, y = 1 },
 	cost = 6,
 	unlocked = true,
     discovered = true,

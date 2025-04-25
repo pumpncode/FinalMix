@@ -42,7 +42,7 @@ end
 		
     rarity = 2,
     atlas = "KHJokers",
-    pos = { x = 1, y = 1 },
+    pos = { x = 3, y = 1 },
     cost = 5,
     unlocked = true,
     discovered = true,

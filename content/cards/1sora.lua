@@ -3,10 +3,12 @@ SMODS.Joker {
 	
 	loc_txt = {
 		name = 'Sora',
-        text = {"This Joker gains {X:mult,C:white}X#2#{} Mult",
-				"For each scored {C:hearts}heart{} card, resets",
-                "when {C:attention}Boss Blind{} is defeated.{}",
-                "{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive} Mult)"
+        text = {
+			"This Joker gains {X:mult,C:white}X#2#{} Mult",
+			"For each scored {C:hearts}heart{} card, resets",
+			"when {C:attention}Boss Blind{} is defeated.{}",
+			"{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive} Mult)",
+			"{C:inactive,s:0.8}My Friends are my Power!",
 				}
     },
 	

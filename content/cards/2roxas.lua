@@ -6,7 +6,7 @@ SMODS.Joker {
 		text = {
 			"Gives {X:mult,C:white}X#1# {} Mult",
 			"Mult increases by {X:mult,C:white}X#2#{}",
-			"every round ",
+			" every round {C:inactive} [Caps at X3] {} ",
 			"{C:inactive,s:0.8}looks like my summer vacation is... over",
 		
 		}
@@ -26,7 +26,7 @@ SMODS.Joker {
     eternal_compat = true,
     perishable_compat = true,
 	config = {
-		extra = { Xmult = 0.5, Xmult_gain = 0.1 }
+		extra = { Xmult = 0.5, Xmult_gain = 0.5 }
 		},
 	
 	
@@ -41,14 +41,20 @@ SMODS.Joker {
 		
 		-- xmult upgrade at end of the round
 		if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-			card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_gain
-                return {
-                    message = 'Upgraded!',
+			if card.ability.extra.Xmult < 3 then
+				card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_gain
+				local message = 'Upgraded!'
+				if card.ability.extra.Xmult == 3 then
+					message = 'Max Power!'
+				end
+				
+				return {
+                    message = message,
                     card = card,
                 }
+			end
+			
 		end
-		
-		
+				
 	end
 }
-
