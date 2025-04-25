@@ -16,7 +16,7 @@ Currently Adds the following:<br>
 | Jokers:          | Rarity   | Ability|
 |------------------|----------|--------|
 | Sora             | Rare     | Gains 0.1x mult for every heart card scored, resets every ante|
-| Roxas            | Uncommon |(WIP/ToDo) Gives 0.5X Mult. Mult increases by 0.1X every round|
+| Roxas            | Uncommon | Gives 0.5X Mult. Mult increases by 0.5X every round, caps at 3X|
 | Kairi    | Uncommon |ToDo |
 | Meeska Mooska    | Uncommon |1 in 4 chance to gain +5 chips and 0.5x mult when a king is scored |
 | Donald Duck   | Uncommon |Copies the ability of a random joker each round |
