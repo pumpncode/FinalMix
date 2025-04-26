@@ -17,7 +17,7 @@ Currently Adds the following:<br>
 |------------------|----------|--------|
 | Sora             | Rare     | Gains 0.1x mult for every heart card scored, resets every ante|
 | Roxas            | Uncommon | Gives 0.5X Mult. Mult increases by 0.5X every round, caps at 3X|
-| Kairi    | Common |Earn $1 at end of round per Joker |
+| Kairi    | Common |Earn $1 at end of round for each Joker card |
 | Meeska Mooska    | Uncommon |1 in 4 chance to gain +2 chips and 0.5x mult when a king is scored |
 | Donald Duck   | Rare |Copies the ability of a random joker each round |
 | Nobody           | Rare  | Gains +13 Chips per unique suit in first hand of round|
