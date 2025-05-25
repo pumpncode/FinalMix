@@ -1,6 +1,6 @@
 # ![icon](assets/1x/mod_icon.png) KHJokers
 Kingdom Hearts Themed Jokers!
-
+![KHJokers](assets/2x/KHJokers.png)
  [Website](https://cloudzxiii.github.io/KHJokers/) (WIP)
 # Requirements
 - Requires [Lovely](https://github.com/ethangreen-dev/lovely-injector).
@@ -10,9 +10,9 @@ Kingdom Hearts Themed Jokers!
 # Installation
 Get the latest version from  [here](https://github.com/cloudzXIII/KHJokers/archive/refs/heads/main.zip), then extract it into the Mods folder.
 
-# Features
+
+## Additions !
 Currently Adds the following:<br>
-![KHJokers](assets/2x/KHJokers.png)
 <details>
 <summary>Jokers</summary>
 - Sora <br>
