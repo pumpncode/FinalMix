@@ -12,65 +12,255 @@ SMODS.Atlas {
     py = 95,
 }
 
+SMODS.Atlas({
+    key = 'consumabels',
+    px = 71,
+    py = 95,
+    path = 'consumabels.png'
+})
 
--- load all individual jokers
-local subdir = "content/cards"
-local cards = NFS.getDirectoryItems(SMODS.current_mod.path .. subdir)
-for _, filename in pairs(cards) do
-    assert(SMODS.load_file(subdir .. "/" .. filename))()
+SMODS.Atlas({
+    key = 'boosters',
+    px = 71,
+    py = 95,
+    path = 'boosters.png'
+})
+
+SMODS.Atlas({
+    key = 'decks',
+    px = 71,
+    py = 95,
+    path = 'decks.png'
+})
+
+SMODS.Atlas({
+  key = 'khblind',
+  path = 'blinds.png',
+  px = 34, py = 34,
+  frames = 21,
+  atlas_table = 'ANIMATION_ATLAS'})
+
+
+KH = SMODS.current_mod
+
+KH.save_config = function(self)
+  SMODS.save_mod_config(self)
+end
+KH.ui_config = {
+  colour = darken(G.C.RED,0.1),
+  author_colour = darken(G.C.BLUE,0.1),
+  ---bg_colour = G.C.CHIPS, 0.3,
+  back_colour = darken(G.C.BLUE, 0.1),
+  tab_button_colour = darken(G.C.BLUE, 0.1),
+  --collection_colour = G.C.RED,
+  collection_back_colour = darken(G.C.BLUE, 0.1),
+  collection_option_cycle_colour = G.C.BLUE, 0.1,
+}
+-- config
+KH.config_tab = function()
+  return {
+    n = G.UIT.ROOT,
+    config = {
+      r = 0.1, minw = 5, align = "cm", padding = 0.2, colour = G.C.BLACK
+    },
+    nodes = {
+	  
+	  create_toggle({
+        id = "enable_jokers",
+        label = localize("k_khjokers_config_jokers"),
+        info = {localize('k_khjokers_config_restart')},
+        ref_table = KH.config,
+        ref_value = "enable_jokers",
+        callback = function()
+          KH:save_config()
+        end,
+      }),
+	  
+      create_toggle({
+        id = "enable_tarots",
+        label = localize("k_khjokers_config_tarots"),
+        info = {localize('k_khjokers_config_restart')},
+        ref_table = KH.config,
+        ref_value = "enable_tarots",
+        callback = function()
+          KH:save_config()
+        end
+      }),
+	  
+	  create_toggle({
+        id = "enable_spectrals",
+        label = localize("k_khjokers_config_spectrals"),
+        info = {localize('k_khjokers_config_restart')},
+        ref_table = KH.config,
+        ref_value = "enable_spectrals",
+        callback = function()
+          KH:save_config()
+        end
+      }),
+	  
+      create_toggle({
+        id = "enable_booster",
+        label = localize("k_khjokers_config_booster"),
+        info = {localize('k_khjokers_config_restart')},
+        ref_table = KH.config,
+        ref_value = "enable_booster",
+        callback = function()
+          KH:save_config()
+        end
+      }),
+	  
+    }
+  }
+end
+
+if KH.config.enable_jokers then
+	local subdir = "content/cards"
+	local cards = NFS.getDirectoryItems(SMODS.current_mod.path .. subdir)
+	for _, filename in pairs(cards) do
+		assert(SMODS.load_file(subdir .. "/" .. filename))()
+	end
+end
+
+if KH.config.enable_tarots then
+	SMODS.load_file("content/consumables/tarots.lua")()
+end
+
+if KH.config.enable_spectrals then 
+  SMODS.load_file("content/consumables/spectrals.lua")()
 end
 
 
+if KH.config.enable_booster then
+	SMODS.load_file("content/booster/booster.lua")()
+end
+
 -- load Friends of Jimbo
-for _, file in ipairs{"kingdomheartsxbalatro.lua"} do -- can add anything else here if needed e.g.`` , "mickeyxbalatro.lua" ``
+for _, file in ipairs{"kingdomheartsxbalatro.lua"} do -- can add anything else here if needed e.g. ', "mickeyxbalatro.lua"'
 	assert(SMODS.load_file("content/collabs/"..file))()
 end
 
--- consumables
-for _, file in ipairs{"tarots.lua"} do -- can add anything else here if needed e.g. , "spectrals.lua"
-	assert(SMODS.load_file("content/consumables/"..file))()
+-- Joker Display Compat
+if JokerDisplay then
+    SMODS.load_file("content/JokerDisplay/joker_display_definitions.lua")()
 end
 
 
+-- challenges
 
-
--- Decks
-SMODS.Back {
-	key = "KHDeck",
+SMODS.Challenge {
+	key = "noone",
 	loc_txt = {
-		name = "Organisation XIII Deck",
-		text = {
-		"Start run with",
-		"{C:attention}52{} {C:hearts}Hearts{} in deck",
-		--"in deck",
-		"Start with {T:j_kingdomhearts_nobody}Nobody{}",
-		"{C:red}-2{} hand size",
-			}
-				},
-
-	config = {hand_size = -2,},
-	pos = { x = 1, y = 3},
-	
-	apply = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-			
-				SMODS.add_card { key = 'j_kingdomhearts_nobody' }
-				for _, card in ipairs(G.playing_cards) do
-					
-					if card:is_suit("Clubs") then
-						assert(SMODS.change_base(card, "Hearts"))
-					end
-					if card:is_suit("Spades") then
-						assert(SMODS.change_base(card, "Hearts"))
-					end
-					if card:is_suit("Diamonds") then
-						assert(SMODS.change_base(card, "Hearts"))
-				end
-			end
-			return true
-			
-			end
-		}))
+		name = "The No ones"
+	},
+  --button_colour = G.C.CHIPS,
+	modifiers = {
+		
+	},
+	jokers = {
+		{ id = "j_kh_nobody", eternal = true },
+	},
+    deck = {
+    seal = 'Blue',
+  },
+	unlocked = function(self)
+		return true
 	end
 }
+
+--[[     rules = {
+        custom = {
+            { id = 'debuff_played_cards' },
+        },
+    },]]
+SMODS.Challenge {
+    key = 'sealsalty',
+	  loc_txt = {
+		  name = "Sea Salt Madness"
+	  },
+    jokers = {
+		  { id = "j_kh_sealsalt", eternal = true },
+	  },
+
+    deck = {
+        seal = 'Blue'
+    }
+}
+
+--[[
+SMODS.Challenge {
+	key = "doubletrouble",
+	loc_txt = {
+		name = "Double Trouble"
+	},
+	jokers = {
+		{ id = "j_kh_namine", eternal = true }
+	},
+  deck = {
+    seal = 'Blue',
+    enhancement = 'm_glass',
+    cards = {
+        { s = 'C', r = 'K' },
+        { s = 'D', r = 'K' },
+        { s = 'H', r = 'K' },
+        { s = 'S', r = 'K' },
+        { s = 'S', r = 'K' },
+    }
+  },
+	unlocked = function(self)
+		return true
+	end
+}
+--]]
+-- blinds
+SMODS.Blind {
+    key = 'khblind',
+    loc_txt = {
+        name = 'Shuffled',
+        text = {
+            'Shuffles Jokers',
+            'When hand is played',
+        }
+    },
+    vars = {},
+    dollars = 5,
+    mult = 2,
+    debuff = {},
+    boss = {min = 2, max = 10},
+    boss_colour = HEX('c88465'),
+    pos = {x = 0, y = 0},
+    atlas = 'khblind',
+    press_play = function(self)
+      G.E_MANAGER:add_event(Event({
+              trigger = 'after',
+              delay = 0.2,
+              func = function()
+                for i = 1, 3 do
+                  G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.15 * (i - 1),
+                    func = function()
+                      G.jokers:shuffle('aajk')
+                      play_sound('cardSlide1', 0.85 + 0.15 * i)
+                      return true
+                    end
+                  }))
+                end
+              return true
+        end
+        }))
+    end
+}
+
+
+
+
+SMODS.Back {
+  key = 'kingdom',
+  atlas = 'decks',
+  pos = { x = 0, y = 0 },
+  config = {vouchers = { "v_overstock_norm"},},
+  loc_vars = function(self, info_queue, center)
+  end,
+}
+
+

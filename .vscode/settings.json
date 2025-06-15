@@ -1,0 +1,11 @@
+{
+
+  "Lua.workspace.library": [
+	"../smods",
+	"../lovely/dump",
+  "../JokerDisplay"
+  ],
+  "Lua.diagnostics.disable": [
+    "duplicate-set-field"
+  ]
+}

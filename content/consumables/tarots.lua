@@ -1,13 +1,3 @@
-
-SMODS.Atlas({
-    key = 'consumabels',
-    px = 71,
-    py = 95,
-    path = 'Tarots.png'
-})
-
-
-
 function Card:set_rank(new_rank)
     local suit_prefix = string.sub(self.base.suit, 1, 1)..'_'
     
@@ -43,15 +33,13 @@ SMODS.Consumable({
         max_highlighted = 5,
     },
     loc_txt = {
-        name = "Keyblade",
-        text = {
-            "Converts up to",
-			"{C:attention}#1#{} selected cards",
-            "into {C:dark_edition}random {}{C:attention}Ranks{}"
-        }
     },
     loc_vars = function(self, info_queue, card)
-        return {vars = {(card.ability or self.config).max_highlighted or 1}}
+        return {
+			vars = {
+				(card.ability or self.config).max_highlighted or 1
+			}
+		}
     end,
     atlas = "consumabels",
     pos = {x = 0, y = 0},
@@ -111,3 +99,32 @@ SMODS.Consumable({
 
 ----------------------------------------------
 ------------MOD CODE END----------------------
+--[[
+How can I add jokers randomly but only from a said mod ?
+Cause I wanna make a tag that once skipped it adds a random joker from my mod
+bepis = {"Yggdrasil","BSR"}[</>]
+ — 10:38 am
+local valid_pool = {}
+local mod_id = "your mod id here"
+
+for _,v in pairs(G.P_CENTER_POOLS.Joker) do
+  if v.original_mod and v.original_mod.id == mod_id then valid_pool[#valid_pool+1] = v end
+end
+
+--valid_pool now only has jokers from your mod
+Somethingcom515 {Seals On Every} — 10:39 am
+What is the difference between center.mod and center.original_mod?
+bepis = {"Yggdrasil","BSR"}[</>]
+ — 10:39 am
+i
+dont know tbh
+:3
+Hellio — 10:39 am
+Thank you alot and how do I use it with the add joker func
+bepis = {"Yggdrasil","BSR"}[</>]
+ — 10:41 am
+local random_joker = pseudorandom_element(valid_pool, pseudoseed(":3"))
+if random_joker then
+  SMODS.add_card({key = random_joker.key})
+end
+--]]

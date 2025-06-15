@@ -1,0 +1,37 @@
+[manifest]
+version = "0.1.3"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if add and not G.GAME.banned_keys[v.key] then "
+position = "after"
+match_indent = true
+payload = '''
+    -- Credits to Paperback dev for the patch!
+    -- If the selected deck is the Kingdom deck and this key is Kingdom Hearts Joker, add copies of it
+    -- to the pool, so that it is more common to get
+    if (G.GAME.selected_back_key or {}).key == 'b_kh_kingdom' and v.key:find('j_kh_') then
+      for i = 1, 2 do
+        _pool[#_pool + 1] = v.key
+        _pool_size = _pool_size + 1
+      end
+    end
+'''
+
+# function Card:flip() (Cassette)
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = "self.facing='back'"
+position = 'after'
+match_indent = true
+payload = '''
+
+if self.config.center.key == 'j_kh_kairi' then
+    self:flip()
+    self:calculate_joker({flip = true})
+end
+'''
