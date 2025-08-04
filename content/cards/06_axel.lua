@@ -5,10 +5,8 @@ XIII = {
     REND = {}
 }
 
--- Credits to Rensnek, Rofflatro for the doubling logic in this joker
+-- Credits to Rofflatro for the doubling logic in this joker!
 
-
--- Check if key should be modified
 local function should_modify_key(k, v, config, ref)
     local keywords = config.keywords
     local unkeywords = config.unkeywords or {}
@@ -24,7 +22,6 @@ local function should_modify_key(k, v, config, ref)
     return type(v) == "number"
 end
 
--- Modify card values
 XIII.funcs.mod_card_values = function(table_in, config)
     if not table_in then return end
     config = config or {}
@@ -46,7 +43,6 @@ XIII.funcs.mod_card_values = function(table_in, config)
     modify(table_in, reference)
 end
 
--- Multiply a card's nominal + ability values
 XIII.funcs.xmult_playing_card = function(card, mult)
     local tablein = {
         nominal = card.base.nominal,
@@ -58,7 +54,7 @@ XIII.funcs.xmult_playing_card = function(card, mult)
     card.ability = tablein.ability
 end
 
--- Helper Functions
+-- Helper Functions (Credits to Rensnek)
 
 XIII.REND.starts_with = function(str, start)
     return str:sub(1, #start) == start
@@ -72,43 +68,59 @@ XIII.REND.table_contains = function(tbl, val)
 end
 
 Exclude_list = { -- List of incompatible Jokers
-            ["Astronomer"] = true,
-            ["Blueprint"] = true,
-            ["Brainstorm"] = true,
-            ["Business Card"] = true,
-            ["Castle"] = true,
-            ["DNA"] = true,
-            ["Flash Card"] = true,
-            ["Four Fingers"] = true,
-            ["Invisible Joker"] = true,
-            --["Madness"] = true,
-            ["Marble Joker"] = true,
-            ["Obelisk"] = true,
-            ["Oops! All 6s"] = true,
-            ["Pareidolia"] = true,
-            ["Perkeo"] = true,
-            ["Popcorn"] = true,
-            ["Raised Fist"] = true,
-            ["Riff Raff"] = true,
-            ["Rough Gem"] = true,
-            ["Runner"] = true,
-            ["Seance"] = true,
-            ["Shoot the Moon"] = true,
-            ["Sixth Sense"] = true,
-            ["Spare Trousers"] = true,
-            ["Splash"] = true,
-            ["Square Joker"] = true,
-            ["Stuntman"] = true,
-            ["Supernova"] = true,
-            ["Vampire"] = true,
-            ["Wee Joker"] = true,
-            ["Yorick"] = true,
-            ["Axel"] = true,
-            ["Donald"] = true,
-            ["Gomez"] = true,
-            ["Kingdom Hearts"] = true,
-            ["Seal Salt Ice Cream"] = true,
-        }
+    ["Astronomer"] = true,
+    ["Axel"] = true,
+    ["Blueprint"] = true,
+    ["Brainstorm"] = true,
+    ["Burnt Joker"] = true,
+    ["Business Card"] = true,
+    ["Cartomancer"] = true,
+    ["Castle"] = true,
+    ["Ceremonial Dagger"] = true,
+    ["Certificate"] = true,
+    ["Chaos the Clown"] = true,
+    ["Credit Card"] = true,
+    ["DNA"] = true,
+    ["Diet Cola"] = true,
+    ["Donald"] = true,
+    ["Drunkard"] = true,
+    ["Dusk"] = true,
+    ["Flash Card"] = true,
+    ["Four Fingers"] = true,
+    ["Hallucination"] = true,
+    ["Invisible Joker"] = true,
+    ["Joker Stencil"] = true,
+    ["Juggler"] = true,
+    ["Kingdom Hearts"] = true,
+    ["Luchador"] = true,
+    ["Marble Joker"] = true,
+    ["Merry Andy"] = true,
+    ["Midas Mask"] = true,
+    ["Mime"] = true,
+    ["Mr. Bones"] = true,
+    ["Oops! All 6s"] = true,
+    ["Pareidolia"] = true,
+    ["Perkeo"] = true,
+    ["Raised Fist"] = true,
+    ["Riff Raff"] = true,
+    ["Rough Gem"] = true,
+    ["Seance"] = true,
+    ["Seal Salt Ice Cream"] = true,
+    ["Shoot the Moon"] = true,
+    ["Shortcut"] = true,
+    ["Sixth Sense"] = true,
+    ["Smeared Joker"] = true,
+    ["Sock and Buskin"] = true,
+    ["Showman"] = true,
+    ["Splash"] = true,
+    ["Supernova"] = true,
+    ["Superposition"] = true,
+    ["Swashbuckler"] = true,
+    ["Troubadour"] = true,
+    ["Turtle Bean"] = true,
+    ["Vagabond"] = true,
+}
+
 
 
 
@@ -187,7 +199,12 @@ SMODS.Joker{
                 ["Riku"] = { keywords = {levels = true}, unkeywords = {total = true} },
                 ["Loyalty Card"] = { unkeywords = {loyalty_remaining = true, every = true}},
                 ["Caino"] = { unkeywords = {caino_xmult = true} },
-                
+                ["Yorick"] = {unkeywords = {yorick_discards = true, discards = true}},
+                ["Wee Joker"] = {keywords = {chip_mod = true}},
+                ["Stuntman"] = {keywords = {chip_mod = true}},
+                ["Square Joker"] = {keywords = {chip_mod = true}},
+                ["Runner"] = {keywords = {chip_mod = true}},
+                ["Faceless Joker"] = {keywords = {dollars = true}},
             }
 
             local rules = joker_rules[name] or { unkeywords = {odds = true, Xmult_mod = true, mult_mod = true,
