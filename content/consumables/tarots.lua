@@ -8,10 +8,10 @@ local function getResourceWithPrefix(prefix)
     return results
 end
 
-SMODS.Tarot{
+SMODS.Tarot {
     key = 'awakening',
     set = 'Tarot',
-	atlas = "consumabels",
+    atlas = "consumabels",
     pos = { x = 0, y = 0 },
     cost = 5,
     discovered = true,
@@ -45,7 +45,7 @@ SMODS.Tarot{
                 delay = 0.4,
                 func = function()
                     play_sound('timpani')
-                    SMODS.add_card({key = random_joker, set = 'Joker'})
+                    SMODS.add_card({ key = random_joker, set = 'Joker' })
                     used_card:juice_up(0.3, 0.5)
                     return true
                 end

@@ -1,7 +1,8 @@
 [manifest]
-version = "1.0.0"
+version = "1.1.0"
 dump_lua = true
 priority = 0
+
 
 # Credits to Paperback for the patch!
 [[patches]]
@@ -13,7 +14,11 @@ match_indent = true
 payload = '''
     -- If the selected deck is the Kingdom deck and this key is Kingdom Hearts Joker, add copies of it
     -- to the pool, so that it is more common to get
-    if (G.GAME.selected_back_key or {}).key == 'b_kh_kingdom' and v.key:find('j_kh_') then
+    local kingdom = 
+        (G.GAME.selected_back_key or {}).key == 'b_kh_kingdom'
+        or G.GAME.selected_sleeve == 'sleeve_kh_kingdom'
+        
+    if kingdom and v.key:find('j_kh_') then
       for i = 1, 2 do
         _pool[#_pool + 1] = v.key
         _pool_size = _pool_size + 1

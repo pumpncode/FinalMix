@@ -1,9 +1,10 @@
 SMODS.Joker {
 	name = 'Paopu Fruit',
 	key = 'paopufruit',
-	
+
 	loc_vars = function(self, info_queue, card)
-		local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds, 'paopu1')
+		local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds,
+			'paopu1')
 		return {
 			vars = {
 				numerator, --1
@@ -11,19 +12,19 @@ SMODS.Joker {
 			}
 		}
 	end,
-	
+
 	rarity = 2,
 	atlas = 'KHJokers',
 	pos = { x = 2, y = 1 },
 	cost = 6,
 	unlocked = true,
-    discovered = true,
+	discovered = true,
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = true,
 
 	config = {
-		extra = { 
+		extra = {
 			repetitions = 1,
 			base = 1,
 			odds = 7
@@ -31,7 +32,6 @@ SMODS.Joker {
 	},
 
 	calculate = function(self, card, context)
-
 		if context.cardarea == G.play and context.repetition and not context.repetition_only then
 			if context.other_card:is_suit("Diamonds") then
 				return {
@@ -41,7 +41,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		
+
 		if context.end_of_round and not context.repetition and context.game_over == false and not context.blueprint then
 			if SMODS.pseudorandom_probability(card, 'paopu', card.ability.extra.base, card.ability.extra.odds, 'paopu1') then
 				G.E_MANAGER:add_event(Event({

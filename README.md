@@ -12,7 +12,7 @@ Get the latest stable version from the [Releases](https://github.com/cloudzXIII/
 # Features
 Currently Adds the following:<br>
 - Kingdom Hearts x Friends of Jimbo
-- 20 Jokers
+- 20+ Jokers
 - 3 Challenges
 - 2 Spectral Cards
 - 1 Tarot Card
@@ -31,10 +31,14 @@ and more to come... stay tuned!
 
 </details>
 
-## JokerDisplay Support!
+## Crossmod Support!
 This Mod has JokerDisplay support! *woo hoo* 
+- [JokerDisplay](https://github.com/larswijn/CardSleeves)
 
-- You can get that from https://github.com/nh6574/JokerDisplay
+This Mod also has CardSleeves support! *yippee*
+- Adds 1 new sleeve: Kingdom Sleeve!
+- [CardSleeves](https://github.com/larswijn/CardSleeves)
+
 
 ## Credits
 Credits to the following Mods and their devs! I borrowed/referenced their code while making this mod
@@ -42,3 +46,4 @@ Credits to the following Mods and their devs! I borrowed/referenced their code w
 - [Bunco](https://github.com/jumbocarrot0/Bunco/)
 - [Rofflatro](https://github.com/MamiKeRiko/Rofflatro)
 - [Cryptid](https://github.com/SpectralPack/Cryptid)
+- [Buffoonery](https://github.com/pinkmaggit-hub/Buffoonery)

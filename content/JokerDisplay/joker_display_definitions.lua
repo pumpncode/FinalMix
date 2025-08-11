@@ -1,4 +1,4 @@
--- Chip and Dale (TODO), 
+-- Chip and Dale (TODO),
 local jd_def = JokerDisplay.Definitions
 
 -- Sora
@@ -26,41 +26,41 @@ jd_def["j_kh_riku"] = {
     text = {
         { ref_table = "card.joker_display_values", ref_value = "most_played", colour = G.C.CHIPS }
     },
-    
-	reminder_text = {
-		{ text = "(" },
-		{ ref_table = "card.ability.extra", ref_value = "counter" },
-		{ text = "/" },
+
+    reminder_text = {
+        { text = "(" },
+        { ref_table = "card.ability.extra", ref_value = "counter" },
+        { text = "/" },
         { ref_table = "card.ability.extra", ref_value = "total" },
-		{ text = ")" },
-	},
-    calc_function = function(card)	
-		local _handname, _played, _order = 'High Card', -1, 100
-		for k, v in pairs(G.GAME.hands) do
-			if v.played > _played or (v.played == _played and _order > v.order) then 
-				_played = v.played
-				_handname = k
-			end
-		end
-		card.ability.extra.most_played = _handname
-		card.ability.extra.old_most_played = card.ability.extra.most_played
+        { text = ")" },
+    },
+    calc_function = function(card)
+        local _handname, _played, _order = 'High Card', -1, 100
+        for k, v in pairs(G.GAME.hands) do
+            if v.played > _played or (v.played == _played and _order > v.order) then
+                _played = v.played
+                _handname = k
+            end
+        end
+        card.ability.extra.most_played = _handname
+        card.ability.extra.old_most_played = card.ability.extra.most_played
         card.joker_display_values.most_played = card.ability.extra.most_played
     end
 }
 
 -- Kairi/Namine
-jd_def["j_kh_kairi"] = { 
+jd_def["j_kh_kairi"] = {
 
     text = {
         { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS },
         { text = ", " },
-        { ref_table = "card.joker_display_values", ref_value = "mult", colour = G.C.MULT },
+        { ref_table = "card.joker_display_values", ref_value = "mult",  colour = G.C.MULT },
 
     },
     reminder_text = {
-        {ref_table = "card.joker_display_values", ref_value = "localized_text",},
-		{ text = "," },
-		{ ref_table = "card.joker_display_values", ref_value = "localised_text", },
+        { ref_table = "card.joker_display_values", ref_value = "localized_text", },
+        { text = "," },
+        { ref_table = "card.joker_display_values", ref_value = "localised_text", },
     },
     calc_function = function(card)
         local chips = card.ability.extra.chips or 0
@@ -97,17 +97,17 @@ jd_def["j_kh_kairi"] = {
 -- Roxas
 jd_def["j_kh_roxas"] = {
     text = {
-		{ text = "+" },
+        { text = "+" },
         { ref_table = "card.ability.extra", ref_value = "chips", colour = G.C.CHIPS },
     },
-	reminder_text = {
-		{ text = "(" },
-		{ ref_table = "card.ability.extra", ref_value = "discards_remaining" },
-		{ text = "/" },
-		{ ref_table = "card.ability.extra", ref_value = "discards" },
-		{ text = ")" },
-	},
-        
+    reminder_text = {
+        { text = "(" },
+        { ref_table = "card.ability.extra", ref_value = "discards_remaining" },
+        { text = "/" },
+        { ref_table = "card.ability.extra", ref_value = "discards" },
+        { text = ")" },
+    },
+
 }
 
 -- Bryce the Nobody
@@ -118,16 +118,16 @@ jd_def["j_kh_brycethenobody"] = {
         { ref_table = "card.joker_display_values", ref_value = "localized_text", colour = lighten(G.C.SUITS["Hearts"], 0.35) },
         { text = ")" }
     },
-	extra = {
-		{
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "odds" },
-			{ text = ")" },
-		}
-	},
-	extra_config = { colour = G.C.GREEN, scale = 0.3 },
-	calc_function = function(card)
-		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
+    extra = {
+        {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "odds" },
+            { text = ")" },
+        }
+    },
+    extra_config = { colour = G.C.GREEN, scale = 0.3 },
+    calc_function = function(card)
+        card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
         card.joker_display_values.localized_text = localize("Hearts", "suits_plural")
     end
 }
@@ -140,9 +140,9 @@ jd_def["j_kh_axel"] = {
         { text = ")" },
     },
 
-	reminder_text = {
-		{ text = "(boss blind)" }
-	},
+    reminder_text = {
+        { text = "(boss blind)" }
+    },
 
     calc_function = function(card)
         card.joker_display_values = card.joker_display_values or {}
@@ -212,28 +212,28 @@ jd_def["j_kh_mickey"] = {
     text = {
         { text = "+" },
         { ref_table = "card.ability.extra", ref_value = "chips", colour = G.C.CHIPS },
-		{ text = ", "},
-		{
+        { text = ", " },
+        {
             border_nodes = {
                 { text = "X" },
                 { ref_table = "card.ability.extra", ref_value = "x_mult" }
             },
-		},
+        },
 
     },
 
-	extra = {
-		{
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "odds" },
-			{ text = ")" },
-		}
-	},
+    extra = {
+        {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "odds" },
+            { text = ")" },
+        }
+    },
 
-	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+    extra_config = { colour = G.C.GREEN, scale = 0.3 },
 
-	calc_function = function(card)
-		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
+    calc_function = function(card)
+        card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
     end,
 }
 
@@ -244,7 +244,6 @@ jd_def["j_kh_donald"] = {
         {
             ref_table = "card.joker_display_values",
             ref_value = "copied_name",
-            --scale = 1.0,
             colour = G.C.ATTENTION,
             newline = true,
         }
@@ -281,79 +280,81 @@ jd_def["j_kh_donald"] = {
 
 -- Goofy
 jd_def["j_kh_goofy"] = {
-
     text = {
         {
-            ref_table = "card.joker_display_values",
-            ref_value = "current_mult",
-            scale = 0.40,
-            colour = G.C.MULT,
-            newline = true
-        }
+            border_nodes = {
+                { text = "X" },
+                { ref_table = "card.ability.extra", ref_value = "Xmult" }
+            },
+            colour = G.C.MULT
+        },
+        { text = ", " },
+        { ref_table = "card.joker_display_values", ref_value = "dollars", colour = G.C.MONEY, },
+    },
+
+    reminder_text = {
+        { ref_table = "card.joker_display_values", ref_value = "mult",  colour = G.C.MULT, },
+        { text = ", " },
+        { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS },
     },
 
     calc_function = function(card)
-        local base_mult = card.ability.extra.mult or 0
-        local wild_tally = 0
-        if G.playing_cards then
-            for _, c in ipairs(G.playing_cards) do
-                if SMODS.has_enhancement(c, 'm_wild') then
-                    wild_tally = wild_tally + 1
-                end
-            end
-        end
-
-        local current_mult = base_mult * wild_tally
-        card.joker_display_values.current_mult = string.format("+%d", current_mult)
-    end
+        local extra = card.ability.extra or {}
+        card.joker_display_values.mult = string.format("+%d", extra.mult)
+        card.joker_display_values.chips = string.format("+%d", extra.chips)
+        card.joker_display_values.dollars = string.format("+$%d", extra.dollars)
+    end,
 }
 
 -- Master Yen Sid
 jd_def["j_kh_disney"] = {
 
-	extra = {
-		{
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "odds" },
-			{ text = ")" },
-		}
-	},
+    extra = {
+        {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "odds" },
+            { text = ")" },
+        }
+    },
 
-	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+    extra_config = { colour = G.C.GREEN, scale = 0.3 },
 
-	calc_function = function(card)
-		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
-		
+    calc_function = function(card)
+        card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
     end,
 }
 
 -- Keyblade
 jd_def["j_kh_keyblade"] = {
 
-	text = {
-		{ text = "+" },
-		{ ref_table = "card.joker_display_values", ref_value = "count", retrigger_type = "mult" }
-	},
+    text = {
+        { text = "+" },
+        { ref_table = "card.joker_display_values", ref_value = "count", retrigger_type = "mult" }
+    },
 
-	reminder_text = {
-		{ text = "(7)", scale = 0.35 },
-	},
+    reminder_text = {
+        { text = "(" },
+        { ref_table = "card.joker_display_values", ref_value = "keyblade_card", scale = 0.35 },
+        { text = ")" },
+    },
 
-	calc_function = function(card)
-		local _, _, scoring_hand = JokerDisplay.evaluate_hand()
-		local keyblade_eval = #scoring_hand == 1 and scoring_hand[1]:get_id() == 7
-		card.joker_display_values.active = G.GAME and G.GAME.current_round.hands_played == 0
-		card.joker_display_values.count = keyblade_eval and 1 or 0
-	end,
-	style_function = function(card, text, reminder_text, extra)
-		if text and text.children[1] and text.children[2] then
-			text.children[1].config.colour = card.joker_display_values.active and G.C.SECONDARY_SET.Spectral or
-				G.C.UI.TEXT_INACTIVE
-			text.children[2].config.colour = card.joker_display_values.active and G.C.SECONDARY_SET.Spectral or
-				G.C.UI.TEXT_INACTIVE
-		end
-		return false
-	end
+    calc_function = function(card)
+        local _, _, scoring_hand = JokerDisplay.evaluate_hand()
+        local keyblade_eval = #scoring_hand == 1 and scoring_hand[1]:get_id() == G.GAME.current_round.keyblade_rank.id
+        card.joker_display_values.active = G.GAME and G.GAME.current_round.hands_played == 0
+        card.joker_display_values.count = keyblade_eval and 1 or 0
+
+        card.joker_display_values.keyblade_card = localize(G.GAME.current_round.keyblade_rank.rank, 'ranks')
+    end,
+    style_function = function(card, text, reminder_text, extra)
+        if text and text.children[1] and text.children[2] then
+            text.children[1].config.colour = card.joker_display_values.active and G.C.SECONDARY_SET.Spectral or
+                G.C.UI.TEXT_INACTIVE
+            text.children[2].config.colour = card.joker_display_values.active and G.C.SECONDARY_SET.Spectral or
+                G.C.UI.TEXT_INACTIVE
+        end
+        return false
+    end
 }
 
 
@@ -366,18 +367,18 @@ jd_def["j_kh_paopufruit"] = {
         { text = ")" }
     },
 
-	extra = {
-		{
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "odds" },
-			{ text = ")" },
-		}
-	},
+    extra = {
+        {
+            { text = "(" },
+            { ref_table = "card.joker_display_values", ref_value = "odds" },
+            { text = ")" },
+        }
+    },
 
-	extra_config = { colour = G.C.GREEN, scale = 0.3 },
+    extra_config = { colour = G.C.GREEN, scale = 0.3 },
 
-	calc_function = function(card)
-		card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
+    calc_function = function(card)
+        card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
         card.joker_display_values.localized_text = localize("Diamonds", "suits_plural")
     end
 }
@@ -387,8 +388,8 @@ jd_def["j_kh_paopufruit"] = {
 jd_def["j_kh_sealsalt"] = {
 
     text = {
-        { text = "(Blue Seal)", scale = 0.35, colour = G.C.SECONDARY_SET.Planet},
-	},
+        { text = "(Blue Seal)", scale = 0.35, colour = G.C.SECONDARY_SET.Planet },
+    },
 }
 
 
@@ -404,8 +405,8 @@ jd_def["j_kh_nobody"] = {
     reminder_text = {
         { text = "(" },
         { ref_table = "card.joker_display_values", ref_value = "suit_count" },
-        { text = " suits", scale = 0.35, colour = G.C.PURPLE},
-		{ text = ")" },
+        { text = " suits",                         scale = 0.35,            colour = G.C.PURPLE },
+        { text = ")" },
     },
 
     calc_function = function(card)
@@ -446,22 +447,22 @@ jd_def["j_kh_moogle"] = {
             scale = 0.40,
             colour = G.C.MONEY,
             newline = true
-			}	
-		},
-		
-	reminder_text = {
-		{ text = "(Round)" }
-	},
-	
+        }
+    },
+
+    reminder_text = {
+        { text = "(Round)" }
+    },
+
     calc_function = function(card)
-		local joker_count = 0
-		if G.jokers and G.jokers.cards then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].ability.set == 'Joker' then
-					joker_count = joker_count + 1
-				end
-			end
-		end
+        local joker_count = 0
+        if G.jokers and G.jokers.cards then
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i].ability.set == 'Joker' then
+                    joker_count = joker_count + 1
+                end
+            end
+        end
         card.joker_display_values.joker_count = string.format("+$%d", card.ability.extra.dollars * joker_count)
     end
 }
@@ -470,29 +471,29 @@ jd_def["j_kh_moogle"] = {
 jd_def["j_kh_chipanddale"] = {
 
     text = {
-		{ text = "Creates " },
+        { text = "Creates " },
         { ref_table = "card.ability.extra", ref_value = "creates" },
     },
 
-	reminder_text = {
-		{ text = "(" },
-		{ ref_table = "card.ability.extra", ref_value = "mini_rounds" },
-		{ text = "/" },
-		{ ref_table = "card.ability.extra", ref_value = "total_rounds" },
-		{ text = ")" },
-	},
-        
+    reminder_text = {
+        { text = "(" },
+        { ref_table = "card.ability.extra", ref_value = "mini_rounds" },
+        { text = "/" },
+        { ref_table = "card.ability.extra", ref_value = "total_rounds" },
+        { text = ")" },
+    },
+
 }
 
 -- Luxord
 jd_def["j_kh_luxord"] = {
 
     text = {
-		{ text = "(" },
-		{ ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS },
-		{ text = "/" },
-		{ ref_table = "card.joker_display_values", ref_value = "cap", colour = G.C.UI.ATTENTION },
-		{ text = ")" },
+        { text = "(" },
+        { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS },
+        { text = "/" },
+        { ref_table = "card.joker_display_values", ref_value = "cap",   colour = G.C.UI.ATTENTION },
+        { text = ")" },
     },
 
     calc_function = function(card)
@@ -547,9 +548,9 @@ jd_def["j_kh_khtrilogy"] = {
         -- Adjust value color depending on level
         local level = card.ability.extra.level or 1
         if text and text.children and #text.children >= 1 then
-            local colour =(level == 1 and G.C.CHIPS) or
-                          (level == 2 and G.C.RED) or
-                          (level == 3 and G.C.XMULT)
+            local colour = (level == 1 and G.C.CHIPS) or
+                (level == 2 and G.C.RED) or
+                (level == 3 and G.C.XMULT)
             text.children[1].config.colour = colour
         end
         return false
@@ -576,20 +577,20 @@ jd_def["j_kh_helpwanted"] = {
         local progress = "loading..."
 
         if task == "play_face" then
-            task_desc = "Score 15 face cards"
+            task_desc = "Grand Stander"
             progress = "(" .. prog .. "/15)"
         elseif task == "destroy_cards" then
-            task_desc = "Destroy 7 cards"
+            task_desc = "Cargo Climb"
             progress = "(" .. prog .. "/7)"
         elseif task == "selling" then
-            task_desc = "Sell 13 cards"
+            task_desc = "Mail Delivery"
             progress = "(" .. prog .. "/13)"
         elseif task == "skipping" then
             task_desc = "Skip 4 Blinds"
             progress = "(" .. prog .. "/4)"
         elseif card.ability.current_task == "shopping" then
             local spent = card.ability.money_spent or 0
-            task_desc = "Spend $30 in one shop"
+            task_desc = "Junk Sweep"
             progress = "($" .. spent .. "/30)"
         end
 
@@ -597,4 +598,3 @@ jd_def["j_kh_helpwanted"] = {
         card.joker_display_values.progress = progress
     end,
 }
-

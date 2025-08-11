@@ -1,5 +1,3 @@
-
-
 XIII = {
     funcs = {},
     REND = {}
@@ -14,9 +12,9 @@ local function should_modify_key(k, v, config, ref)
 
     if unkeywords[k] then return false end
     if keywords and not keywords[k] then return false end
-    if x_protect and ref[k] == 1 then 
-        if k:sub(1, 2) == "x_" or k:sub(1, 4) == "h_x_" then -- if k == "Xmult" 
-            return false 
+    if x_protect and ref[k] == 1 then
+        if k:sub(1, 2) == "x_" or k:sub(1, 4) == "h_x_" then -- if k == "Xmult"
+            return false
         end
     end
     return type(v) == "number"
@@ -49,7 +47,7 @@ XIII.funcs.xmult_playing_card = function(card, mult)
         ability = card.ability
     }
 
-    XIII.funcs.mod_card_values(tablein, {multiply = mult})
+    XIII.funcs.mod_card_values(tablein, { multiply = mult })
     card.base.nominal = tablein.nominal
     card.ability = tablein.ability
 end
@@ -99,6 +97,8 @@ Exclude_list = { -- List of incompatible Jokers
     ["Midas Mask"] = true,
     ["Mime"] = true,
     ["Mr. Bones"] = true,
+    ["Munny"] = true,
+    ["Munny Pouch"] = true,
     ["Oops! All 6s"] = true,
     ["Pareidolia"] = true,
     ["Perkeo"] = true,
@@ -125,17 +125,18 @@ Exclude_list = { -- List of incompatible Jokers
 
 
 
-SMODS.Joker{
+SMODS.Joker {
     name = 'Axel',
     key = 'axel',
 
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = {key = "kh_perishable", set = "Other"}
-        info_queue[#info_queue+1] = {key = "kh_unstackable", set = "Other"}
+        info_queue[#info_queue + 1] = { key = "kh_perishable", set = "Other" }
+        info_queue[#info_queue + 1] = { key = "kh_unstackable", set = "Other" }
 
         if card.area == G.jokers then
             local target = G.jokers.cards[1]
-            local compatible = target and target ~= card and not target.ability.perishable and not Exclude_list[target.ability.name]
+            local compatible = target and target ~= card and not target.ability.perishable and
+                not Exclude_list[target.ability.name]
 
             local main_end = {
                 {
@@ -147,7 +148,8 @@ SMODS.Joker{
                             config = {
                                 ref_table = card,
                                 align = "m",
-                                colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+                                colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or
+                                    mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
                                 r = 0.05,
                                 padding = 0.06
                             },
@@ -155,7 +157,8 @@ SMODS.Joker{
                                 {
                                     n = G.UIT.T,
                                     config = {
-                                        text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ',
+                                        text = ' ' ..
+                                            localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ',
                                         colour = G.C.UI.TEXT_LIGHT,
                                         scale = 0.256
                                     }
@@ -189,7 +192,6 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.end_of_round and G.GAME.blind.boss and context.cardarea == G.jokers and not context.individual and not context.repetition and not context.blueprint then
-
             local target = G.jokers.cards[1]
             if not target or target == card or target.ability.perishable then return end
 
@@ -197,20 +199,32 @@ SMODS.Joker{
             local is_excluded = Exclude_list[name]
 
             local joker_rules = {
-                ["Riku"] = { keywords = {levels = true}, unkeywords = {total = true} },
-                ["Loyalty Card"] = { unkeywords = {loyalty_remaining = true, every = true}},
-                ["Caino"] = { unkeywords = {caino_xmult = true} },
-                ["Yorick"] = {unkeywords = {yorick_discards = true, discards = true}},
-                ["Wee Joker"] = {keywords = {chip_mod = true}},
-                ["Stuntman"] = {keywords = {chip_mod = true}},
-                ["Square Joker"] = {keywords = {chip_mod = true}},
-                ["Runner"] = {keywords = {chip_mod = true}},
-                ["Faceless Joker"] = {keywords = {dollars = true}},
+                ["Riku"] = { keywords = { levels = true }, unkeywords = { total = true } },
+                ["Loyalty Card"] = { unkeywords = { loyalty_remaining = true, every = true } },
+                ["Caino"] = { unkeywords = { caino_xmult = true } },
+                ["Yorick"] = { unkeywords = { yorick_discards = true, discards = true } },
+                ["Wee Joker"] = { keywords = { chip_mod = true } },
+                ["Stuntman"] = { keywords = { chip_mod = true } },
+                ["Square Joker"] = { keywords = { chip_mod = true } },
+                ["Runner"] = { keywords = { chip_mod = true } },
+                ["Faceless Joker"] = { keywords = { dollars = true } },
             }
 
-            local rules = joker_rules[name] or { unkeywords = {odds = true, Xmult_mod = true, mult_mod = true,
-                chips_mod = true, hand_add = true, discard_sub = true, h_mod = true, size = true, chip_mod = true,
-                h_size = true, increase = true } }
+            local rules = joker_rules[name] or {
+                unkeywords = {
+                    odds = true,
+                    Xmult_mod = true,
+                    mult_mod = true,
+                    chips_mod = true,
+                    hand_add = true,
+                    discard_sub = true,
+                    h_mod = true,
+                    size = true,
+                    chip_mod = true,
+                    h_size = true,
+                    increase = true
+                }
+            }
 
             XIII.funcs.mod_card_values(target.ability, {
                 multiply = is_excluded and 1 or card.ability.extra.value,

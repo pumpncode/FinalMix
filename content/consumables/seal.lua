@@ -8,15 +8,17 @@ SMODS.Atlas {
 SMODS.Seal {
     name = "luckyemblem",
     key = "luckyemblem",
+    discovered = true,
     badge_colour = HEX("fab950"),
     atlas = "KHSeals",
-    pos = {x=0, y=0},
+    pos = { x = 0, y = 0 },
 
     loc_vars = function(self, info_queue, card)
-        return { 
+        return {
             vars = {
                 self.config.extra.most_common_suit,
-                localize(self.config.extra.most_common_suit, 'suits_singular'), colours = { G.C.SUITS[self.config.extra.most_common_suit],}
+                localize(self.config.extra.most_common_suit, 'suits_singular'),
+                colours = { G.C.SUITS[self.config.extra.most_common_suit], }
             }
         }
     end,
@@ -26,20 +28,22 @@ SMODS.Seal {
             most_common_suit = 'Hearts'
         }
     },
-    
+
     loc_txt = {
         label = 'Lucky Emblem',
         name = 'Lucky Emblem',
         text = {
-             "Increases rank of card by 1",
-             "when {C:attention}discarded{} and converts",
-             "it to your {C:attention}most common{}",
-             "suit in your {C:attention}full deck{}",
-             "{C:inactive}(Currently {V:1}#1#{}{C:inactive}){}"
+            "Increases rank of card by 1",
+            "when {C:attention}discarded{} and converts",
+            "it to your {C:attention}most common{}",
+            "suit in your {C:attention}full deck{}",
+            "{C:inactive}(Currently {V:1}#1#{}{C:inactive}){}"
         }
     },
-    
-    calculate = function(self, card, context)
+    update = function(self, card, dt)
+        if not G.GAME or not G.playing_cards or #G.playing_cards == 0 then
+            return
+        end
         local counts = {}
         for suit in pairs(SMODS.Suits) do
             counts[suit] = 0
@@ -57,9 +61,9 @@ SMODS.Seal {
                 self.config.extra.most_common_suit = suit
             end
         end
-
+    end,
+    calculate = function(self, card, context)
         if context.discard and context.other_card == card then
-
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
                 delay = 0.4,
@@ -69,7 +73,7 @@ SMODS.Seal {
                     return true
                 end
             }))
-            
+
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
                 delay = 0.15,
@@ -78,7 +82,7 @@ SMODS.Seal {
                     play_sound('card1', 1)
                     card:juice_up(0.3, 0.3)
                     return true
-                 end
+                end
             }))
 
             G.E_MANAGER:add_event(Event({

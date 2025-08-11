@@ -11,11 +11,11 @@ end
 SMODS.Joker {
     name = 'Donald',
     key = 'donald',
- 
+
     loc_vars = function(self, info_queue, card)
         local copied_joker_key = card.ability.extra.copied_joker_key
         local copied_name = "None"
-        
+
         if G.jokers then
             local copied_joker = getJokerByKey(G.jokers.cards, copied_joker_key)
             -- If a match is found, update the copied_name
@@ -23,12 +23,12 @@ SMODS.Joker {
                 copied_name = copied_joker.config.center.name
             end
         end
-        
+
         return {
-			vars = {
-				copied_name --1
-			}
-		}
+            vars = {
+                copied_name --1
+            }
+        }
     end,
 
     rarity = 3,
@@ -44,12 +44,11 @@ SMODS.Joker {
     config = {
         extra = {
             copied_joker_key = nil
-        }  -- No Joker is copied at the start
+        } -- No Joker is copied at the start
     },
 
     calculate = function(self, card, context)
-        if context.setting_blind  and not context.blueprint and G.jokers and #G.jokers.cards > 1 then
-            
+        if context.setting_blind and not context.blueprint and G.jokers and #G.jokers.cards > 1 then
             local available_jokers = {}
 
             for _, joker in ipairs(G.jokers.cards) do
@@ -57,7 +56,7 @@ SMODS.Joker {
                     table.insert(available_jokers, joker)
                 end
             end
-            
+
             -- If there are available Jokers to choose from
             if #available_jokers > 0 then
                 local random_joker = pseudorandom_element(available_jokers, pseudoseed("rando"))
@@ -68,11 +67,9 @@ SMODS.Joker {
                     message = 'Copying!',
                     card = card,
                 }
-
             else
                 card.ability.extra.copied_joker_key = nil
             end
-
         end
 
         if card.ability.extra.copied_joker_key and not card.debuff and G.jokers then
@@ -83,9 +80,8 @@ SMODS.Joker {
                 local success, effect = pcall(SMODS.blueprint_effect, card, copied_joker, context)
                 -- If successful, apply effect
                 if success and effect then
-                     return effect
+                    return effect
                 end
-
             end
         end
     end

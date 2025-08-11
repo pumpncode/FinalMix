@@ -3,18 +3,12 @@ SMODS.Joker {
     key = "goofy",
 
     loc_vars = function(self, info_queue, card)
-        local wild_tally = 0
-        if G.playing_cards then
-            for _, c in ipairs(G.playing_cards) do
-                if SMODS.has_enhancement(c, 'm_wild') then
-                    wild_tally = wild_tally + 1
-                end
-            end
-        end
         return {
             vars = {
-                card.ability.extra.mult, --1
-                card.ability.extra.mult * wild_tally --2
+                card.ability.extra.mult,    --1
+                card.ability.extra.chips,   --2
+                card.ability.extra.Xmult,   --3
+                card.ability.extra.dollars, --4
             }
         }
     end,
@@ -31,26 +25,34 @@ SMODS.Joker {
 
     config = {
         extra = {
-            mult = 7
+            mult = 7,
+            Xmult = 1.3,
+            chips = 13,
+            dollars = 1,
         }
     },
 
     calculate = function(self, card, context)
-        
-        if context.joker_main and G.playing_cards then
-            local wild_tally = 0
-            for _, c in ipairs(G.playing_cards) do
-                if SMODS.has_enhancement(c, 'm_wild') then
-                    wild_tally = wild_tally + 1
-                end
+        if context.individual and context.cardarea == G.play and not context.blueprint and not context.repetition then
+            if SMODS.has_enhancement(context.other_card, 'm_wild') then
+                local bonuses = {
+                    { mult = card.ability.extra.mult },
+                    { chips = card.ability.extra.chips },
+                    { dollars = card.ability.extra.dollars },
+                    {
+                        Xmult_mod = card.ability.extra.Xmult,
+                        message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xmult } }
+                    }
+                }
+
+                local choice = pseudorandom_element(bonuses, "goofy_bonus")
+
+                return choice
             end
-            return {
-                mult = card.ability.extra.mult * wild_tally
-            }
         end
     end,
-    
-    in_pool = function(self, args) 
+
+    in_pool = function(self, args)
         for _, playing_card in ipairs(G.playing_cards or {}) do
             if SMODS.has_enhancement(playing_card, 'm_wild') then
                 return true
@@ -59,25 +61,3 @@ SMODS.Joker {
         return false
     end
 }
-
---[[
-
-
-    calculate = function(self, card, context)
-        if context.destroy_card and context.destroy_card.should_destroy and not context.blueprint then
-            return { remove = true }
-        end
-        if context.individual and context.cardarea == G.play and not context.blueprint then
-            context.other_card.should_destroy = false
-            if SMODS.get_enhancements(context.other_card)["m_wild"] == true then
-                context.other_card.should_destroy = true
-            end
-            if context.other_card.should_destroy then
-                return {
-                    message = "Gawrsh!"
-                }
-            end
-        end
-    end,
-    
-    ]]

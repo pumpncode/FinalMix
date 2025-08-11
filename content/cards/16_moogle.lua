@@ -13,7 +13,7 @@ SMODS.Joker {
 		end
 		return {
 			vars = {
-				card.ability.extra.dollars, --1
+				card.ability.extra.dollars,  --1
 				card.ability.extra.dollars * joker_count --2
 			}
 		}
@@ -24,19 +24,18 @@ SMODS.Joker {
 	pos = { x = 2, y = 4 },
 	cost = 4,
 	unlocked = true,
-    discovered = true,
+	discovered = true,
 	blueprint_compat = false,
-    eternal_compat = true,
-    perishable_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
 
-	config = { 
+	config = {
 		extra = {
-			 dollars = 1 
-		} 
+			dollars = 1
+		}
 	},
 
 	calc_dollar_bonus = function(self, card)
-		
 		local joker_count = 0
 		if G.jokers and G.jokers.cards then
 			for i = 1, #G.jokers.cards do

@@ -3,54 +3,54 @@ SMODS.Joker {
     key = 'kairi',
 
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = {key = "kh_lightsuit", set = "Other"}
-		info_queue[#info_queue+1] = {key = "kh_darksuit", set = "Other"}
-        
+        info_queue[#info_queue + 1] = { key = "kh_lightsuit", set = "Other" }
+        info_queue[#info_queue + 1] = { key = "kh_darksuit", set = "Other" }
+
         local vars = {
-                    card.ability.extra.chips, --1
-                    card.ability.extra.mult, --2
-                    card.ability.extra.dark, --3
-                    card.ability.extra.light --4
+            card.ability.extra.chips, --1
+            card.ability.extra.mult,  --2
+            card.ability.extra.dark,  --3
+            card.ability.extra.light  --4
         }
         local flip_nodes = {}
-        localize{type = 'descriptions', set = 'Joker', key = 'j_kh_kairi_extra', nodes = flip_nodes, vars = vars, scale = 0.8}
+        localize { type = 'descriptions', set = 'Joker', key = 'j_kh_kairi_extra', nodes = flip_nodes, vars = vars, scale = 0.8 }
 
         local side_nodes = {}
-        localize{type = 'descriptions', set = 'Joker', key = 'j_kh_kairi_'..(card.ability.extra.side == 'A' and 'b' or 'a'), nodes = side_nodes, vars = vars, scale = 0.75}
+        localize { type = 'descriptions', set = 'Joker', key = 'j_kh_kairi_' .. (card.ability.extra.side == 'A' and 'b' or 'a'), nodes = side_nodes, vars = vars, scale = 0.75 }
 
         local main_end = {
             {
                 n = G.UIT.R,
-                config = {align = "cm", padding = 0.08},
+                config = { align = "cm", padding = 0.08 },
                 nodes = {
                     {
                         n = G.UIT.R,
-                        config = {align = "cm"},
+                        config = { align = "cm" },
                         nodes = flip_nodes[1]
                     },
 
 
                     {
                         n = G.UIT.R,
-                        config = {align = "cm"},
+                        config = { align = "cm" },
                         nodes = flip_nodes[2]
                     },
 
 
                     {
                         n = G.UIT.R,
-                        config = {align = "cm", padding = 0.08, colour = G.C.UI.BACKGROUND_INACTIVE, r = 0.1},
+                        config = { align = "cm", padding = 0.08, colour = G.C.UI.BACKGROUND_INACTIVE, r = 0.1 },
                         nodes = {
                             {
                                 n = G.UIT.R,
-                                config = {align = "cm"},
+                                config = { align = "cm" },
                                 nodes = {
                                     {
                                         n = G.UIT.O,
                                         config = {
                                             object = DynaText({
-                                                string = {G.localization.misc.dictionary['kh_'..(card.ability.extra.side == 'A' and 'b' or 'a')..'_side']},
-                                                colours = {G.C.WHITE},
+                                                string = { G.localization.misc.dictionary['kh_' .. (card.ability.extra.side == 'A' and 'b' or 'a') .. '_side'] },
+                                                colours = { G.C.WHITE },
                                                 scale = 0.32
                                             })
                                         }
@@ -72,12 +72,12 @@ SMODS.Joker {
                                 nodes = {
                                     {
                                         n = G.UIT.R,
-                                        config = {align = "cm"},
+                                        config = { align = "cm" },
                                         nodes = side_nodes[1]
                                     },
                                     {
                                         n = G.UIT.R,
-                                        config = {align = "cm"},
+                                        config = { align = "cm" },
                                         nodes = side_nodes[2]
                                     }
                                 }
@@ -90,22 +90,22 @@ SMODS.Joker {
 
         if card.ability.extra.side == 'A' then
             return {
-                key = self.key..'_a',
+                key = self.key .. '_a',
                 main_end = main_end,
                 vars = vars
             }
         else
             return {
-                key = self.key..'_b',
+                key = self.key .. '_b',
                 main_end = main_end,
                 vars = vars
             }
         end
     end,
-    
+
     rarity = 2,
     atlas = 'KHJokers',
-    pos = {x = 2, y = 0},
+    pos = { x = 2, y = 0 },
     cost = 5,
     unlocked = true,
     discovered = true,
@@ -117,19 +117,19 @@ SMODS.Joker {
         extra = {
             side = 'A',
             repetitions = 1,
-    		chips = 0,
-			mult = 0,
-			dark = 1,
-			light = 1
+            chips = 0,
+            mult = 0,
+            dark = 1,
+            light = 1
         }
     },
 
     update = function(self, card)
         if card.VT.w <= 0 then
             if card.ability.extra.side == 'A' then
-                card.children.center:set_sprite_pos({x = 2, y = 0})
+                card.children.center:set_sprite_pos({ x = 2, y = 0 })
             else
-                card.children.center:set_sprite_pos({x = 3, y = 2})
+                card.children.center:set_sprite_pos({ x = 3, y = 2 })
             end
         end
     end,
@@ -138,23 +138,23 @@ SMODS.Joker {
         if self.discovered or card.bypass_discovery_center then
             if card.ability and card.ability.extra and card.ability.extra.side then
                 if card.ability.extra.side == 'A' then
-                    card.children.center:set_sprite_pos({x = 2, y = 0})
+                    card.children.center:set_sprite_pos({ x = 2, y = 0 })
                 else
-                    card.children.center:set_sprite_pos({x = 3, y = 2})
+                    card.children.center:set_sprite_pos({ x = 3, y = 2 })
                 end
             end
         end
     end,
 
     calculate = function(self, card, context)
-        
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             card:flip()
         end
 
         if context.flip and not context.blueprint then
             card_eval_status_text(card, 'extra', nil, nil, nil, {
-                message = G.localization.misc.dictionary['kh_'..(card.ability.extra.side == 'A' and 'b' or 'a')..'_side'],
+                message = G.localization.misc.dictionary
+                    ['kh_' .. (card.ability.extra.side == 'A' and 'b' or 'a') .. '_side'],
                 colour = G.C.RED,
                 instant = true
             })
@@ -164,7 +164,6 @@ SMODS.Joker {
             else
                 card.ability.extra.side = 'A'
             end
-
         end
 
         if context.individual and context.cardarea == G.play and not context.blueprint then
@@ -172,7 +171,7 @@ SMODS.Joker {
 
             if context.other_card:is_suit('Hearts') or context.other_card:is_suit('Diamonds') then
                 if side == 'A' then -- KAIRI
-					-- Gain Chips
+                    -- Gain Chips
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.dark
                     return {
                         message = 'Upgraded!',
@@ -184,7 +183,7 @@ SMODS.Joker {
                 if side == 'B' and card.ability.extra.mult > 0 then -- NAMINE
                     -- Lose Mult
                     card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.light
-                
+
                     return {
                         message = 'Nope!',
                         colour = G.C.MONEY,
@@ -197,7 +196,7 @@ SMODS.Joker {
                 if side == 'A' and card.ability.extra.chips > 0 then -- KAIRI
                     --Lose Chips
                     card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.light
-                
+
                     return {
                         message = 'Nope!',
                         colour = G.C.MONEY,
@@ -206,7 +205,7 @@ SMODS.Joker {
                 end
 
                 if side == 'B' then -- NAMINE
-					-- Gain Mult
+                    -- Gain Mult
                     card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.dark
                     return {
                         message = 'Upgraded!',

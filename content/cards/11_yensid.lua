@@ -1,24 +1,24 @@
-local function get_poker_hand()
-  local poker_hands = {}
-  local total_weight = 0
-  for _, handname in ipairs(G.handlist) do
-    if G.GAME.hands[handname].visible then
-      local weight = G.GAME.hands[handname].played + 1
-      total_weight = total_weight + weight
-      poker_hands[#poker_hands + 1] = { handname, total_weight }
-    end
-  end
+local function getPokerHand()
+	local poker_hands = {}
+	local total_weight = 0
+	for _, handname in ipairs(G.handlist) do
+		if G.GAME.hands[handname].visible then
+			local weight = G.GAME.hands[handname].played + 1
+			total_weight = total_weight + weight
+			poker_hands[#poker_hands + 1] = { handname, total_weight }
+		end
+	end
 
-  local weight = pseudorandom("yensid") * total_weight
-  local hand
-  for _, h in ipairs(poker_hands) do
-    if weight < h[2] then
-      hand = h[1]
-      break
-    end
-  end
+	local weight = pseudorandom("yensid") * total_weight
+	local hand
+	for _, h in ipairs(poker_hands) do
+		if weight < h[2] then
+			hand = h[1]
+			break
+		end
+	end
 
-  return hand
+	return hand
 end
 
 
@@ -27,7 +27,8 @@ SMODS.Joker {
 	key = 'disney',
 
 	loc_vars = function(self, info_queue, card)
-		local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds, 'yensid1')
+		local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds,
+			'yensid1')
 		return {
 			vars = {
 				numerator, --1
@@ -47,17 +48,16 @@ SMODS.Joker {
 	perishable_compat = true,
 
 	config = {
-		extra = { 
-			odds = 3,
+		extra = {
+			odds = 2,
 			base = 1
 		}
 	},
-	
+
 	calculate = function(self, card, context)
-		
-		if context.using_consumeable and context.consumeable and  context.consumeable.ability.set == 'Tarot' and not context.blueprint then
+		if context.using_consumeable and context.consumeable and context.consumeable.ability.set == 'Tarot' and not context.blueprint then
 			if SMODS.pseudorandom_probability(card, 'yensid', card.ability.extra.base, card.ability.extra.odds, 'yensid1') then
-				local hand = get_poker_hand()
+				local hand = getPokerHand()
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize("k_level_up_ex"),
 					colour = G.C.GREEN,
@@ -79,5 +79,5 @@ SMODS.Joker {
 				)
 			end
 		end
-	end		
+	end
 }

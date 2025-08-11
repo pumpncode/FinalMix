@@ -1,38 +1,71 @@
 SMODS.Atlas {
-    key = "modicon",
-    path = "mod_icon.png",
-    px = 34,
-    py = 34,
+  key = "modicon",
+  path = "mod_icon.png",
+  px = 34,
+  py = 34,
 }
 
 SMODS.Atlas {
-    key = "KHJokers",
-    path = "KHJokers.png",
-    px = 71,
-    py = 95,
+  key = "KHJokers",
+  path = "KHJokers.png",
+  px = 71,
+  py = 95,
 }
 
 SMODS.Atlas({
-    key = 'consumabels',
-    px = 71,
-    py = 95,
-    path = 'consumabels.png'
+  key = 'consumabels',
+  px = 71,
+  py = 95,
+  path = 'consumabels.png'
 })
 
 
 SMODS.Atlas({
-    key = 'decks',
-    px = 71,
-    py = 95,
-    path = 'decks.png'
+  key = 'decks',
+  px = 71,
+  py = 95,
+  path = 'decks.png'
 })
+
+SMODS.Atlas {
+  key = "KHSleeves",
+  path = "cardsleeves.png",
+  px = 71,
+  py = 95,
+}
 
 SMODS.Atlas({
   key = 'khblind',
   path = 'blinds.png',
-  px = 34, py = 34,
+  px = 34,
+  py = 34,
   frames = 21,
-  atlas_table = 'ANIMATION_ATLAS'})
+  atlas_table = 'ANIMATION_ATLAS'
+})
+
+-- adds Kingdom Hearts Joker to the title menu
+function Card:resize(mod, force_save)
+  self:hard_set_T(self.T.x, self.T.y, self.T.w * mod, self.T.h * mod)
+  remove_all(self.children)
+  self.children = {}
+  self.children.shadow = Moveable(0, 0, 0, 0)
+  self:set_sprites(self.config.center, self.base.id and self.config.card)
+end
+
+local mainmenuref2 = Game.main_menu
+Game.main_menu = function(change_context)
+  local ret = mainmenuref2(change_context)
+
+  local newcard = SMODS.create_card({ key = 'j_kh_khtrilogy', area = G.title_top })
+  G.title_top.T.w = G.title_top.T.w * 1.7675
+  G.title_top.T.x = G.title_top.T.x - 0.8
+  G.title_top:emplace(newcard)
+  newcard:start_materialize()
+  newcard:resize(1.1 * 1.2)
+  newcard.no_ui = true
+  return ret
+end
+
 
 
 KH = SMODS.current_mod
@@ -49,58 +82,90 @@ KH.config_tab = function()
       r = 0.1, minw = 5, align = "cm", padding = 0.2, colour = G.C.BLACK
     },
     nodes = {
-	  
-	  create_toggle({
+
+      create_toggle({
         id = "enable_jokers",
         label = localize("k_khjokers_config_jokers"),
-        info = {localize('k_khjokers_config_restart')},
+        info = { localize('k_khjokers_config_restart') },
         ref_table = KH.config,
         ref_value = "enable_jokers",
         callback = function()
           KH:save_config()
         end,
       }),
-	  
+
       create_toggle({
         id = "enable_tarots",
         label = localize("k_khjokers_config_tarots"),
-        info = {localize('k_khjokers_config_restart')},
+        info = { localize('k_khjokers_config_restart') },
         ref_table = KH.config,
         ref_value = "enable_tarots",
         callback = function()
           KH:save_config()
         end
       }),
-	  
-	  create_toggle({
+
+      create_toggle({
         id = "enable_spectrals",
         label = localize("k_khjokers_config_spectrals"),
-        info = {localize('k_khjokers_config_restart')},
+        info = { localize('k_khjokers_config_restart') },
         ref_table = KH.config,
         ref_value = "enable_spectrals",
         callback = function()
           KH:save_config()
         end
       }),
-	  
+
+
+      create_toggle({
+        id = "enable_seal",
+        label = localize("k_khjokers_config_seal"),
+        info = { localize('k_khjokers_config_restart') },
+        ref_table = KH.config,
+        ref_value = "enable_seal",
+        callback = function()
+          KH:save_config()
+        end
+      }),
+
+      create_toggle({
+        id = "enable_blind",
+        label = localize("k_khjokers_config_blind"),
+        info = { localize('k_khjokers_config_restart') },
+        ref_table = KH.config,
+        ref_value = "enable_blind",
+        callback = function()
+          KH:save_config()
+        end
+      }),
+
     }
   }
 end
 
 if KH.config.enable_jokers then
-	local subdir = "content/cards"
-	local cards = NFS.getDirectoryItems(SMODS.current_mod.path .. subdir)
-	for _, filename in pairs(cards) do
-		assert(SMODS.load_file(subdir .. "/" .. filename))()
-	end
+  local subdir = "content/cards"
+  local cards = NFS.getDirectoryItems(SMODS.current_mod.path .. subdir)
+  for _, filename in pairs(cards) do
+    assert(SMODS.load_file(subdir .. "/" .. filename))()
+  end
+  SMODS.load_file("content/challenges/challenges.lua")() -- Loads Challenges if Jokers are enabled
 end
 
 if KH.config.enable_tarots then
-	SMODS.load_file("content/consumables/tarots.lua")()
+  SMODS.load_file("content/consumables/tarots.lua")()
 end
 
-if KH.config.enable_spectrals then 
+if KH.config.enable_spectrals then
   SMODS.load_file("content/consumables/spectrals.lua")()
+end
+
+if KH.config.enable_seal then
+  SMODS.load_file("content/consumables/seal.lua")()
+end
+
+if KH.config.enable_blind then
+  SMODS.load_file("content/blinds/blinds.lua")()
 end
 
 -- load Friends of Jimbo
@@ -108,62 +173,44 @@ SMODS.load_file("content/collabs/kingdomheartsxbalatro.lua")()
 
 -- Joker Display Compat
 if JokerDisplay then
-    SMODS.load_file("content/JokerDisplay/joker_display_definitions.lua")()
+  SMODS.load_file("content/JokerDisplay/joker_display_definitions.lua")()
 end
 
-SMODS.load_file("content/consumables/seal.lua")()
-
-SMODS.load_file("content/challenges/challenges.lua")()
-
-
-
--- blinds
-SMODS.Blind {
-    key = 'khblind',
-    loc_txt = {
-        name = 'Shuffled',
-        text = {
-            'Shuffles Jokers',
-            'When hand is played',
-        }
-    },
-    vars = {},
-    dollars = 5,
-    mult = 2,
-    debuff = {},
-    boss = {min = 2, max = 10},
-    boss_colour = HEX('c88465'),
-    pos = {x = 0, y = 0},
-    atlas = 'khblind',
-    press_play = function(self)
-      G.E_MANAGER:add_event(Event({
-              trigger = 'after',
-              delay = 0.2,
-              func = function()
-                for i = 1, 3 do
-                  G.E_MANAGER:add_event(Event({
-                    trigger = 'after',
-                    delay = 0.15 * (i - 1),
-                    func = function()
-                      G.jokers:shuffle('aajk')
-                      play_sound('cardSlide1', 0.85 + 0.15 * i)
-                      return true
-                    end
-                  }))
-                end
-              return true
-        end
-        }))
-    end
-}
-
+-- Decks
 SMODS.Back {
   key = 'kingdom',
   atlas = 'decks',
   pos = { x = 0, y = 0 },
-  config = {vouchers = { "v_overstock_norm"},},
+  config = { vouchers = { "v_overstock_norm" }, },
   loc_vars = function(self, info_queue, center)
   end,
   calculate = function(self, back, context)
   end
 }
+
+-- CardSleeves Support!
+if CardSleeves then
+  CardSleeves.Sleeve {
+    key       = 'kingdom',
+    deck_buff = 'b_kh_kingdom',
+    atlas     = 'KHSleeves',
+    pos       = { x = 0, y = 0 },
+
+    loc_vars  = function(self)
+      local key, vars
+      if self.get_current_deck_key() == "b_kh_kingdom" then
+        key = self.key .. "_alt"
+        self.config = { vouchers = { "v_overstock_plus" } }
+        vars = { self.config.vouchers }
+      else
+        key = self.key
+        self.config = { vouchers = { "v_overstock_norm" } }
+        vars = { self.config.vouchers }
+      end
+      return { key = key, vars = vars }
+    end,
+
+    calculate = function(self, sleeve, context)
+    end
+  }
+end

@@ -1,47 +1,62 @@
-
 SMODS.Consumable {
-    set = "Spectral",
     key = "sorcerer",
-	config = {
+    set = "Spectral",
+    discovered = true,
+    config = {
         max_highlighted = 1,
         extra = 'kh_luckyemblem',
     },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = G.P_SEALS[(card.ability or self.config).extra]
-        return {vars = {(card.ability or self.config).max_highlighted}}
+        info_queue[#info_queue + 1] = G.P_SEALS[(card.ability or self.config).extra]
+        return { vars = { (card.ability or self.config).max_highlighted } }
     end,
 
     atlas = "consumabels",
-    pos = {x = 1, y = 0},
+    pos = { x = 1, y = 0 },
     cost = 4,
-    
+
     use = function(self, card, area, copier)
         for i = 1, math.min(#G.hand.highlighted, card.ability.max_highlighted) do
-            G.E_MANAGER:add_event(Event({func = function()
-                play_sound('tarot1')
-                card:juice_up(0.3, 0.5)
-                return true end }))
-            
-            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-                G.hand.highlighted[i]:set_seal(card.ability.extra, nil, true)
-                return true end }))
-            
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    card:juice_up(0.3, 0.5)
+                    return true
+                end
+            }))
+
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    G.hand.highlighted[i]:set_seal(card.ability.extra, nil, true)
+                    return true
+                end
+            }))
+
             delay(0.5)
         end
-        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all(); return true
+            end
+        }))
     end
 }
 
 
 SMODS.Consumable {
     key = 'gummiship',
+    discovered = true,
     set = 'Spectral',
-	atlas = "consumabels",
+    atlas = "consumabels",
     pos = { x = 2, y = 0 },
     loc_vars = function(self, info_queue, card)
         return { vars = { 1 } }
     end,
-	
+
     use = function(self, card, area, copier)
         local destructable_jokers = {}
         for i = 1, #G.jokers.cards do
@@ -95,7 +110,7 @@ SMODS.Consumable {
 --[[
 function Card:set_rank(new_rank)
     local suit_prefix = string.sub(self.base.suit, 1, 1)..'_'
-    
+
     -- Convert rank to number if it's a valid number string
     local rank_suffix = tonumber(new_rank) or new_rank
 
