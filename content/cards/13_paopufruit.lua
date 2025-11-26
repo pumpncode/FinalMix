@@ -3,7 +3,11 @@ SMODS.Joker {
 	key = "paopufruit",
 
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.hands_left } }
+		return {
+			vars = {
+				card.ability.extra.hands_left -- 1
+			}
+		}
 	end,
 
 	rarity = 2,
@@ -36,10 +40,7 @@ SMODS.Joker {
 		if context.after and not context.blueprint then
 			if card.ability.extra.hands_left - 1 <= 0 then
 				SMODS.destroy_cards(card, nil, nil, true)
-				return {
-					message = "RIKU NO!",
-					colour = G.C.FILTER
-				}
+				SMODS.calculate_effect({ message = localize('kh_riku_no'), colour = G.C.FILTER }, card)
 			else
 				card.ability.extra.hands_left = card.ability.extra.hands_left - 1
 				return {

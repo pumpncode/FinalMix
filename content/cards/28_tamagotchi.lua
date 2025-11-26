@@ -17,14 +17,14 @@ SMODS.Joker {
     pos = { x = 0, y = 6 },
     unlocked = true,
     discovered = true,
-    blueprint_compat = false,
-    eternal_compat = false,
+    blueprint_compat = true,
+    eternal_compat = true,
     perishable_compat = true,
 
     config = {
         extra = {
             x_mult = 1,
-            xmult_gain = 0.1
+            xmult_gain = 0.2
         }
     },
 
@@ -40,13 +40,14 @@ SMODS.Joker {
                         _first_dissolve = true
                         card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.xmult_gain
                     end
-                    card_eval_status_text(card, 'extra', nil, nil, nil, {
-                        message = localize('k_upgrade_ex'), colour = G.C.FILTER
-                    })
+                    SMODS.calculate_effect({ message = localize('kh_destroyed'), colour = G.C.FILTER }, card)
                     card:juice_up(0.3, 0.5)
                     return true
                 end
             }))
+        else
+            SMODS.destroy_cards(card, nil, nil, true)
+            SMODS.calculate_effect({ message = localize('k_eaten_ex'), colour = G.C.FILTER }, card)
         end
         if context.joker_main then
             return {

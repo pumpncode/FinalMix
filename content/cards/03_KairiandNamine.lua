@@ -173,22 +173,13 @@ SMODS.Joker {
                 if side == 'A' then -- KAIRI
                     -- Gain Chips
                     card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.dark
-                    return {
-                        message = 'Upgraded!',
-                        colour = G.C.CHIPS,
-                        card = card
-                    }
+                    SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.FILTER }, card)
                 end
 
                 if side == 'B' and card.ability.extra.mult > 0 then -- NAMINE
                     -- Lose Mult
                     card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.light
-
-                    return {
-                        message = 'Nope!',
-                        colour = G.C.MONEY,
-                        card = card,
-                    }
+                    SMODS.calculate_effect({ message = localize('k_nope_ex'), colour = G.C.PURPLE }, card)
                 end
             end
 
@@ -196,22 +187,13 @@ SMODS.Joker {
                 if side == 'A' and card.ability.extra.chips > 0 then -- KAIRI
                     --Lose Chips
                     card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.light
-
-                    return {
-                        message = 'Nope!',
-                        colour = G.C.MONEY,
-                        card = card,
-                    }
+                    SMODS.calculate_effect({ message = localize('k_nope_ex'), colour = G.C.PURPLE }, card)
                 end
 
                 if side == 'B' then -- NAMINE
                     -- Gain Mult
                     card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.dark
-                    return {
-                        message = 'Upgraded!',
-                        colour = G.C.MULT,
-                        card = card
-                    }
+                    SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.FILTER }, card)
                 end
             end
         end

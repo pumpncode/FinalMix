@@ -1,7 +1,9 @@
 SMODS.Joker {
     name = 'Half Face',
     key = 'xigbar',
-
+    set_badges = function(self, card, badges)
+        badges[#badges + 1] = create_badge("Organisation XIII", G.C.BLACK, G.C.WHITE, 1.0)
+    end,
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -43,10 +45,7 @@ SMODS.Joker {
                             return true
                         end,
                     }))
-                    card_eval_status_text(card, "extra", nil, nil, nil, {
-                        message = localize("k_upgrade_ex"),
-                        colour = G.C.PURPLE,
-                    })
+                    SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.PURPLE }, card)
                 end
             end
 
@@ -57,8 +56,7 @@ SMODS.Joker {
 
         if context.joker_main and card.ability.extra.x_mult > 1 then
             return {
-                Xmult_mod = card.ability.extra.x_mult,
-                message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.x_mult } }
+                x_mult = card.ability.extra.x_mult
             }
         end
     end

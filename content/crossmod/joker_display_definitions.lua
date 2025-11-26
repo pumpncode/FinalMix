@@ -1,17 +1,11 @@
--- Not needed for seal salt ice cream
-
 local jd_def = JokerDisplay.Definitions
 
 jd_def["j_kh_lethimcook"] = {
     text = {
         { text = "<-- ",                           colour = G.C.UI.TEXT_INACTIVE },
         { ref_table = "card.joker_display_values", ref_value = "left",           colour = G.C.RED },
-        --{ text = " | " },
-        --{ ref_table = "card.joker_display_values", ref_value = "right", colour = G.C.RED },
-        --{ text = ")" },
     },
     reminder_text = {
-        --{ text = "(" },
         { ref_table = "card.joker_display_values", ref_value = "right", colour = G.C.RED },
         { text = " -->" }
     },
@@ -24,27 +18,20 @@ jd_def["j_kh_lethimcook"] = {
         card.joker_display_values.right = localize("k_incompatible")
 
         if G.jokers and G.jokers.cards then
-            -- Find index of this joker
-            local pos
-            for i, v in ipairs(G.jokers.cards) do
-                if v == card then
-                    pos = i; break
-                end
-            end
-            if not pos then return end
+            local pos = GetPos(card, G.jokers.cards)
 
             -- Left Joker
             local left = G.jokers.cards[pos - 1]
-            if left and left ~= card and left.ability then
-                local is_excluded = Exclude_list[left.ability.name] or left.ability.perishable
-                card.joker_display_values.left = is_excluded and localize("k_incompatible") or localize("k_compatible")
+            if left and left ~= card then
+                local left_compat = CompatCheck(card, left)
+                card.joker_display_values.left = left_compat and localize("k_compatible") or localize("k_incompatible")
             end
 
             -- Right Joker
             local right = G.jokers.cards[pos + 1]
-            if right and right ~= card and right.ability then
-                local is_excluded = Exclude_list[right.ability.name] or right.ability.perishable
-                card.joker_display_values.right = is_excluded and localize("k_incompatible") or localize("k_compatible")
+            if right and right ~= card then
+                local right_compat = CompatCheck(card, right)
+                card.joker_display_values.right = right_compat and localize("k_compatible") or localize("k_incompatible")
             end
         end
     end,
@@ -228,20 +215,17 @@ jd_def["j_kh_axel"] = {
     },
 
     reminder_text = {
-        { text = "(boss blind)" }
+        { text = "(Boss Blind)" }
     },
 
     calc_function = function(card)
         card.joker_display_values = card.joker_display_values or {}
         local target = G.jokers.cards[1]
-        local is_excluded = Exclude_list[target.ability.name]
+        local compatible = CompatCheck(card, target) and not target.ability.perishable
 
         if target and target ~= card then
-            if is_excluded or target.ability.perishable then
-                card.joker_display_values.compatibility = localize('k_incompatible')
-            else
-                card.joker_display_values.compatibility = localize('k_compatible')
-            end
+            card.joker_display_values.compatibility = compatible and localize('k_compatible') or
+                localize('k_incompatible')
         else
             card.joker_display_values.compatibility = localize('k_incompatible')
         end
@@ -436,8 +420,14 @@ jd_def["j_kh_paopufruit"] = {
 jd_def["j_kh_nobody"] = {
 
     text = {
-        { text = "+" },
-        { ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS },
+        {
+            border_nodes = {
+                { text = "X" },
+                { ref_table = "card.joker_display_values", ref_value = "x_mult" }
+            }
+        },
+        --{ text = "+" },
+        --{ ref_table = "card.joker_display_values", ref_value = "chips", colour = G.C.CHIPS },
     },
 
     reminder_text = {
@@ -452,7 +442,7 @@ jd_def["j_kh_nobody"] = {
         local extra = card.ability.extra or {}
 
         -- Default values
-        d.chips = extra.chips or 0
+        d.x_mult = extra.x_mult or 1
         d.suit_count = 0
 
         -- Try to evaluate upcoming or last scoring hand
@@ -648,23 +638,6 @@ jd_def["j_kh_helpwanted"] = {
     end,
 }
 
--- Random Joker
-jd_def["j_kh_randomjoker"] = {
-
-    extra = {
-        {
-            { text = "(" },
-            { ref_table = "card.joker_display_values", ref_value = "odds" },
-            { text = ")" },
-        }
-    },
-
-    extra_config = { colour = G.C.GREEN, scale = 0.3 },
-
-    calc_function = function(card)
-        card.joker_display_values.odds = localize { type = 'variable', key = "jdis_odds", vars = { card.ability.extra.base, card.ability.extra.odds } }
-    end,
-}
 
 jd_def["j_kh_munnypouch"] = {
 
@@ -755,8 +728,6 @@ jd_def["j_kh_magnet"] = {
 jd_def["j_kh_kingdomhearts"] = {
 
     text = {
-        { ref_table = "card.joker_display_values", ref_value = "hands",    colour = G.C.CHIPS },
-        { text = "Hands, " },
         { ref_table = "card.joker_display_values", ref_value = "discards", colour = G.C.MULT },
         { text = "Discards" },
     },
@@ -772,22 +743,3 @@ jd_def["j_kh_kingdomhearts"] = {
     end
 
 }
-jd_def["j_kh_invitation"] = {
-
-    text = {
-        { text = "(" },
-        { ref_table = "card.joker_display_values", ref_value = "sold_remaining" },
-        { text = "/" },
-        { ref_table = "card.ability.extra",        ref_value = "sold" },
-        { text = ")" },
-    },
-
-    text_config = { colour = G.C.UI.TEXT_INACTIVE },
-
-    calc_function = function(card)
-        card.joker_display_values.sold_remaining = card.ability.extra.sold_remaining
-    end
-}
-
-
--- to do: command menu

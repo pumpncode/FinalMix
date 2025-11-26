@@ -26,7 +26,7 @@ SMODS.Joker {
 	eternal_compat = true,
 	perishable_compat = true,
 	blueprint_compat = true,
-	display_size = { w = 71 * 1.3, h = 95 * 1.3 },
+	display_size = { w = 71 * 1.1, h = 95 * 1.1 }, -- used to be 1.3
 
 	config = {
 		extra = {
@@ -53,28 +53,20 @@ SMODS.Joker {
 	end,
 
 	calculate = function(self, card, context)
-		if context.joker_main then
-			local level = {
-				[1] = { chips = card.ability.extra.chips },
-				[2] = { mult = card.ability.extra.mult },
-				[3] = { xmult = card.ability.extra.xmult },
-			}
-			return level[card.ability.extra.level]
-		end
+		local level = card.ability.extra.level
 
-		if context.after and not context.blueprint and not context.repetition and not context.other_card then
-			local hand_score = hand_chips * mult
-			local blind_score = G.GAME.blind.chips
-			local level = card.ability.extra.level
+		if level == 1 and G.GAME.current_round.hands_played == 0 then
+			if context.after and not context.blueprint and not context.repetition and not context.other_card then
+				local hand_score = hand_chips * mult
+				local blind_score = G.GAME.blind.chips
 
-			if level == 1 and G.GAME.current_round.hands_played == 0 then
 				if hand_score >= blind_score then
 					card.ability.extra.counter = card.ability.extra.counter + 1
 				end
 			end
 		end
 
-		if context.discard and not context.blueprint and card.ability.extra.level == 2 then
+		if context.discard and not context.blueprint and level == 2 then
 			card.ability.extra.discards_remaining = card.ability.extra.discards_remaining - 1
 
 			if card.ability.extra.discards_remaining <= 0 then
@@ -103,6 +95,15 @@ SMODS.Joker {
 				end
 			}))
 			return
+		end
+
+		if context.joker_main then
+			local level = {
+				[1] = { chips = card.ability.extra.chips },
+				[2] = { mult = card.ability.extra.mult },
+				[3] = { xmult = card.ability.extra.xmult },
+			}
+			return level[card.ability.extra.level]
 		end
 	end
 }

@@ -1,35 +1,68 @@
-local function reset_keyblade_rank()
-    G.GAME.current_round.keyblade_rank = { rank = 'Seven', }
-    local valid_keyblade_cards = {}
-    for _, playing_card in ipairs(G.playing_cards) do
-        if not SMODS.has_no_rank(playing_card) then
-            valid_keyblade_cards[#valid_keyblade_cards + 1] = playing_card
+-- Main Menu Logo
+local oldfunc = Game.main_menu
+Game.main_menu = function(change_context)
+    local ret = oldfunc(change_context)
+
+    if KH.config.menu_toggle then
+        local SC_scale = 1.1 * (G.debug_splash_size_toggle and 0.8 or 1)
+        G.SPLASH_KH_LOGO = Sprite(0, 0,
+            6 * SC_scale,
+            6 * SC_scale * (G.ASSET_ATLAS["kh_logo"].py / G.ASSET_ATLAS["kh_logo"].px),
+            G.ASSET_ATLAS["kh_logo"], { x = 0, y = 0 }
+        )
+        G.SPLASH_KH_LOGO:set_alignment({
+            major = G.title_top,
+            type = 'cm',
+            bond = 'Strong',
+            offset = { x = 4, y = 3 }
+        })
+        G.SPLASH_KH_LOGO:define_draw_steps({ {
+            shader = 'dissolve',
+        } })
+
+        G.SPLASH_KH_LOGO.tilt_var = { mx = 0, my = 0, dx = 0, dy = 0, amt = 0 }
+
+        G.SPLASH_KH_LOGO.dissolve_colours = { G.C.WHITE, G.C.WHITE }
+        G.SPLASH_KH_LOGO.dissolve = 1
+
+        G.SPLASH_KH_LOGO.states.collide.can = true
+
+        function G.SPLASH_KH_LOGO:click()
+            play_sound('button', 1, 0.3)
+            G.FUNCS['openModUI_kingdomhearts']()
         end
+
+        function G.SPLASH_KH_LOGO:hover()
+            G.SPLASH_KH_LOGO:juice_up(0.05, 0.03)
+            play_sound('paper1', math.random() * 0.2 + 0.9, 0.35)
+            Node.hover(self)
+        end
+
+        function G.SPLASH_KH_LOGO:stop_hover() Node.stop_hover(self) end
+
+        --Logo animation
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = change_context == 'splash' and 3.6 or change_context == 'game' and 4 or 1,
+            blockable = false,
+            blocking = false,
+            func = (function()
+                play_sound('magic_crumple' .. (change_context == 'splash' and 2 or 3),
+                    (change_context == 'splash' and 1 or 1.3), 0.9)
+                play_sound('whoosh1', 0.2, 0.8)
+                ease_value(G.SPLASH_KH_LOGO, 'dissolve', -1, nil, nil, nil,
+                    change_context == 'splash' and 2.3 or 0.9)
+                G.VIBRATION = G.VIBRATION + 1.5
+                return true
+            end)
+        }))
     end
-    local keyblade_card = pseudorandom_element(valid_keyblade_cards, 'cloudzXIII' .. G.GAME.round_resets.ante)
-    if keyblade_card then
-        G.GAME.current_round.keyblade_rank.rank = keyblade_card.base.value
-        G.GAME.current_round.keyblade_rank.id = keyblade_card.base.id
-    end
+
+
+    return ret
 end
 
-local function reset_kh_bryce_card()
-    G.GAME.current_round.kh_bryce_card = G.GAME.current_round.kh_bryce_card or { suit = 'Hearts' }
-    local bryce_suits = {}
-    for k, v in ipairs({ 'Spades', 'Hearts', 'Clubs', 'Diamonds' }) do
-        if v ~= G.GAME.current_round.kh_bryce_card.suit then bryce_suits[#bryce_suits + 1] = v end
-    end
-    local bryce_card = pseudorandom_element(bryce_suits, 'kh_bryce' .. G.GAME.round_resets.ante)
-    G.GAME.current_round.kh_bryce_card.suit = bryce_card
-end
-
-function SMODS.current_mod.reset_game_globals(run_start)
-    reset_kh_bryce_card()
-    reset_keyblade_rank()
-end
-
--- Extra Buttons
-
+-- Extra Buttons on Jokers
 local use_and_sell_buttonsref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
     local ret = use_and_sell_buttonsref(card)
@@ -114,7 +147,7 @@ function G.UIDEF.use_and_sell_buttons(card)
     return ret
 end
 
--- Munny Magnet, Steel cards shuffled to the top
+-- Munny Magnet, Steel cards shuffled to the top of deck
 local shuffle_ref = CardArea.shuffle
 function CardArea:shuffle(_seed)
     local g = shuffle_ref(self, _seed)
@@ -137,6 +170,7 @@ function CardArea:shuffle(_seed)
     return g
 end
 
+-- Extra Skip button in blind selection
 G.FUNCS.skip_blind_alt = function(e)
     stop_use()
     G.CONTROLLER.locks.skip_blind = true
@@ -179,4 +213,37 @@ G.FUNCS.skip_blind_alt = function(e)
             end
         }))
     end
+end
+
+
+-- Misc Joker stuff
+
+local function reset_keyblade_rank()
+    G.GAME.current_round.keyblade_rank = { rank = 'Seven', }
+    local valid_keyblade_cards = {}
+    for _, playing_card in ipairs(G.playing_cards) do
+        if not SMODS.has_no_rank(playing_card) then
+            valid_keyblade_cards[#valid_keyblade_cards + 1] = playing_card
+        end
+    end
+    local keyblade_card = pseudorandom_element(valid_keyblade_cards, 'j_kh_keyblade' .. G.GAME.round_resets.ante)
+    if keyblade_card then
+        G.GAME.current_round.keyblade_rank.rank = keyblade_card.base.value
+        G.GAME.current_round.keyblade_rank.id = keyblade_card.base.id
+    end
+end
+
+local function reset_kh_bryce_card()
+    G.GAME.current_round.kh_bryce_card = G.GAME.current_round.kh_bryce_card or { suit = 'Hearts' }
+    local bryce_suits = {}
+    for k, v in ipairs({ 'Spades', 'Hearts', 'Clubs', 'Diamonds' }) do
+        if v ~= G.GAME.current_round.kh_bryce_card.suit then bryce_suits[#bryce_suits + 1] = v end
+    end
+    local bryce_card = pseudorandom_element(bryce_suits, 'j_kh_bryce' .. G.GAME.round_resets.ante)
+    G.GAME.current_round.kh_bryce_card.suit = bryce_card
+end
+
+function SMODS.current_mod.reset_game_globals(run_start)
+    reset_kh_bryce_card()
+    reset_keyblade_rank()
 end

@@ -1,7 +1,9 @@
 SMODS.Joker {
 	name = 'Master Yen Sid',
 	key = 'disney',
-
+	set_badges = function(self, card, badges)
+		badges[#badges + 1] = create_badge("Disney", G.C.BLUE, G.C.WHITE, 1.2)
+	end,
 	loc_vars = function(self, info_queue, card)
 		local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds,
 			'yensid1')

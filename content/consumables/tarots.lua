@@ -5,23 +5,19 @@ SMODS.Tag {
     config = { odds = 3 },
     apply = function(self, tag, context)
         if context.type == 'store_joker_create' then
-            -- get all KH jokers
             local joker_keys = GetResourceWithPrefix("j_kh_")
 
-            -- remove unwanted jokers
             for i = #joker_keys, 1, -1 do
                 if joker_keys[i] == "j_kh_nobody" or joker_keys[i] == "j_kh_munny" then
                     table.remove(joker_keys, i)
                 end
             end
 
-            -- track owned jokers
             local owned_jokers = {}
             for _, j in ipairs(G.jokers.cards) do
                 owned_jokers[j.config.center.key] = true
             end
 
-            -- filter available KH jokers (not owned)
             local available_jokers = {}
             for _, key in ipairs(joker_keys) do
                 if not owned_jokers[key] then
@@ -29,7 +25,6 @@ SMODS.Tag {
                 end
             end
 
-            -- choose one at random
             local random_joker = pseudorandom_element(available_jokers, pseudoseed("KH_RareTag"))
 
             if random_joker then

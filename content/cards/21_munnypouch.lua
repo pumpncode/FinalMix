@@ -1,15 +1,47 @@
 SMODS.Joker {
+    key = 'dummy',
+    name = "Munny",
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        if desc_nodes ~= full_UI_table.main then
+            G.munny_area = CardArea(
+                G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
+                1.05 * G.CARD_W,
+                0.95 * G.CARD_H,
+                { card_limit = 1, type = "title", highlight_limit = 0, collection = true }
+            )
+            SMODS.add_card({
+                key = "j_kh_munny",
+                area = G.munny_area
+            })
+            desc_nodes[#desc_nodes + 1] = { {
+                n = G.UIT.R,
+                config = { align = "cm", padding = 0.07, no_fill = true },
+                nodes = {
+                    { n = G.UIT.O, config = { object = G.munny_area } }
+                }
+            } }
+        end
+        return SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    end,
+    no_collection = true,
+    in_pool = function(self)
+        return false
+    end
+}
+SMODS.Joker {
     key = 'munnypouch',
     name = "Munny Pouch",
 
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = { key = "kh_munny_info", set = "Other" }
+        info_queue[#info_queue + 1] = G.P_CENTERS["j_kh_dummy"]
         local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds,
             'munnypouch1')
         return {
             vars = {
                 numerator,
                 denominator,
+                card.ability.extra.price1,
+                card.ability.extra.price2,
             }
         }
     end,
@@ -28,14 +60,15 @@ SMODS.Joker {
             base = 1,
             odds = 8,
             price = 1,
+            price1 = 1,
+            price2 = 5,
         }
     },
 
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            card.ability.extra.price = pseudorandom('cool', 1, 5)
+            card.ability.extra.price = pseudorandom('cool', card.ability.extra.price1, card.ability.extra.price2)
             card.ability.extra_value = card.ability.extra_value + card.ability.extra.price
-            print(card.sell_cost)
             card:set_cost()
             return {
                 message = localize('k_val_up'),
@@ -66,12 +99,10 @@ SMODS.Joker {
                     end
                 }))
                 -- Extinct/Survival Message
-                return {
-                    message = 'Stolen!'
-                }
+                SMODS.calculate_effect({ message = localize('kh_stolen'), colour = G.C.FILTER }, card)
             else
                 return {
-                    message = 'Safe!'
+                    message = localize("k_safe_ex")
                 }
             end
         end
@@ -83,15 +114,14 @@ SMODS.Joker {
                     G.GAME.joker_buffer = G.GAME.joker_buffer + 1
                     G.E_MANAGER:add_event(Event({
                         func = function()
-                            local new_card = SMODS.add_card({ set = 'Joker', key = 'j_kh_munny', })
+                            local new_card = (SMODS.add_card { set = 'Joker', key = 'j_kh_munny', })
 
                             if new_card then
                                 new_card.ability.extra.dollars = payout
                             end
 
                             G.GAME.joker_buffer = 0
-                            card_eval_status_text(card, 'extra', nil, nil, nil,
-                                { message = "Munny!", colour = G.C.BLUE })
+                            SMODS.calculate_effect({ message = localize('kh_munny'), colour = G.C.BLUE }, card)
                             return true
                         end
                     }))
@@ -114,7 +144,7 @@ SMODS.Joker {
             }
         }
     end,
-
+    no_collection = true,
     rarity = 1,
     atlas = "KHJokers",
     pos = { x = 0, y = 5 },

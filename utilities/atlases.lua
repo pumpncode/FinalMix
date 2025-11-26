@@ -1,17 +1,16 @@
 SMODS.Atlas {
     key = "modicon",
     path = "mod_icon.png",
-    px = 34,
-    py = 34,
+    px = 32,
+    py = 32,
 }
 
 SMODS.Atlas({
     key = 'logo',
     path = 'logo.png',
-    px = 173,
+    px = 200,
     py = 61,
 })
-
 
 SMODS.Atlas {
     key = "KHJokers",
@@ -20,30 +19,6 @@ SMODS.Atlas {
     py = 95,
 }
 
--- ranks and spell cards? maybe wait for easy way to make custom playing cards for the ranks
-SMODS.Atlas({
-    key = 'COMRanks',
-    px = 71,
-    py = 95,
-    path = 'COMRanks.png'
-})
-SMODS.Atlas({
-    key = 'KHSpells',
-    px = 71,
-    py = 95,
-    path = 'Spells.png'
-})
-
-
--- uh idk
-SMODS.Atlas {
-    key = "cloudz",
-    path = "cloudz.png",
-    px = 71,
-    py = 95,
-}
-
--- cool idea
 SMODS.Atlas {
     key = "command",
     path = "commands.png",
@@ -51,7 +26,6 @@ SMODS.Atlas {
     py = 95,
 }
 
--- cool idea
 SMODS.Atlas {
     key = "cooking",
     path = "lethimcook.png",
@@ -65,7 +39,6 @@ SMODS.Atlas({
     py = 95,
     path = 'consumabels.png'
 })
-
 
 SMODS.Atlas({
     key = 'KHDecks',
@@ -104,9 +77,31 @@ SMODS.Atlas {
     py = 95
 }
 
+SMODS.Atlas({
+    key = 'KHStickers',
+    px = 71,
+    py = 95,
+    path = 'KHStickers.png'
+})
+
+
 SMODS.Atlas {
     key = "KHVouchers",
     path = "voucher.png",
     px = 71,
     py = 95
 }
+
+-- ranks and spell cards? maybe wait for easy way to make custom playing cards for the ranks
+SMODS.Atlas({
+    key = 'COMRanks',
+    px = 71,
+    py = 95,
+    path = 'COMRanks.png'
+})
+SMODS.Atlas({
+    key = 'KHSpells',
+    px = 71,
+    py = 95,
+    path = 'DriveCards.png'
+})

@@ -3,11 +3,12 @@ SMODS.Joker {
     key = "invitation",
 
     loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds,
+            'j_kh_invitation')
         return {
             vars = {
-                card.ability.extra.dollars,
-                card.ability.extra.sold,
-                card.ability.extra.sold_remaining
+                numerator,
+                denominator
             }
         }
     end,
@@ -18,43 +19,26 @@ SMODS.Joker {
     pos = { x = 2, y = 5 },
     unlocked = true,
     discovered = true,
-    blueprint_compat = true,
-    eternal_compat = false,
+    blueprint_compat = false,
+    eternal_compat = true,
     perishable_compat = true,
 
     config = {
         extra = {
-            dollars = 1,
-            sold = 3,
-            sold_remaining = 3,
+            base = 1,
+            odds = 4,
         }
     },
 
-    update = function(self, card)
-    end,
     calculate = function(self, card, context)
-        if context.selling_card then
+        if context.buying_card then
             if context.card.ability.set == 'Joker' then
-                card.ability.extra.sold_remaining = card.ability.extra.sold_remaining - 1
-                card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('k_upgrade_ex') })
+                if SMODS.pseudorandom_probability(card, 'invitation', card.ability.extra.base, card.ability.extra.odds, 'j_kh_invitation') then
+                    card_eval_status_text(card, 'extra', nil, nil, nil,
+                        { message = "Negative!", colour = G.C.DARK_EDITION })
+                    context.card:set_edition("e_negative", true)
+                end
             end
-            if card.ability.extra.sold_remaining <= 0 then
-                card.ability.extra.sold_remaining = card.ability.extra.sold
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        SMODS.add_card {
-                            set = 'Joker',
-                            edition = 'e_negative',
-                            stickers = { "perishable" },
-                            force_stickers = true
-                        }
-                        return true
-                    end
-                }))
-            end
-            return {
-                dollars = card.ability.extra.dollars
-            }
         end
     end
 }

@@ -5,10 +5,8 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra.chips_gain,         --1
-                card.ability.extra.discards,           --2
-                card.ability.extra.discards_remaining, --3
-                card.ability.extra.chips               --4
+                card.ability.extra.total_chips, --1
+                card.ability.extra.chips_gain   -- 2
             }
         }
     end,
@@ -21,32 +19,37 @@ SMODS.Joker {
     discovered = true,
     blueprint_compat = true,
     eternal_compat = true,
+    eternal = false,
     perishable_compat = true,
 
     config = {
         extra = {
-            chips = 0,
-            chips_gain = 13,
-            discards = 13,
-            discards_remaining = 13
+            total_chips = 0,
+            chips_gain = 13
         }
     },
 
     calculate = function(self, card, context)
-        if context.joker_main and card.ability.extra.chips > 0 then
-            return {
-                chips = card.ability.extra.chips,
-            }
-        elseif context.discard and not context.blueprint then
-            if card.ability.extra.discards_remaining <= 1 then
-                card.ability.extra.discards_remaining = card.ability.extra.discards
-                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_gain
-                return {
-                    message = localize('k_upgrade_ex'),
-                }
-            else
-                card.ability.extra.discards_remaining = card.ability.extra.discards_remaining - 1
+        if context.before and context.cardarea == G.jokers and not context.blueprint and G.GAME.current_round.hands_played == 0 then
+            local suits = {}
+            for _, v in ipairs(context.scoring_hand) do
+                suits[v.base.suit] = true
             end
+
+            local unique_suits = 0
+            for _ in pairs(suits) do
+                unique_suits = unique_suits + 1
+            end
+
+            local total = unique_suits * card.ability.extra.chips_gain
+            card.ability.extra.total_chips = card.ability.extra.total_chips + total
+            return { message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.total_chips } } }
+        end
+
+        if context.joker_main then
+            return {
+                chips = card.ability.extra.total_chips
+            }
         end
     end
 }

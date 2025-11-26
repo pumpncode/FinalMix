@@ -3,69 +3,32 @@ XIII = {
     REND = {}
 }
 
--- Credits to Rofflatro and Rensnek for the doubling logic in the "Axel" Joker! Check them out!
+-- Find position of card
+function GetPos(card, area)
+    for i, v in ipairs(area) do
+        if v == card then
+            return i
+        end
+    end
+    return nil
+end
 
-local function should_modify_key(k, v, config, ref)
-    local keywords = config.keywords
-    local unkeywords = config.unkeywords or {}
-    local x_protect = config.x_protect ~= false
+-- Use Blockbuster API to see if cards are compatible with value manipulation or not
+function CompatCheck(card, target)
+    if not target or target == card then
+        return false
+    end
 
-    if unkeywords[k] then return false end
-    if keywords and not keywords[k] then return false end
-    if x_protect and ref[k] == 1 then
-        if k:sub(1, 2) == "x_" or k:sub(1, 4) == "h_x_" then -- if k == "Xmult"
+    for _, standard in pairs(Blockbuster.ValueManipulation.CompatStandards) do
+        if standard.exempt_jokers and standard.exempt_jokers[target.config.center.key] then
             return false
         end
     end
-    return type(v) == "number"
+
+    return true
 end
 
-XIII.funcs.mod_card_values = function(table_in, config)
-    if not table_in then return end
-    config = config or {}
-
-    local add = config.add or 0
-    local multiply = config.multiply or 1
-    local reference = config.reference or table_in
-
-    local function modify(t, ref)
-        for k, v in pairs(t) do
-            if type(v) == "table" and type(ref[k]) == "table" then
-                modify(v, ref[k])
-            elseif should_modify_key(k, v, config, ref) then
-                t[k] = (ref[k] + add) * multiply
-            end
-        end
-    end
-
-    modify(table_in, reference)
-end
-
-XIII.funcs.xmult_playing_card = function(card, mult)
-    local tablein = {
-        nominal = card.base.nominal,
-        ability = card.ability
-    }
-
-    XIII.funcs.mod_card_values(tablein, { multiply = mult })
-    card.base.nominal = tablein.nominal
-    card.ability = tablein.ability
-end
-
--- Credit to Rensnek for these functions!
-
-XIII.REND.starts_with = function(str, start)
-    return str:sub(1, #start) == start
-end
-
-XIII.REND.table_contains = function(tbl, val)
-    for _, v in pairs(tbl) do
-        if v == val then return true end
-    end
-    return false
-end
-
--- Function to get a Joker by its unique key from a list of Jokers. (Donald)
+-- Function to get a Joker by its key from a list of Jokers. (Donald)
 function GetJokerByKey(jokers, key)
     for _, joker in ipairs(jokers) do
         if joker.config.center.key == key then
@@ -75,6 +38,7 @@ function GetJokerByKey(jokers, key)
     return nil
 end
 
+-- Function to find stuff with a specific prefix, used for Awakening Tarot and Kingdom Tag
 function GetResourceWithPrefix(prefix)
     local results = {}
     for k, v in pairs(G.P_CENTERS) do
@@ -85,7 +49,7 @@ function GetResourceWithPrefix(prefix)
     return results
 end
 
--- Gets a random Poker Hand
+-- Gets a random Poker Hand (Master Yen Sid)
 function GetPokerHand()
     local poker_hands = {}
     local total_weight = 0
@@ -109,42 +73,47 @@ function GetPokerHand()
     return hand
 end
 
--- Function to create a consumable, currently unused
-function CreateConsumable(joker, type, seed, key, message, colour)
-    if #G.consumeables.cards + G.GAME.consumeable_buffer >= G.consumeables.config.card_limit then -- checks space in consumable slots
-        card_eval_status_text(joker, "extra", nil, nil, nil, {
-            message = localize("k_no_space_ex")                                                   -- gives a "No Space!" message if there isn't any space
-        })
-        return
+-- Gets most played Poker Hand
+function MostPlayedHand()
+    local _handname, _played, _order = 'High Card', -1, 100
+    for k, v in pairs(G.GAME.hands) do
+        if v.played > _played or (v.played == _played and _order > v.order) then
+            _played = v.played
+            _handname = k
+        end
     end
+    return _handname
+end
 
-    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+-- Reroll Button for "Help Wanted" Joker
+
+-- Check if you have enough money to reroll
+G.FUNCS.kh_can_reroll = function(e)
+    local reroll_cost = 4
+    local can_afford = to_big(G.GAME.dollars) >= to_big(reroll_cost)
+    if can_afford then
+        e.config.colour = G.C.RED
+        e.config.button = 'kh_reroll'
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+
+-- What the reroll button actually does
+G.FUNCS.kh_reroll = function(e)
+    local ref = e.config and e.config.ref_table
+    local card = ref and ref[1]
+
+    local reroll_cost = 4
+    card.ability.current_task = nil
+
     G.E_MANAGER:add_event(Event({
-        trigger = "before",
-        delay = 0.0,
+        trigger = 'after',
+        delay = 0.4,
         func = function()
-            local card = create_card(type, G.consumeables, nil, nil, nil, nil, key, seed)
-            card:add_to_deck()
-            G.consumeables:emplace(card)
-            G.GAME.consumeable_buffer = 0
+            ease_dollars(-math.min(reroll_cost, G.GAME.dollars), true)
             return true
         end
     }))
-
-    card_eval_status_text(joker, "extra", nil, nil, nil, {
-        message = localize(message),
-        colour = colour
-    })
-end
-
--- Function to get a random poker hand name, excluding the specials (Currently unused)
-function RandomPokerHand(card)
-    local _poker_hands = {}
-    for handname, _ in pairs(G.GAME.hands) do
-        if SMODS.is_poker_hand_visible(handname) and handname ~= 'Five of a Kind' and handname ~= 'Flush Five' and handname ~= 'Flush House' then
-            _poker_hands[#_poker_hands + 1] = handname
-        end
-    end
-
-    card.ability.extra.poker_hand = pseudorandom_element(_poker_hands, 'kh_poker_hand' .. (card.round or 0))
 end

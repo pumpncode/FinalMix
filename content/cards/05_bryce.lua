@@ -40,10 +40,7 @@ SMODS.Joker {
 					context.other_card.ability.perma_mult = context.other_card.ability.perma_mult or 0
 					context.other_card.ability.perma_mult = context.other_card.ability.perma_mult +
 						card.ability.extra.mult
-					return {
-						extra = { message = localize('k_upgrade_ex'), colour = G.C.MULT },
-						card = card
-					}
+					SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.FILTER }, card)
 				end
 			end
 		end

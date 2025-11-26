@@ -1,8 +1,11 @@
 SMODS.Joker {
     name = 'Goofy',
     key = "goofy",
-
+    set_badges = function(self, card, badges)
+        badges[#badges + 1] = create_badge("Disney", G.C.BLUE, G.C.WHITE, 1.2)
+    end,
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_wild
         return {
             vars = {
                 card.ability.extra.mult,    --1
@@ -25,10 +28,10 @@ SMODS.Joker {
 
     config = {
         extra = {
-            mult = 7,
-            Xmult = 1.3,
-            chips = 13,
-            dollars = 1,
+            mult = 4,
+            Xmult = 1.5,
+            chips = 30,
+            dollars = 3,
         }
     },
 
@@ -39,10 +42,7 @@ SMODS.Joker {
                     { mult = card.ability.extra.mult },
                     { chips = card.ability.extra.chips },
                     { dollars = card.ability.extra.dollars },
-                    {
-                        Xmult_mod = card.ability.extra.Xmult,
-                        message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xmult } }
-                    }
+                    { x_mult = card.ability.extra.Xmult }
                 }
 
                 local choice = pseudorandom_element(bonuses, "goofy_bonus")

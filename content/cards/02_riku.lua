@@ -35,36 +35,25 @@ SMODS.Joker {
 	},
 
 	set_ability = function(self, card, initial, delay_sprites)
-		local _handname, _played, _order = 'High Card', -1, 100
-		for k, v in pairs(G.GAME.hands) do
-			if v.played > _played or (v.played == _played and _order > v.order) then
-				_played = v.played
-				_handname = k
-			end
-		end
-		card.ability.extra.most_played = _handname
+		local most_played = MostPlayedHand()
+		card.ability.extra.most_played = most_played
 		card.ability.extra.old_most_played = card.ability.extra.most_played
 	end,
 
 	calculate = function(self, card, context)
+		-- Update most played hand after every hand played/ at end of round
 		if context.final_scoring_step or context.end_of_round and not context.individual then
-			-- Update most played hand after every hand played/ at end of round
-			local _handname, _played, _order = 'High Card', -1, 100
-			for k, v in pairs(G.GAME.hands) do
-				if v.played > _played or (v.played == _played and _order > v.order) then
-					_played = v.played
-					_handname = k
-				end
-			end
+			local most_played = MostPlayedHand()
+			card.ability.extra.most_played = most_played
 			card.ability.extra.old_most_played = card.ability.extra.most_played
-			card.ability.extra.most_played = _handname
 		end
 
 		if context.reroll_shop then
 			card.ability.extra.counter = card.ability.extra.counter - 1
 
 			if card.ability.extra.counter <= 0 then
-				card.ability.extra.counter = card.ability.extra.total -- resets reroll counter
+				-- resets reroll counter
+				card.ability.extra.counter = card.ability.extra.total
 				local _card = context.blueprint_card or card
 				if card.ability.extra.condition_satisfied == true then
 					card_eval_status_text(_card, 'extra', nil, nil, nil, {

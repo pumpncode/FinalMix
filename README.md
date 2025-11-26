@@ -13,14 +13,14 @@ Get the latest stable version from the [Releases](https://github.com/cloudzXIII/
 <details>
 <summary>Currently Adds the following:</summary><br>
 - Kingdom Hearts x Friends of Jimbo Collab<br>
-- 20+ Jokers<br>
+- 30 + Jokers<br>
 - 2 Challenges<br>
 - 2 Spectral Cards<br>
 - 1 Tarot Card<br>
 - 1 Boss Blind<br>
-- 2 Seal<br>
+- 2 Seals<br>
 - 2 Decks<br>
-- 1 Voucher<br>
+- Vouchers<br>
 </details>
 and more to come... stay tuned!
 
@@ -81,12 +81,12 @@ Credits to the following Mods and their devs! I borrowed/referenced their code w
 
 <details>
   <summary>All in Jest — <a href="https://github.com/survovoaneend/All-In-Jest">GitHub</a></summary>
-  - For the code used make you enter shop
+  - For the code used force you to enter shop
 </details>
 
 <details>
   <summary>Maximus — <a href="https://github.com/the-Astra/Maximus">GitHub</a></summary>
-  - For the title screen logic used in KHJokers’ main menu integration.
+  - For the code used to display my logo on the titlescreen.
 </details>
 
 **Misc Functions:**

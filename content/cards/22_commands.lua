@@ -116,10 +116,7 @@ SMODS.Joker {
 				end
 				if #cards_to_destroy > 0 then
 					SMODS.destroy_cards(cards_to_destroy)
-					return {
-						message = "Destroyed!",
-						colour = G.C.MULT
-					}
+					SMODS.calculate_effect({ message = localize('kh_destroyed'), colour = G.C.FILTER }, card)
 				end
 			end
 		elseif pos == 1 then -- Magic - First card returns to hand (to be changed, but thanks bluelatro for hook)
@@ -134,7 +131,7 @@ SMODS.Joker {
 					end
 				end
 				return {
-					message = "Returned!",
+					message = localize("kh_returned"),
 					colour = G.C.GREEN
 				}
 			end

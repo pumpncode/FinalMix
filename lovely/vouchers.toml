@@ -4,257 +4,12 @@ dump_lua = true
 priority = 0
 
 
-# Credits to Paperback for the patch!
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "if add and not G.GAME.banned_keys[v.key] then "
-position = "after"
-match_indent = true
-payload = '''
-    -- If the selected deck is the Kingdom deck and this key is Kingdom Hearts Joker, add copies of it
-    -- to the pool, so that it is more common to get
-    local kingdom = 
-        (G.GAME.selected_back_key or {}).key == 'b_kh_kingdom'
-        or G.GAME.selected_sleeve == 'sleeve_kh_kingdom'
-        
-    if kingdom and v.key:find('j_kh_') then
-      for i = 1, 2 do
-        _pool[#_pool + 1] = v.key
-        _pool_size = _pool_size + 1
-      end
-    end
-'''
-
-# function Card:flip(), Credits to Bunco for the patch!
-[[patches]]
-[patches.pattern]
-target = 'card.lua'
-pattern = "self.facing='back'"
-position = 'after'
-match_indent = true
-payload = '''
-
-if self.config.center.key == 'j_kh_kairi' then
-    self:flip()
-    self:calculate_joker({flip = true})
-end
-'''
-
-# Add context when a card retriggers
-# Credit: Somethingcom515
-[[patches]]
-[patches.pattern]
-target = '=[SMODS _ "src/utils.lua"]'
-pattern = '''effect.message = effect.message or (not effect.remove_default_message and localize('k_again_ex'))'''
-position = "after"
-payload = '''
-effect.extra = {func = function() SMODS.calculate_context({card_retriggered = true}) end}
-'''
-match_indent = true
-
-
-# thank you cryptid for the following patches used for the Got it Memorised Challenge!
-
-# Remove tags
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = "if type == 'Small' then"
-position = "at"
-payload = "if type == 'Small' and not G.GAME.modifiers.no_skipping then"
-match_indent = true
-
-# Remove tags
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = "elseif type == 'Big' then"
-position = "at"
-payload = "elseif type == 'Big' and not G.GAME.modifiers.no_skipping then"
-match_indent = true
-
-# Remove tags
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = "elseif not run_info then"
-position = "at"
-payload = "elseif type == 'Boss' and not run_info then"
-match_indent = true
-
-
-# big blind bosses
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "self.GAME.round_resets.blind_choices.Boss = get_new_boss()"
-position = "before"
-payload = '''
-if G.GAME.modifiers.kh_got_it_memorized then
-    self.GAME.round_resets.blind_choices.Small = get_new_boss()
-    self.GAME.round_resets.blind_choices.Big = get_new_boss()
-else
-    self.GAME.round_resets.blind_choices.Big = 'bl_big'
-end
-'''
-match_indent = true
-
-
-# big blind bosses
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "G.GAME.round_resets.blind_choices.Boss = get_new_boss()"
-position = "before"
-payload = '''
-if G.GAME.modifiers.kh_got_it_memorized then
-    G.GAME.round_resets.blind_choices.Small = get_new_boss()
-    G.GAME.round_resets.blind_choices.Big = get_new_boss()
-else
-    G.GAME.round_resets.blind_choices.Big = 'bl_big'
-end
-'''
-match_indent = true
-
-
-# Small and Big Boss Blinds don't increase ante
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
-position = "at"
-payload = '''
-if G.GAME.blind_on_deck == "Boss" then
-	delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
-end
-'''
-match_indent = true
-overwrite = true
-
-
-# Smaller showdown blinds don't win
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then"
-position = "at"
-payload = "if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then"
-match_indent = true
-
-
-# Mark small blind as defeated
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then"
-position = "at"
-payload = "if G.GAME.blind_on_deck == 'Small' then"
-match_indent = true
-
-
-# Mark big blind as defeated
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then"
-position = "at"
-payload = "elseif G.GAME.blind_on_deck == 'Big' then"
-match_indent = true
-
-
-
-# Funky patch which fixes let him cook to make it so that when you create a copy of the joker it creates an entirely new card (prevents crashes)
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "local new_card = new_card or Card(other.T.x, other.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card, bypass_back = G.GAME.selected_back.pos})"
-position = "before"
-match_indent = true
-payload = '''
-if other.config and other.config.center and other.config.center.key == "j_kh_lethimcook" then
-    -- Spawn a brand-new Joker using create_card
-    local new_joker = create_card("Joker", G.jokers, nil, nil, false, nil, "j_kh_lethimcook")
-    return new_joker
-end
-'''
-
-# main menu stuff - credits to Maximus, Check them out!
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''
-if self.SPLASH_LOGO then self.SPLASH_LOGO:remove(); self.SPLASH_LOGO = nil end
-'''
-position = "after"
-payload = '''
-if self.SPLASH_KH_LOGO then self.SPLASH_KH_LOGO:remove(); self.SPLASH_KH_LOGO = nil end
-'''
-match_indent = true
-times = 1
-
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''
-if G.SPLASH_LOGO then
-    love.graphics.push()
-    G.SPLASH_LOGO:translate_container()
-    G.SPLASH_LOGO:draw()
-    love.graphics.pop()
-end
-'''
-position = "after"
-payload = '''
-
-if G.SPLASH_KH_LOGO then
-    love.graphics.push()
-    G.SPLASH_KH_LOGO:translate_container()
-
-    if not G.SPLASH_KH_LOGO.states.drag.is then
-        local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
-        local rotate_mod = 0.05*math.sin(1.219*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
-
-        G.SPLASH_KH_LOGO:draw_shader('dissolve',0, nil, nil, G.SPLASH_KH_LOGO,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
-        G.SPLASH_KH_LOGO:draw_shader('dissolve', nil, nil, nil, G.SPLASH_KH_LOGO, scale_mod, rotate_mod)local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
-        local rotate_mod = 0.05*math.sin(1.219*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
-
-        G.SPLASH_KH_LOGO:draw_shader('dissolve',0, nil, nil, G.SPLASH_KH_LOGO,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
-        G.SPLASH_KH_LOGO:draw_shader('dissolve', nil, nil, nil, G.SPLASH_KH_LOGO, scale_mod, rotate_mod)
-    end
-
-    add_to_drawhash(G.SPLASH_KH_LOGO)
-
-    love.graphics.pop()
-end
-'''
-match_indent = true
-times = 1
-
-# Game Variables
-[[patches]] #G.GAME 
-[patches.pattern]
-target = 'game.lua'
-pattern = '''
-unused_discards = 0,'''
-position = 'after'
-match_indent = true 
-payload = '''
-kh = {
-    moogle_shop = false,
-    moogle_skip = false,
-    luxord_sold = false,
-    luxord_destroyed = false,
-},
-'''
-
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = "extras = create_UIBox_blind_tag(type, run_info)"
 position = "after"
 payload = '''
-    -- Add second skip option
     if extras and not run_info and G.GAME.moogle_skip then
         G.GAME.round_resets.blind_tags = G.GAME.round_resets.blind_tags or {}
         local alt_key = type..'_alt'
@@ -262,7 +17,6 @@ payload = '''
             G.GAME.round_resets.blind_tags[alt_key] = get_next_tag_key()
         end
         
-        -- Create second tag UI
         local _tag = Tag(G.GAME.round_resets.blind_tags[alt_key], nil, type)
         local _tag_ui, _tag_sprite = _tag:generate_UI()
         _tag_sprite.states.collide.can = true
@@ -280,7 +34,6 @@ payload = '''
             }}
         }}
         
-        -- Wrap both skip options
         extras = {
             n = G.UIT.R, 
             config = {align = "cm", padding = 0.1}, 
@@ -292,6 +45,7 @@ payload = '''
     end'''
 match_indent = true
 
+
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -301,6 +55,7 @@ position = "after"
 payload = '''          local _tag_alt = e.UIBox:get_UIE_by_ID('tag_'..e.config.id..'_alt')
           local _tag_container_alt = e.UIBox:get_UIE_by_ID('tag_container_alt')'''
 match_indent = true
+
 
 [[patches]]
 [patches.pattern]
@@ -317,6 +72,7 @@ payload = '''
             end
           end'''
 match_indent = true
+
 
 [[patches]]
 [patches.pattern]
@@ -349,6 +105,7 @@ payload = '''
               end
             end'''
 match_indent = true
+
 
 [[patches]]
 [patches.pattern]
@@ -446,5 +203,3 @@ payload = '''
               end
             end'''
 match_indent = true
-
-

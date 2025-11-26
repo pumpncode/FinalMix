@@ -1,6 +1,8 @@
 SMODS.Voucher {
     key = 'moogleskip',
     atlas = "KHVouchers",
+    unlocked = true,
+    discovered = true,
     pos = { x = 0, y = 0 },
     config = { extra = {} },
     loc_vars = function(self, info_queue, card)
@@ -9,10 +11,11 @@ SMODS.Voucher {
         G.GAME.moogle_skip = true
     end
 }
-
 SMODS.Voucher { -- Credits to All in Jest!
     key = 'moogleshop',
     atlas = "KHVouchers",
+    unlocked = true,
+    discovered = true,
     pos = { x = 1, y = 0 },
     config = { extra = {} },
     loc_vars = function(self, info_queue, card)
@@ -23,7 +26,13 @@ SMODS.Voucher { -- Credits to All in Jest!
             stop_use()
             G.deck:shuffle('cashout' .. G.GAME.round_resets.ante)
             G.deck:hard_set_T()
-            G.GAME.current_round.reroll_cost_increase = 0
+            ''
+            local rechain = (G.GAME.selected_back_key or {}).key == 'b_kh_rechain' or
+                G.GAME.selected_sleeve == 'sleeve_kh_rechain'
+            if not rechain or G.GAME.round_resets.blind.boss then
+                G.GAME.current_round.reroll_cost_increase = 0
+            end
+
             G.GAME.current_round.used_packs = {}
             G.GAME.current_round.free_rerolls = G.GAME.round_resets.free_rerolls
             calculate_reroll_cost(true)

@@ -2,16 +2,6 @@ return {
 	descriptions = {
 
 		Partner = {
-			--[[pnr_kh_sora = {
-				name = "{E:kh_pulse}Sora",
-				text = {
-					"This Joker gains {X:mult,C:white}X#2#{} Mult",
-					"For each scored {C:hearts}heart{} card, resets",
-					"when {C:attention}Boss Blind{} is defeated{}",
-					"but Mult gained increases by {X:mult,C:white}X#3#{}",
-					"{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive} Mult)",
-				},
-			},--]]
 			pnr_kh_sora = {
 				name = "{E:kh_pulse}Sora",
 				text = {
@@ -56,8 +46,8 @@ return {
 				text = {
 					"{C:legendary}Kingdom Hearts{} {C:attention}Jokers{} are",
 					"{C:attention}3X{} more likely to appear",
-					"Start run with",
-					"{C:attention,T:v_overstock_norm}Overstock{}",
+					"Start run with the",
+					"{C:attention,T:v_overstock_norm}Overstock{} voucher",
 
 				}
 			},
@@ -73,43 +63,43 @@ return {
 				}
 			},
 
-			sleeve_kh_fairgame = {
-				name = "{E:kh_pulse}Fair Game Sleeve",
+			sleeve_kh_rechain = {
+				name = "{E:kh_pulse}Re:Chain Sleeve",
 				text = {
-					"When a hand is played",
-					"{C:attention}Flip{} a {C:money}Coin{}",
-					"If {C:attention}Heads{}, doubles",
-					"base chips and mult",
-					"If {C:attention}Tails{}, halves",
-					"base chips and mult"
-
-				}
+					"{C:green}Reroll{} costs reset every {C:attention}Ante{}",
+					"Start run with the",
+					"{C:attention,T:v_kh_moogleskip}Moogle Skip{} voucher",
+				},
+			},
+			sleeve_kh_rechain_alt = {
+				name = "{E:kh_pulse}Re:Chain Sleeve",
+				text = {
+					"{C:green}Reroll{} costs reset every {C:attention}Ante{}",
+					"Start run with {C:attention,T:v_kh_moogleskip}Moogle Skip{}",
+					"and {C:attention,T:v_reroll_surplus}Reroll Surplus{}",
+				},
 			},
 		},
 
 		Back = {
 
+			b_kh_rechain = {
+				name = "{E:kh_pulse}Re:Chain Deck",
+				text = {
+					"{C:green}Reroll{} costs reset",
+					"every {C:attention}Ante{}",
+					"Start run with the",
+					"{C:attention,T:v_kh_moogleskip}Moogle Skip{} voucher",
+				},
+			},
 			b_kh_kingdom = {
 				name = "{E:kh_pulse}Kingdom Deck",
 				text = {
-					"Kingdom Hearts Jokers are",
+					"{C:legendary}Kingdom Hearts{} {C:attention}Jokers{} are",
 					"{C:attention}3X{} more likely to appear",
 					"Start run with the",
-					"{C:attention,T:v_overstock_norm}Overstock{} Voucher",
+					"{C:attention,T:v_overstock_norm}Overstock{} voucher",
 				},
-			},
-
-			b_kh_fairgame = {
-				name = "{E:kh_pulse}Fair Game Deck",
-				text = {
-					"When a hand is played",
-					"{C:attention}Flip{} a {C:money}Coin{}",
-					"If {C:attention}Heads{}, doubles",
-					"base chips and mult",
-					"If {C:attention}Tails{}, halves",
-					"base chips and mult"
-
-				}
 			},
 		},
 		Joker = {
@@ -128,11 +118,11 @@ return {
 			j_kh_kingdomhearts = {
 				name = '{E:kh_pulse}Kingdom Hearts',
 				text = {
-					"Unused Hands/Discards",
+					"Unused {C:red}discards{}",
 					"this ante",
 					"carry over to",
-					"the {C:attention}boss blind{}",
-					"{C:inactive}(Currently {C:blue}#2#{}{C:inactive} Hands, {C:red}#1#{}{C:inactive} Discards)"
+					"the {C:attention}Boss Blind{}",
+					"{C:inactive}(Currently {C:red}#1#{}{C:inactive} Discards)"
 
 				},
 			},
@@ -140,20 +130,53 @@ return {
 			j_kh_tamagotchi = {
 				name = '{E:kh_pulse}Tamagotchi',
 				text = {
-					"Destroy all held consumables",
-					"at the end of the {C:attention}shop",
+					"Destroy all held {C:attention}consumables{}",
+					"at the end of the {C:attention}shop{}",
 					"gains {X:mult,C:white}X#2#{} for",
 					"each one destroyed",
+					"{C:red,E:2,s:1.1}self destructs if there are no held consumables",
 					"{C:inactive}(Currently {X:mult,C:white}X#1#{C:inactive} Mult)",
 				},
 			},
+			j_kh_xehanort = {
+				name = '{E:kh_pulse}Master Xehanort',
+				text = {
+					{
 
+						"This Joker gains {C:mult}+#1#{} Mult",
+						"per {C:attention}consecutive{} hand played",
+						"that isn't the same",
+						"as previously played hand",
+						"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+					},
+				},
+			},
+			j_kh_com = {
+				name = '{E:kh_pulse}Chain of Memories',
+				text = {
+					"Adds {C:chips}Chips{} and {C:mult}Mult{}",
+					"from previous poker hand",
+					"to current hand",
+					"{C:inactive}({C:attention}#1#{}{C:inactive}: {X:chips,C:white}#2#{} {C:mult}X{} {X:mult,C:white}#3#{}{C:inactive})",
+				},
+			},
 			j_kh_lethimcook = {
 				name = '{E:kh_pulse}Let Him Cook',
 				text = {
-					"Multiply values of",
-					"adjacent {C:attention}Jokers{}",
-					"by {X:legendary,C:white}X1.5{}",
+					"When an adjacent",
+					"{C:attention}Joker{} is triggered,",
+					"it's values",
+					"increase by {X:enhanced,C:white}X0.05{}",
+					"{C:inactive,s:0.8}Hollup... Let Him Cook",
+
+				},
+			},
+			j_kh_lethimcook_alt = {
+				name = '{E:kh_pulse}Let Him Cook',
+				text = {
+					"This Joker gains {X:mult,C:white}X#2#{} Mult",
+					"When a {C:attention}Joker{} is triggered,",
+					"{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive} Mult)",
 					"{C:inactive,s:0.8}Hollup... Let Him Cook",
 
 				},
@@ -166,7 +189,7 @@ return {
 				text = {
 					{
 						"When a {C:attention}Blind{} is selected,",
-						"this Joker  cycles through",
+						"this Joker cycles through",
 						"it's {C:attention}modes{}:",
 					},
 					{
@@ -249,9 +272,8 @@ return {
 				name = '{E:kh_pulse}Riku',
 				text = {
 					'Levels up most played hand',
-					'by #2# every {C:attention}#4#{} {C:inactive}#3#{} {C:green}rerolls',
+					'by #2# every {C:attention}#4#{} {C:inactive}(#3#){} {C:green}rerolls',
 					'{C:inactive}(Most Played: {C:attention}#1#{}{C:inactive})',
-					--'{C:inactive}(Reroll {C:attention}#3#{}{C:inactive}/#4#){}',
 					--"{C:inactive,s:0.8}I'm not afraid of the darkness!",
 					"{C:inactive,s:0.8}I'm thinking RIKU RIKU oo ee oo",
 				}
@@ -287,10 +309,12 @@ return {
 			j_kh_roxas = {
 				name = '{E:kh_pulse}Roxas',
 				text = {
-					"This Joker gains {C:chips}+#1#{} Chips",
-					"every {C:attention}#2#{} {C:inactive}[#3#]{} cards discarded",
-					"{C:inactive}(Currently {C:chips}+#4#{C:inactive} Chips)",
+					"This Joker gains {C:chips}+#2#{} Chips",
+					"per unique {C:attention}suit{}",
+					"in first played hand",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)",
 					"{C:inactive,s:0.8}looks like my summer vacation is... over",
+
 
 				},
 			},
@@ -306,17 +330,28 @@ return {
 				},
 			},
 
-			j_kh_axel = {
+			j_kh_axel_alt = {
 				name = '{E:kh_pulse}Axel',
 				text = {
-					"{C:enhanced}Doubles{} values of leftmost {C:attention}Joker{}",
-					"and applies a {C:spectral}Perishable{} sticker",
-					"after defeating a {C:attention}boss blind",
+					"Add {C:dark_edition}Foil{}, {C:dark_edition}Holographic{},",
+					"or {C:dark_edition}Polychrome{} edition",
+					"to leftmost {C:attention}Joker{}",
+					"when {C:attention}Boss Blind{} is defeated",
 					"{C:inactive,s:0.8}Got it Memorized?",
 
 				},
 			},
 
+			j_kh_axel = {
+				name = '{E:kh_pulse}Axel',
+				text = {
+					"{C:white,X:enhanced}X2{} values of leftmost {C:attention}Joker{}",
+					"and applies a {C:spectral}Perishable{} sticker",
+					"when {C:attention}Boss Blind{} is defeated",
+					"{C:inactive,s:0.8}Got it Memorized?",
+
+				},
+			},
 			j_kh_xigbar = {
 				name = "{E:kh_pulse}Half Face",
 				text = {
@@ -331,15 +366,14 @@ return {
 			j_kh_mickey = {
 				name = '{E:kh_pulse}Meeska Mooska',
 				text = {
-
-					--"First and last played cards have",
-					"{C:green}#1# in #2#{} chance",
-					"for {C:attention}first{} and {C:attention}last{}",
-					"played cards to become",
-					"{C:attention}Kings{} when scored",
+					"Played {C:attention}Kings{} have a",
+					"{C:green}#1# in #2#{} chance to",
+					"add a {C:red}Red Seal{},",
+					"{C:green}#1# in #3#{} chance to",
+					"become {C:attention}Steel{} cards,",
 					"{C:inactive,s:0.8}Did somebody mention",
 					"{C:inactive,s:0.8}the Door to Darkness?"
-				},
+				}
 			},
 
 			j_kh_donald = {
@@ -415,9 +449,10 @@ return {
 			j_kh_nobody = {
 				name = '{E:kh_pulse}Nobody',
 				text = {
-					"Gains {C:chips}+#2#{} Chips per",
-					"unique {C:attention}suit{} in played hand",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)",
+					"All cards {C:attention}held in hand{}",
+					"count in scoring",
+					"with a {C:green}#1# in #2#{} chance",
+					"to retrigger",
 					"{C:inactive,s:0.8} Nobody? Who's Nobody?",
 				},
 			},
@@ -432,22 +467,22 @@ return {
 				},
 			},
 
-			j_kh_cloudz = {
-				name = "{E:kh_pulse}Time",
+			j_kh_dummy = {
+				name = "Munny",
 				text = {
-					"{C:inactive}(Currently: {X:mult,C:white}X#3#{C:inactive} Mult)",
-					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
-					"{C:inactive}(Currently: {C:chips}+#1#{C:inactive} Chips)",
-				},
+					"Earn {C:money}$(pouch sell value){} at",
+					"end of round",
+					"Decreases by {C:red}$1{}",
+					"every round."
+				}
 			},
-
 			j_kh_invitation = {
 				name = "{E:kh_pulse}Invitation",
 				text = {
-					"Gain {C:money}$#1#{}",
-					"for every card sold,",
-					"Create a {C:dark_edition}Negative{} {C:spectral}Perishable{} Joker",
-					"every {C:attention}#2#{} {C:inactive}(#3#{}{C:inactive}){} {C:attention}Jokers{} sold",
+					"{C:green}#1# in #2#{} chance",
+					"to add {C:dark_edition}Negative{} edition",
+					"to Jokers {C:attention}purchased{}",
+					"from the {C:attention}shop",
 					"{C:inactive,s:0.8}A new challenger approaches...!",
 				},
 			},
@@ -468,15 +503,16 @@ return {
 					{
 						'Gains {C:chips}+#3#{} Chips for every',
 						'{C:attention}second{} passed this round,',
-						'{C:red,E:2,s:1.1}self destructs at #2# Chips',
-					},
-					{
-						'Each scored card',
-						'increases the cap by {C:green}#4#{}',
+
 					},
 					{
 						'Each hand increases the',
 						'total Chips gained by {C:green}#5#{}',
+					},
+					{
+						'{C:red,E:2,s:1.1}self destructs at #2# Chips',
+						'Cap increases by {X:purple,C:white}X1.5{}',
+						'when a {C:attention}Boss Blind{} is defeated.',
 						"{C:inactive,s:0.8}I'd rather we just skip the formalities",
 					},
 
@@ -486,22 +522,30 @@ return {
 			j_kh_khtrilogy_kh1 = {
 				name = "{E:kh_pulse}Kingdom Hearts 1",
 				text = {
-					"{C:chips}+#5#{} Chips",
-					"Win a blind in one",
-					"hand to {C:legendary}level up{}",
-					"{C:inactive}(Next level: {C:mult}+#1#{C:inactive} Mult)",
-					"{C:inactive,s:0.8}A true classic",
+					{
+						"{C:chips}+#5#{} Chips",
+						"Win a blind in one",
+						"hand to {C:legendary}level up{}",
+					},
+					{
+						"{C:inactive}(Next level: {C:mult}+#1#{C:inactive} Mult)",
+						"{C:inactive,s:0.8}A true classic",
+					},
 				}
 			},
 
 			j_kh_khtrilogy_kh2 = {
 				name = "{E:kh_pulse}Kingdom Hearts 2",
 				text = {
-					"{C:mult}+#1#{} Mult",
-					"Discard {C:attention}#7#{} {C:inactive}[#6#]{}",
-					"cards to {C:legendary}level up{}",
-					"{C:inactive}(Next level: {X:mult,C:white}X3{C:inactive} Mult)",
-					"{C:inactive,s:0.8}peak has arrived",
+					{
+						"{C:mult}+#1#{} Mult",
+						"Discard {C:attention}#7#{} {C:inactive}(#6#){}",
+						"cards to {C:legendary}level up{}",
+					},
+					{
+						"{C:inactive}(Next level: {X:mult,C:white}X#2#{C:inactive} Mult)",
+						"{C:inactive,s:0.8}peak has arrived",
+					},
 				}
 			},
 
@@ -517,9 +561,10 @@ return {
 				name = "{E:kh_pulse}Help Wanted!",
 				text = {
 					{
-						"Complete a task to earn a prize!.",
-						"New task appears after completion.",
-						"{C:red,E:2,s:1}Self Destructs when no tasks remain",
+						"Complete a task to earn a prize!",
+						"New task appears after completion",
+						"{C:red,E:2,s:1}When no tasks remain,",
+						"{C:red,E:2,s:1}Self Destructs and earn $15"
 					},
 					{
 						"{C:attention}Current Task:{} #1#",
@@ -533,7 +578,7 @@ return {
 				name = '{E:kh_pulse}Munny Pouch',
 				text = {
 					{
-						"Gains {C:money}$1-$5{} of",
+						"Gains {C:money}$#3#-$#4#{} of",
 						"{C:money}sell value{} at",
 						"end of round",
 					},
@@ -558,23 +603,12 @@ return {
 				},
 			},
 
-			--[[j_kh_lethimcook = {
-				name = '{E:kh_pulse}Let Him Cook',
-				text = {
-					"Gain {C:money}$#1#{} for",
-					"every card",
-					"{C:attention}Retriggered{}",
-					"{C:inactive,s:0.8}Hollup... Let Him Cook",
-				},
-			},--]]
-
 			j_kh_randomjoker = {
 				name = '{E:kh_pulse}Random Joker',
+
 				text = {
-					"All cards {C:attention}held in hand{}",
-					"count in scoring",
-					"with a {C:green}#1# in #2#{} chance",
-					"to retrigger",
+					"of {C:mult}Mult{} and {C:chips}Chips{}",
+					"when a hand is played"
 				},
 			},
 		},
@@ -590,13 +624,7 @@ return {
 		},
 
 		Voucher = {
-			v_kh_moogleshop = {
-				name = "Moogle Shop",
-				text = {
-					"Enter the {C:attention}Shop{}",
-					"when a {C:attention}Blind{} is skipped"
-				},
-			},
+
 			v_kh_moogleskip = {
 				name = "Moogle Skip",
 				text = {
@@ -604,9 +632,41 @@ return {
 					"available in blind selection",
 				},
 			},
+			v_kh_moogleshop = {
+				name = "Moogle Shop",
+				text = {
+					"Enter the {C:attention}Shop{}",
+					"when a {C:attention}Blind{} is skipped"
+				},
+			},
+
+
+			v_kh_grandtheft = {
+				name = "Grand Theft",
+				text = {
+					"You may now steal",
+					"consumables from",
+					"{C:attention}Booster{} packs",
+				},
+			},
+			v_kh_specialdeal = {
+				name = "Special Deal",
+				text = {
+					"{C:attention}Booster{} Packs have",
+					"{C:attention}1{} extra option",
+					"to choose from"
+				},
+			},
 		},
 		Other = {
 
+			kh_shuffled = {
+				name = "Shuffled",
+				text = {
+					"This Joker is shuffled",
+					"before scoring"
+				}
+			},
 			kh_lightsuit = {
 				name = "Light Suit",
 				text = {
@@ -621,6 +681,32 @@ return {
 				}
 			},
 
+			kh_no_blockbuster = {
+				name = "Note!",
+				text = {
+					"This Joker currently has",
+					"an alternate effect as",
+					"{C:attention}Blockbuster-ValueManipulation{}",
+					"is not installed."
+				}
+			},
+			kh_lhceffect = {
+				name = "Original Effect",
+				text = {
+					"When an adjacent",
+					"{C:attention}Joker{} is triggered,",
+					"it's values",
+					"increase by {X:enhanced,C:white}X0.05{}",
+				}
+			},
+			kh_axleffect = {
+				name = 'Original Effect',
+				text = {
+					"{x:enhanced,C:white}Doubles{} values of leftmost {C:attention}Joker{}",
+					"when {C:attention}Boss Blind{} is defeated",
+
+				},
+			},
 			kh_unstackable = {
 				name = "Unstackable",
 				text = {
@@ -640,49 +726,24 @@ return {
 			kh_play_face = {
 				name = "Grand Stander",
 				text = {
-					"Score 15 {C:attention{}Face{} cards",
+					"Score 7 {C:attention{}Face{} cards",
 					"to get {C:attention}+1{} {C:blue}Hand{}"
 				}
 			},
 
-			kh_destroy_cards = {
+			kh_drawing = {
 				name = "Cargo Climb",
 				text = {
-					"Destroy 7 cards",
-					"to get {C:attention}+1{} {C:red}Discard{}",
-				}
-			},
-
-			kh_selling = {
-				name = "Mail Delivery",
-				text = {
-					"Sell 7 cards",
-					"to get {C:attention}-1{} Ante"
-				}
-			},
-			kh_skipping = {
-				name = "Junk Sweep",
-				text = {
-					"Skip 2 Blinds",
-					"to get {C:attention}+1{} Hand Size"
+					"Draw {C:attention}20{} cards in a single round",
+					"to get {C:attention}+1{} {C:green}Hand Size{}",
 				}
 			},
 
 			kh_shopping = {
 				name = "Poster Duty",
 				text = {
-					"Spend {C:money{}${}30 in one shop",
+					"Spend {C:money{}${}20 in one shop",
 					"to get {C:attention}+1{} Shop Slot"
-				}
-			},
-
-			kh_munny_info = {
-				name = "Munny",
-				text = {
-					"Earn {C:money}$[pouch sell value]{} at",
-					"end of round",
-					"Decreases by {C:red}$1{}",
-					"every round."
 				}
 			},
 
@@ -699,11 +760,10 @@ return {
 			kh_kingdom_seal = {
 				name = 'Kingdom Seal',
 				text = {
-					"Increases rank of card by 1",
-					"when {C:attention}discarded{} and converts",
-					"it to your {C:attention}most common{}",
-					"suit in your {C:attention}full deck{}",
-					"{C:inactive}(Currently {V:1}#1#{}{C:inactive}){}"
+					"Cards held in hand",
+					"permanently gain",
+					"{C:chips}+#1#{} Chips",
+					"when {C:attention}discarded",
 				}
 			},
 
@@ -753,7 +813,13 @@ return {
 					"apply {C:attention}Lucky Seal{}"
 				}
 			},
-
+			c_kh_kingdom = {
+				name = "Hearts",
+				text = {
+					"Select {C:attention}#1#{} card to",
+					"apply {C:attention}Kingdom Seal{}"
+				}
+			},
 			c_kh_gummiship = {
 				name = "Gummi Ship",
 				text = {
@@ -772,22 +838,79 @@ return {
 				text = {
 					"Creates a random",
 					"{C:legendary}Kingdom Hearts{} {C:attention}Joker{}",
-					"{C:inactive}[Must have room]",
+					"{C:inactive}(Must have room)",
 				},
 			},
 
 		},
+
+		Drive = {
+
+			c_kh_valorform = {
+				name = "Valor Form",
+				text = {
+					"Adds {C:mult}+4{} base {C:mult}Mult{}",
+					"to next played hand",
+				},
+			},
+
+			c_kh_wisdomform = {
+				name = "Wisdom Form",
+				text = {
+					"{C:enhanced}Swap{} base {C:chips}Chips{} and {C:mult}Mult{}",
+					"of next played hand",
+					"{C:inactive}(Cannot Stack){}",
+				},
+			},
+
+			c_kh_limitform = {
+				name = "Limit Form",
+				text = {
+					"Adds {C:chips}+30{} base {C:chips}Chips{}",
+					"to next played hand"
+				},
+			},
+
+			c_kh_masterform = {
+				name = "Master Form",
+				text = {
+					"{X:mult,C:white}X2{} {C:mult}Mult{}",
+					"when calculating score",
+					"for next played hand",
+				},
+			},
+
+
+			c_kh_finalform = {
+				name = "Final Form",
+				text = {
+					"{C:enhanced}Doubles{} base {C:chips}Chips{} and {C:mult}Mult{}",
+					"of next played hand",
+				},
+			},
+
+			c_kh_antiform = {
+				name = "Anti Form",
+				text = {
+					"{C:enhanced}Balances{} {C:blue}Chips{} and",
+					"{C:red}Mult{} when calculating",
+					"score for next played hand",
+					"{C:inactive}(Cannot Stack){}",
+				},
+			},
+
+
+
+
+
+		},
 		Mod = {
 			kingdomhearts = {
-				name = "KHJokers",
+				name = "Final Mix",
 				text = {
-					"Adds {C:red}30{} Jokers and more content based on the",
-					"{C:attention,E:kh_pulse}Kingdom Hearts{} Series!",
-					"art by {C:attention}cloudz{}!",
-					" ",
-					" ",
-					"Includes the following {C:green}cross-mod{} content:",
-					"{C:attention}JokerDisplay{}, {C:attention}CardSleeves{} and 5 new {C:attention}Partners{}!",
+					"Adds {C:red}30{} Jokers and more content",
+					"based on the {C:attention,E:kh_pulse}Kingdom Hearts{} Series!",
+					"code and art by {C:attention}cloudz{}!",
 					" ",
 					" ",
 					"Here's the {C:blue}website{}:",
@@ -799,6 +922,48 @@ return {
 	},
 
 	misc = {
+		quips = {
+
+			kh_friendsmult = {
+				"My friends are my multiplier!"
+			},
+
+			kh_simpleclean = {
+				"Simple and Clean",
+				"is the way that you're",
+				"making me feel tonight!"
+			},
+
+			kh_walkaway = {
+				"When you walk away…",
+				"you don't hear me say,",
+				"{C:attention}Fold{}!"
+			},
+
+			kh_kairiinside = {
+				"Kairi... Kairi's inside me?"
+			},
+
+			kh_rikubugs = {
+				"Mickey! It's Riku!",
+				"They put bugs in him!",
+			},
+
+			kh_theyregone = {
+				"They're gone! All our",
+				"{E:kh_pulse}chips{} are gone!"
+			},
+
+			kh_icecream = {
+				"No! Who else will I have ice cream with?"
+			},
+
+			kh_ownedlamers = {
+				"That was undeniable proof",
+				"that we totally owned you lamers."
+			},
+
+		},
 
 		achievement_descriptions = {},
 		achievement_names = {},
@@ -807,29 +972,43 @@ return {
 		collabs = {},
 
 		dictionary = {
-			k_khjokers_config_jokers = "Enable KH Jokers",
-			k_khjokers_config_tarots = "Enable Tarot cards",
-			k_khjokers_config_spectrals = "Enable Spectral cards",
-			k_khjokers_config_vouchers = "Enable Vouchers",
-			k_khjokers_config_seal = "Enable Seal",
-			k_khjokers_config_blind = "Enable Boss Blind",
-			k_khjokers_config_menu_toggle = "Toggle Custom Title Screen",
-			k_khjokers_config_restart = "(requires restart)",
+			-- config
+			k_finalmix_config_jokers = "Enable KH Jokers",
+			k_finalmix_config_tarots = "Enable Tarot cards",
+			k_finalmix_config_spectrals = "Enable Spectral cards",
+			k_finalmix_config_vouchers = "Enable Vouchers",
+			k_finalmix_config_seal = "Enable Seal",
+			k_finalmix_config_blind = "Enable Boss Blind",
+			k_finalmix_config_menu_toggle = "Toggle Custom Title Screen",
+			k_finalmix_config_restart = "(requires restart)",
+
+			-- kairi/namine
 			kh_a_side = 'Kairi',
 			kh_b_side = 'Naminé',
+
+			-- misc text
 			kh_plus_consumeable = '+1 Consumable!',
 			kh_king = 'Fellas!',
 			b_open_link = "Opens in browser",
+			kh_destroyed = "Destroyed!",
+			kh_copying = "Copying!",
+			kh_riku_no = "RIKU NO!",
+			kh_sealed = "Sealed!",
+			kh_tasks_complete = "Tasks Complete!",
+			kh_complete = "Complete!",
+			kh_stolen = "Stolen!",
+			kh_munny = "Munny!",
+			kh_returned = "Returned!"
 		},
 
 		high_scores = {},
 		labels = {
 			kh_luckyemblem_seal = "Lucky Emblem",
-			kh_kingdom_seal = "Kingdom Seal"
+			kh_kingdom_seal = "Kingdom Seal",
+			kh_shuffled = "Shuffled"
 		},
 		poker_hand_descriptions = {},
 		poker_hands = {},
-		quips = {},
 		ranks = {},
 		suits_plural = {
 			kh_com = "Kingdom Cards"

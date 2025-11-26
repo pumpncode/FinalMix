@@ -1,60 +1,67 @@
 SMODS.Joker {
     name = 'Nobody',
-    key = 'nobody',
+    key = "nobody",
 
     loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds,
+            'nobody')
         return {
             vars = {
-                card.ability.extra.chips, --1
-                card.ability.extra.chips_gain -- 2
+                numerator,
+                denominator,
             }
         }
     end,
 
+
     rarity = 4,
     atlas = 'KHJokers',
     pos = { x = 0, y = 1 },
-    soul_pos = { x = 0, y = 2 },
+    soul_pos = { x = 0, y = 2, },
     cost = 10,
     unlocked = true,
     discovered = true,
-    blueprint_compat = true,
     eternal_compat = true,
-    eternal = false,
     perishable_compat = true,
+    blueprint_compat = true,
 
     config = {
         extra = {
-            chips = 0,
-            chips_gain = 13
-        }
+            base = 1,
+            odds = 4,
+        },
     },
+}
 
-    calculate = function(self, card, context)
-        if context.before and context.cardarea == G.jokers and not context.blueprint then
-            local suits = {}
-            for _, v in ipairs(context.scoring_hand) do
-                suits[v.base.suit] = true
+local oldsmodsscorecard = SMODS.score_card
+function SMODS.score_card(card, context)
+    local conditions = false
+    if G.jokers and G.jokers.cards then
+        for _, j in ipairs(G.jokers.cards) do
+            if j.config and j.config.center and j.config.center.key == "j_kh_nobody" then
+                conditions = true
+                J = j
+                break
             end
-
-            local unique_suits = 0
-            for _ in pairs(suits) do
-                unique_suits = unique_suits + 1
-            end
-
-            local total_chips = unique_suits * card.ability.extra.chips_gain
-            card.ability.extra.chips = card.ability.extra.chips + total_chips
-
-            return {
-                message = '+' .. total_chips,
-                colour = G.C.CHIPS
-            }
-        end
-
-        if context.joker_main then
-            return {
-                chips = card.ability.extra.chips
-            }
         end
     end
-}
+
+    if not G.scorehand and conditions and context.cardarea == G.hand then
+        G.scorehand = true
+        context.cardarea = G.play
+        SMODS.score_card(card, context)
+
+        local base = J.ability.extra.base or 1
+        local odds = J.ability.extra.odds or 2
+        local retrigger = SMODS.pseudorandom_probability(card, 'nobody', base, odds)
+
+        if retrigger then
+            card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize("k_again_ex") })
+            SMODS.score_card(card, context)
+        end
+
+        context.cardarea = G.hand
+        G.scorehand = nil
+    end
+    return oldsmodsscorecard(card, context)
+end

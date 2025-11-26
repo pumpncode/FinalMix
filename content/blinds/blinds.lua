@@ -1,4 +1,4 @@
-SMODS.Blind {
+--[[SMODS.Blind {
   key = 'shuffled',
   loc_txt = {
     name = 'Shuffled',
@@ -37,3 +37,4 @@ SMODS.Blind {
     }))
   end
 }
+--]]

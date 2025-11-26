@@ -43,10 +43,7 @@ SMODS.Joker {
                     local random_seal = SMODS.poll_seal { key = "kh_seed", guaranteed = true }
                     chosen:set_seal(random_seal)
 
-                    return {
-                        message = "Sealed!",
-                        colour = G.C.CHIPS
-                    }
+                    SMODS.calculate_effect({ message = localize('kh_sealed'), colour = G.C.FILTER }, card)
                 end
             end
         end

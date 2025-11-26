@@ -24,7 +24,7 @@ SMODS.Joker {
 	config = {
 		extra = {
 			x_mult = 1,
-			Xmult_gain = 0.2
+			Xmult_gain = 0.2,
 		}
 	},
 
@@ -32,22 +32,16 @@ SMODS.Joker {
 		if context.individual and context.cardarea == G.play and not context.blueprint then
 			if context.other_card:is_suit("Hearts") then
 				card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_gain
-				return {
-					message = 'Upgraded!',
-					card = card,
-				}
+				SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.FILTER }, card)
 			end
 		end
 
-		-- display xmult underneath joker after hand is played
 		if context.joker_main and card.ability.extra.x_mult > 1 then
 			return {
-				Xmult_mod = card.ability.extra.x_mult,
-				message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.x_mult } }
+				x_mult = card.ability.extra.x_mult
 			}
 		end
 
-		-- reset mult at the end of a boss blind
 		if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
 			if G.GAME.blind.boss then
 				card.ability.extra.x_mult = 1

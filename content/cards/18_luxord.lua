@@ -1,7 +1,9 @@
 SMODS.Joker {
     name = 'Luxord',
     key = 'luxord',
-
+    set_badges = function(self, card, badges)
+        badges[#badges + 1] = create_badge("Organisation XIII", G.C.BLACK, G.C.WHITE, 1.0)
+    end,
     loc_vars = function(self, info_queue, card)
         local vars = {
             card.ability.chips,      --1
@@ -66,7 +68,7 @@ SMODS.Joker {
 
         return { main_end = main_end, vars = vars, }
     end,
-    rarity = 1,
+    rarity = 2,
     atlas = 'KHJokers',
     pos = { x = 1, y = 4, },
     cost = 7,
@@ -78,10 +80,10 @@ SMODS.Joker {
 
     config = {
         chips = 0,
-        cap = 100,
+        cap = 200,
         chips_gain = 1,
         time_spent = 0,
-        extra_time = 5,
+        extra_time = 1.5,
         chips_extra = 0.5,
         active = false,
         destroying = false,
@@ -148,10 +150,6 @@ SMODS.Joker {
             end, true)
         end
 
-        if context.individual and context.cardarea == G.play then
-            card.ability.cap = card.ability.cap + card.ability.extra_time
-        end
-
         if context.joker_main and card.ability.chips > 0 and not card.ability.destroying then
             card.ability.chips_gain = card.ability.chips_gain + card.ability.chips_extra
             return {
@@ -159,7 +157,11 @@ SMODS.Joker {
             }
         end
 
-        if context.end_of_round and not (context.individual or context.repetition or context.blueprint) then
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            if context.beat_boss then
+                card.ability.cap = card.ability.cap * card.ability.extra_time
+                card_eval_status_text(card, 'extra', nil, nil, nil, { message = 'Cap Increased!' })
+            end
             card.ability.destroying = false
             card.ability.active = false
             card.ability.chips = 0

@@ -23,10 +23,7 @@ Partner_API.Partner {
                 context.other_card.ability.perma_x_mult = context.other_card.ability.perma_x_mult or 0
                 context.other_card.ability.perma_x_mult = context.other_card.ability.perma_x_mult +
                     card.ability.extra.Xmult * benefits
-                return {
-                    extra = { message = localize('k_upgrade_ex'), colour = G.C.MULT },
-                    card = card
-                }
+                SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.FILTER }, card)
             end
         end
     end,
@@ -74,10 +71,7 @@ Partner_API.Partner { -- art is currently placeholder, will change eventually
                 card.ability.extra.copied_joker_key = random_joker.config.center.key
                 card:update()
 
-                return {
-                    message = 'Copying!',
-                    card = card,
-                }
+                SMODS.calculate_effect({ message = localize('kh_copying'), colour = G.C.FILTER }, card)
             else
                 card.ability.extra.copied_joker_key = nil
             end
@@ -176,82 +170,6 @@ Partner_API.Partner {
 }
 
 Partner_API.Partner {
-    key = "randompaertner",
-    name = "Random Partner",
-    unlocked = true,
-    discovered = true,
-    pos = { x = 3, y = 0 },
-    loc_txt = {},
-    atlas = "KHPartner",
-    config = {
-        extra = {
-            percent = 0,
-            percent_plus = 5,
-            cost = 3,
-        }
-    },
-    link_config = { j_kh_randomjokeer = 1 },
-    loc_vars = function(self, info_queue, card)
-        local link_level = self:get_link_level()
-        local benefits = 1
-        if link_level == 1 then benefits = 2 end
-        return {
-            vars = {
-                card.ability.extra.percent,
-                card.ability.extra.percent_plus * benefits,
-                card.ability.extra.cost,
-            }
-        }
-    end,
-
-    calculate = function(self, card, context)
-        if context.setting_blind and card.ability.extra.percent > 0 then
-            card_eval_status_text(card, 'extra', nil, nil, nil, { message = "Reduced!", colour = G.C.PURPLE })
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.2,
-                func = function()
-                    G.GAME.blind.chips = math.floor(G.GAME.blind.chips * (1 - card.ability.extra.percent / 100))
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-
-                    local chips_UI = G.hand_text_area.blind_chips
-                    G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)
-                    G.HUD_blind:recalculate()
-                    chips_UI:juice_up()
-
-                    if not silent then play_sound('chips2') end
-
-                    if G.GAME.chips - G.GAME.blind.chips >= 0 then
-                        G.STATE = G.STATES.HAND_PLAYED
-                        G.STATE_COMPLETE = true
-                        end_round()
-                    end
-
-                    return true
-                end
-            }))
-        end
-        if context.end_of_round and not context.individual and not context.repetition and card.ability.extra.percent > 0 then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    card.ability.extra.percent = 0
-                    return true
-                end
-            }))
-            card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_reset"), colour = G.C.RED })
-        end
-        if context.partner_click and ((to_big(G.GAME.dollars) - to_big(G.GAME.bankrupt_at)) >= to_big(card.ability.extra.cost)) then
-            local link_level = self:get_link_level()
-            local benefits = 1
-            if link_level == 1 then benefits = 2 end
-            card.ability.extra.percent = card.ability.extra.percent + card.ability.extra.percent_plus * benefits
-            ease_dollars(-card.ability.extra.cost)
-            card_eval_status_text(card, "dollars", -card.ability.extra.cost)
-        end
-    end
-}
-
-Partner_API.Partner {
     key = "randompartner",
     name = "Random Partner",
     unlocked = true,
@@ -295,52 +213,3 @@ function SMODS.score_card(card, context)
 
     return old_smods_scorecard(card, context)
 end
-
---[[ kinda op so in the vault for now till i find something better to do with it
-Partner_API.Partner {
-    key = "sora",
-    name = "Sora",
-    unlocked = true,
-    discovered = true,
-    pos = { x = 0, y = 0 },
-    loc_txt = {},
-    atlas = "KHPartner",
-    config = { extra = { x_mult = 1, Xmult_gain = 0.1, Xmult_extra = 0.1 } },
-    link_config = { j_kh_sora = 1 },
-    loc_vars = function(self, info_queue, card)
-        return {
-            vars = {
-                card.ability.extra.x_mult,     --1
-                card.ability.extra.Xmult_gain, --2
-                card.ability.extra.Xmult_extra --3
-            }
-        }
-    end,
-    calculate = function(self, card, context)
-        if context.individual and context.cardarea == G.play and not context.blueprint then
-            if context.other_card:is_suit("Hearts") then
-                card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.Xmult_gain
-                return {
-                    message = 'Upgraded!',
-                    card = card,
-                }
-            end
-        end
-
-        if context.joker_main and card.ability.extra.x_mult > 1 then
-            return {
-                Xmult_mod = card.ability.extra.x_mult,
-                message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.x_mult } }
-            }
-        end
-
-        if context.end_of_round and G.GAME.blind.boss and not context.individual and not context.repetition and not context.blueprint then
-            card.ability.extra.Xmult_gain = card.ability.extra.Xmult_gain + card.ability.extra.Xmult_extra
-            card.ability.extra.x_mult = 1
-            return {
-                message = localize('k_reset'),
-                colour = G.C.RED
-            }
-        end
-    end,
-}--]]

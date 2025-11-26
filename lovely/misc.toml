@@ -1,0 +1,96 @@
+[manifest]
+version = "1.1.3"
+dump_lua = true
+priority = 0
+
+# Game Variables
+[[patches]] #G.GAME 
+[patches.pattern]
+target = 'game.lua'
+pattern = '''unused_discards = 0,'''
+position = 'after'
+payload = '''
+kh = {
+    -- Moogle Vouchers
+    moogle_shop = false,
+    moogle_skip = false,
+
+    -- Luxord Challenge
+    luxord_sold = false,
+    luxord_destroyed = false,
+
+    -- Drive Cards
+    valorform = 0,
+    limitform = 0,
+    masterform = 1,
+    finalform = 1,
+    antiform = false,
+    wisdomform = false,
+    
+},
+'''
+match_indent = true 
+
+# Credits to Paperback for the patch!
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if add and not G.GAME.banned_keys[v.key] then "
+position = "after"
+payload = '''
+    -- If the selected deck is the Kingdom deck and this key is Kingdom Hearts Joker, add copies of it
+    -- to the pool, so that it is more common to get
+    local kingdom = 
+        (G.GAME.selected_back_key or {}).key == 'b_kh_kingdom'
+        or G.GAME.selected_sleeve == 'sleeve_kh_kingdom'
+        
+    if kingdom and v.key:find('j_kh_') then
+      for i = 1, 2 do
+        _pool[#_pool + 1] = v.key
+        _pool_size = _pool_size + 1
+      end
+    end
+'''
+match_indent = true
+
+# function Card:flip(), Credits to Bunco for the patch!
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = "self.facing='back'"
+position = 'after'
+payload = '''
+
+if self.config.center.key == 'j_kh_kairi' then
+    self:flip()
+    self:calculate_joker({flip = true})
+end
+'''
+match_indent = true
+
+# Add context when a card retriggers
+# Credit: Somethingcom515
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = '''effect.message = effect.message or (not effect.remove_default_message and localize('k_again_ex'))'''
+position = "after"
+payload = '''
+effect.extra = {func = function() SMODS.calculate_context({card_retriggered = true}) end}
+'''
+match_indent = true
+
+# Rechain deck, rerolls only reset every ante
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "G.GAME.current_round.reroll_cost_increase = 0"
+position = 'at'
+payload = '''
+local rechain = (G.GAME.selected_back_key or {}).key == 'b_kh_rechain' or G.GAME.selected_sleeve == 'sleeve_kh_rechain'
+        
+if not rechain or G.GAME.round_resets.blind.boss then
+    G.GAME.current_round.reroll_cost_increase = 0
+end
+'''
+match_indent = true
