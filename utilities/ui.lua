@@ -108,6 +108,13 @@ KH.config_tab = function()
         config = { r = 0.1, minw = 3, align = "tm", padding = 0.2, colour = G.C.BLACK },
         nodes = {
             create_toggle({
+                id = "enable_drive",
+                ref_table = KH.config,
+                ref_value = "enable_drive",
+                label = localize("k_finalmix_config_drive"),
+                callback = function() KH:save_config() end
+            }),
+            create_toggle({
                 id = "enable_seal",
                 label = localize("k_finalmix_config_seal"),
                 info = { localize('k_finalmix_config_restart') },

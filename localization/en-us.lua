@@ -982,6 +982,7 @@ return {
 			k_finalmix_config_vouchers = "Enable Vouchers",
 			k_finalmix_config_seal = "Enable Seal",
 			k_finalmix_config_blind = "Enable Boss Blind",
+			k_finalmix_config_drive = "Enable Drive cards (WIP)",
 			k_finalmix_config_menu_toggle = "Toggle Custom Title Screen",
 			k_finalmix_config_restart = "(requires restart)",
 

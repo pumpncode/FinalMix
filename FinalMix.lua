@@ -100,5 +100,8 @@ end
 SMODS.load_file("content/collabs/kingdomheartsxbalatro.lua")()
 SMODS.load_file("content/misc/jimboquips.lua")()
 SMODS.load_file("content/misc/decks.lua")()
-SMODS.load_file("content/misc/boosters.lua")()
-SMODS.load_file("content/consumables/drive_cards.lua")()
+
+if KH.config.enable_drive then
+  SMODS.load_file("content/consumables/drive_cards.lua")()
+  SMODS.load_file("content/misc/boosters.lua")()
+end
