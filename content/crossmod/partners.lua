@@ -38,7 +38,7 @@ pnr_def { -- art is currently placeholder, will change eventually
     pos = { x = 1, y = 0 },
     loc_txt = {},
     atlas = "KHPartner",
-    config = { extra = { Xmult = 0.1 } },
+    config = { extra = {} },
     link_config = { j_kh_donald = 1 },
     loc_vars = function(self, info_queue, card)
         local copied_joker_key = card.ability.extra.copied_joker_key

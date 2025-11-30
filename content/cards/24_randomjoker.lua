@@ -40,7 +40,7 @@ SMODS.Joker {
 	rarity = 1,
 	atlas = 'KHJokers',
 	pos = { x = 1, y = 5 },
-	cost = 6,
+	cost = 4,
 	unlocked = true,
 	discovered = true,
 	eternal_compat = true,

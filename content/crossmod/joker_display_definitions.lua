@@ -783,3 +783,30 @@ jd_def["j_kh_kingdomhearts"] = {
     end
 
 }
+
+-- Chain of Memories
+jd_def["j_kh_com"] = {
+    text = {
+        {
+            border_nodes = {
+                { ref_table = "card.ability.extra", ref_value = "old_hand_chips" }
+            },
+            border_colour = G.C.CHIPS
+        },
+        { text = " X " },
+        {
+            border_nodes = {
+                { ref_table = "card.ability.extra", ref_value = "old_hand_mult" }
+            },
+        },
+    },
+
+    reminder_text = {
+        { text = "(" },
+        { ref_table = "card.ability.extra", ref_value = "last_played", colour = G.C.UI.TEXT_INACTIVE, },
+        { text = ")" },
+    },
+
+    calc_function = function(card)
+    end,
+}
