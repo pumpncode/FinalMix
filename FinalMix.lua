@@ -30,6 +30,7 @@ SMODS.DynaTextEffect {
 
 -- tailsman thingy
 to_big = to_big or function(x) return x end
+to_number = to_number or function(x) return x end
 
 SMODS.current_mod.optional_features = {
   post_trigger = true,

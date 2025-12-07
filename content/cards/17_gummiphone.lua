@@ -31,7 +31,7 @@ SMODS.Joker {
 
     calculate = function(self, card, context)
         if context.after and not context.blueprint and not context.repetition and not context.other_card then
-            local handy = hand_chips
+            local handy = to_number(hand_chips)
             card.ability.extra.old_hand_chips = handy / 10
         end
         if context.setting_blind and card.ability.extra.old_hand_chips > 0 then
