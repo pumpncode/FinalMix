@@ -1,6 +1,6 @@
 -- When a blind is selected, add a tenth of the chips of the last played hand to this Joker's Mult
 SMODS.Joker {
-    name = 'Chip and Dale',
+    name = 'Gummiphone',
     key = "chipanddale",
 
     loc_vars = function(self, info_queue, card)
