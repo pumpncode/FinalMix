@@ -881,10 +881,6 @@ return {
 					"新增{C:red}30{}张小丑牌、新机制及更多内容",
 					"基于{C:attention,E:kh_pulse}王国之心{}系列",
 					"代码与美术由{C:attention}cloudzXIII{}制作",
-					" ",
-					" ",
-					"这里是{C:blue}网站{}",
-					"{C:attention}https://cloudzxiii.github.io/{}",
 				}
 			},
 		},

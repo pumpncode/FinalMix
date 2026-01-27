@@ -874,10 +874,6 @@ return {
 					"Adds {C:red}30{} Jokers, new mechanics, and more content",
 					"based on the {C:attention,E:kh_pulse}Kingdom Hearts{} Series!",
 					"code and art by {C:attention}cloudzXIII{}!",
-					" ",
-					" ",
-					"Here's the {C:blue}website{}:",
-					"{C:attention}https://cloudzxiii.github.io/{}",
 				}
 			},
 		},
@@ -938,7 +934,6 @@ return {
 			-- misc text
 			kh_plus_consumeable = '+1 Consumable!',
 			kh_king = 'Fellas!',
-			b_open_link = "Opens in browser",
 			kh_destroyed = "Destroyed!",
 			kh_copying = "Copying!",
 			kh_riku_no = "RIKU NO!",

@@ -26,8 +26,6 @@ SMODS.current_mod.ui_config = {
 
 -- Adds cards to mod page, credits to N' who made JoyousSpring, check them out!
 KH.custom_ui = function(modNodes)
-    modNodes[1].nodes[1].config.colour = G.C.BLUE
-
     G.kh_desc_area = CardArea(
         G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
         4.25 * G.CARD_W,
@@ -49,6 +47,45 @@ KH.custom_ui = function(modNodes)
             { n = G.UIT.O, config = { object = G.kh_desc_area } }
         }
     }
+    -- Wiki Link
+    modNodes[#modNodes + 1] = {
+        n = G.UIT.R,
+        config = { align = "bm", padding = 0.05 },
+        nodes = {
+            {
+                n = G.UIT.C,
+                config = { align = "cm", padding = 0.05 },
+                nodes = {
+                    UIBox_button({
+                        colour = G.C.RED,
+                        button = "kh_wiki_page",
+                        label = { localize("b_kh_wiki_page") },
+                        minw = 4.75,
+                    }),
+                },
+            },
+            {
+                n = G.UIT.C,
+                config = { align = "cm", padding = 0.05 },
+                nodes = {
+                    UIBox_button({
+                        colour = G.C.RED,
+                        button = "kh_website_page",
+                        label = { localize("b_kh_website_page") },
+                        minw = 4.75,
+                    }),
+                },
+            },
+        },
+    }
+end
+
+function G.FUNCS.kh_wiki_page(e)
+    love.system.openURL("https://balatromods.miraheze.org/wiki/Final_Mix")
+end
+
+function G.FUNCS.kh_website_page(e)
+    love.system.openURL("https://cloudzxiii.github.io/")
 end
 
 -- Config Tab
