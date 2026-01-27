@@ -230,33 +230,3 @@ XIII.create_random_tag = function(card)
         end)
     }))
 end
-
-
-SMODS.Keybind {
-    key_pressed = 'a',
-    held_keys = { "lshift" },
-    event = 'pressed',
-    action = function(self)
-        if G.hand then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    local _first_dissolve = nil
-                    local new_cards = {}
-
-                    G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-                    local _card = XIII.create_random_card("kingdom")
-                    _card:add_to_deck()
-                    G.deck.config.card_limit = G.deck.config.card_limit + 1
-                    table.insert(G.playing_cards, _card)
-                    G.hand:emplace(_card)
-                    _card:start_materialize(nil, _first_dissolve)
-                    _first_dissolve = true
-                    new_cards[#new_cards + 1] = _card
-
-                    SMODS.calculate_context({ playing_card_added = true, cards = new_cards })
-                    return true
-                end
-            }))
-        end
-    end
-}
