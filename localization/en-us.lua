@@ -247,8 +247,8 @@ return {
 				name = "{E:kh_pulse}Half Face",
 				text = {
 					"This Joker gains {X:mult,C:white}X#2#{} Mult",
-					"for each {C:attention}face{} card in played",
-					"hand that {C:attention}does not score{}",
+					"if hand played contains",
+					"a {C:attention}Face{} card",
 					"{C:inactive}(Currently {X:mult,C:white}X#1#{} {C:inactive}Mult){}",
 					"{C:inactive,s:0.8,E:1}Me? I'm already half Xehanort"
 				},

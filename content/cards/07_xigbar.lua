@@ -29,29 +29,19 @@ SMODS.Joker {
 
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.before and not context.blueprint then
-            for k, v in ipairs(context.scoring_hand) do
-                v.scoring = true
-            end
-
+            local faces = 0
             for k, v in ipairs(context.full_hand) do
-                if not v.scoring and v:is_face() then
-                    SMODS.scale_card(card, {
-                        ref_table = card.ability.extra,
-                        ref_value = "x_mult",
-                        scalar_value = "Xmult_gain",
-                        operation = '+',
-                    })
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            v:juice_up()
-                            return true
-                        end,
-                    }))
+                if v:is_face() then
+                    faces = faces + 1
                 end
             end
-
-            for k, v in ipairs(context.scoring_hand) do
-                v.scoring = nil
+            if faces > 0 then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability.extra,
+                    ref_value = "x_mult",
+                    scalar_value = "Xmult_gain",
+                    operation = '+',
+                })
             end
         end
 
