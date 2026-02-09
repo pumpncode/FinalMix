@@ -24,13 +24,6 @@ SMODS.current_mod.ui_config = {
     collection_option_cycle_colour = KH.C.COLLECTION_OPTION,
 }
 
-SMODS.Atlas({
-    key = 'modlogo',
-    path = 'modlogo.png',
-    px = 426,
-    py = 285,
-})
-
 -- Adds cards to mod page, credits to N' who made JoyousSpring, check them out!
 KH.custom_ui = function(modNodes)
     local logo = {

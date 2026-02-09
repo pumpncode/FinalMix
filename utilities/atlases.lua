@@ -6,6 +6,13 @@ SMODS.Atlas {
 }
 
 SMODS.Atlas({
+    key = 'modlogo',
+    path = 'modlogo.png',
+    px = 426,
+    py = 285,
+})
+
+SMODS.Atlas({
     key = 'logo',
     path = 'logo.png',
     px = 200,
