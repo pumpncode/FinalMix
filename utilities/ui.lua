@@ -26,7 +26,7 @@ SMODS.current_mod.ui_config = {
 
 -- Adds cards to mod page, credits to N' who made JoyousSpring, check them out!
 KH.custom_ui = function(modNodes)
-    modNodes[#modNodes + 1] = {
+    local logo = {
 
         n = G.UIT.R,
         config = {
@@ -55,6 +55,7 @@ KH.custom_ui = function(modNodes)
             }
         }
     }
+    table.insert(modNodes, 2, logo)
 
     G.kh_desc_area = CardArea(
         G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
@@ -64,7 +65,7 @@ KH.custom_ui = function(modNodes)
     )
     for i, key in ipairs({ "j_kh_sealsalt", "j_kh_roxas", "j_kh_sora", "j_kh_riku", "j_kh_paopufruit", }) do
         local card = Card(G.kh_desc_area.T.x + G.kh_desc_area.T.w / 2, G.kh_desc_area.T.y,
-            G.CARD_W, G.CARD_H, G.P_CARDS.empty,
+            0.75 * G.CARD_W, 0.75 * G.CARD_H, G.P_CARDS.empty,
             G.P_CENTERS[key])
         G.kh_desc_area:emplace(card)
         card:juice_up()
