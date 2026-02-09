@@ -25,8 +25,9 @@ return {
 			pnr_kh_sora = {
 				name = "{E:kh_pulse}Sora",
 				text = {
-					"Every played {C:hearts}Heart{} card",
-					"permanently gains",
+					"Played cards with",
+					"{C:hearts}Heart{} suit give",
+					"permanently gain",
 					"{X:mult,C:white}X#1#{} Mult when scored.",
 				},
 			},
@@ -72,28 +73,6 @@ return {
 		},
 
 		Sleeve = {
-			sleeve_kh_kingdom = {
-				name = "{E:kh_pulse}Kingdom Sleeve",
-				text = {
-					"{C:legendary}Final Mix{} {C:attention}Jokers{} are",
-					"{C:attention}3X{} more likely to appear",
-					"Start run with the",
-					"{C:attention,T:v_overstock_norm}Overstock{} voucher",
-
-				}
-			},
-
-			sleeve_kh_kingdom_alt = {
-				name = "{E:kh_pulse}Kingdom Sleeve",
-				text = {
-					"{C:legendary}Final Mix{} {C:attention}Jokers{} are",
-					"{C:attention}3X{} more likely to appear",
-					"Start run with {C:attention,T:v_overstock_norm}Overstock{}",
-					"and {C:attention,T:v_overstock_plus}Overstock Plus{}",
-
-				}
-			},
-
 			sleeve_kh_rechain = {
 				name = "{E:kh_pulse}Re:Chain Sleeve",
 				text = {
@@ -151,7 +130,8 @@ return {
 				name = '{E:kh_pulse}Sora',
 				text = {
 					"This Joker gains {X:mult,C:white}X#2#{} Mult",
-					"For each scored {C:hearts}heart{} card, resets",
+					"for each scored card",
+					"with a {C:hearts}Heart{} suit, resets",
 					"when {C:attention}Boss Blind{} is defeated.{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive} Mult)",
 					"{C:inactive,s:0.8,E:1}My Friends are my Power!",
@@ -192,7 +172,6 @@ return {
 				text = {
 					"{C:inactive}(Currently {C:chips}+#1#{}{C:inactive} Chips, {C:mult}+#2#{}{C:inactive} Mult){}",
 					'{C:inactive}Joker flips at end of round',
-
 				}
 			},
 
@@ -204,8 +183,6 @@ return {
 					"in first played hand",
 					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)",
 					"{C:inactive,s:0.8,E:1}looks like my summer vacation is... over",
-
-
 				},
 			},
 
@@ -644,15 +621,6 @@ return {
 					"every {C:attention}Ante{}",
 					"Start run with the",
 					"{C:attention,T:v_kh_moogleskip}Moogle Skip{} voucher",
-				},
-			},
-			b_kh_kingdom = {
-				name = "{E:kh_pulse}Kingdom Deck",
-				text = {
-					"{C:legendary}Final Mix{} {C:attention}Jokers{} are",
-					"{C:attention}3X{} more likely to appear",
-					"Start run with the",
-					"{C:attention,T:v_overstock_norm}Overstock{} voucher",
 				},
 			},
 		},

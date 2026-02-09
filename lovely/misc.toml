@@ -22,27 +22,6 @@ kh = {
 '''
 match_indent = true
 
-# Credits to Paperback for the patch!
-# If the selected deck is the Kingdom deck and this key is Final Mix Joker, add copies of it to the pool, so that it is more common to get
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "if add and not G.GAME.banned_keys[v.key] then "
-position = "after"
-payload = '''
-    local kingdom = 
-        (G.GAME.selected_back_key or {}).key == 'b_kh_kingdom'
-        or G.GAME.selected_sleeve == 'sleeve_kh_kingdom'
-        
-    if kingdom and v.key:find('j_kh_') then
-      for i = 1, 2 do
-        _pool[#_pool + 1] = v.key
-        _pool_size = _pool_size + 1
-      end
-    end
-'''
-match_indent = true
-
 # function Card:flip(), Credits to Bunco for the patch!
 [[patches]]
 [patches.pattern]
