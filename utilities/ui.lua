@@ -24,6 +24,13 @@ SMODS.current_mod.ui_config = {
     collection_option_cycle_colour = KH.C.COLLECTION_OPTION,
 }
 
+SMODS.Atlas({
+    key = 'modlogo',
+    path = 'modlogo.png',
+    px = 426,
+    py = 285,
+})
+
 -- Adds cards to mod page, credits to N' who made JoyousSpring, check them out!
 KH.custom_ui = function(modNodes)
     local logo = {
@@ -45,8 +52,8 @@ KH.custom_ui = function(modNodes)
                         config = {
                             object = SMODS.create_sprite(
                                 0, 0,
-                                6, 2,
-                                'kh_logo',
+                                6.5, 4.5,
+                                'kh_modlogo',
                                 { x = 0, y = 0 }
                             )
                         }
@@ -57,27 +64,6 @@ KH.custom_ui = function(modNodes)
     }
     table.insert(modNodes, 2, logo)
 
-    G.kh_desc_area = CardArea(
-        G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
-        4.25 * G.CARD_W,
-        0.95 * G.CARD_H,
-        { card_limit = 5, type = 'title', highlight_limit = 0, collection = true }
-    )
-    for i, key in ipairs({ "j_kh_sealsalt", "j_kh_roxas", "j_kh_sora", "j_kh_riku", "j_kh_paopufruit", }) do
-        local card = Card(G.kh_desc_area.T.x + G.kh_desc_area.T.w / 2, G.kh_desc_area.T.y,
-            0.75 * G.CARD_W, 0.75 * G.CARD_H, G.P_CARDS.empty,
-            G.P_CENTERS[key])
-        G.kh_desc_area:emplace(card)
-        card:juice_up()
-    end
-
-    modNodes[#modNodes + 1] = {
-        n = G.UIT.R,
-        config = { align = "cm", padding = 0.07, no_fill = true },
-        nodes = {
-            { n = G.UIT.O, config = { object = G.kh_desc_area } }
-        }
-    }
     -- Wiki Link
     modNodes[#modNodes + 1] = {
         n = G.UIT.R,
