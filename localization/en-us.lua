@@ -924,6 +924,9 @@ return {
 		collabs = {},
 
 		dictionary = {
+			-- main tab
+			b_kh_website_page = "My Website!",
+			b_kh_wiki_page = "Wiki Page",
 			-- config
 			k_finalmix_config_menu_toggle = "Toggle Custom Title Screen",
 
