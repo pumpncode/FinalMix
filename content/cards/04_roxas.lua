@@ -15,12 +15,9 @@ SMODS.Joker {
     atlas = 'KHJokers',
     pos = { x = 1, y = 0 },
     cost = 5,
-    unlocked = true,
+
     discovered = true,
     blueprint_compat = true,
-    eternal_compat = true,
-    eternal = false,
-    perishable_compat = true,
 
     config = {
         extra = {

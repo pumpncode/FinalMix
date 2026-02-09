@@ -18,11 +18,9 @@ SMODS.Joker {
 	rarity = 3,
 	atlas = 'command',
 	pos = { x = 0, y = 0 },
-	cost = 10,
-	unlocked = true,
+	cost = 9,
+
 	discovered = true,
-	eternal_compat = true,
-	perishable_compat = true,
 	blueprint_compat = true,
 
 	config = {

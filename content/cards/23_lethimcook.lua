@@ -64,11 +64,9 @@ if Blockbuster then
 		atlas = 'cooking',
 		pos = { x = 0, y = 0 },
 		cost = 8,
-		unlocked = true,
+
 		discovered = true,
 		blueprint_compat = false,
-		eternal_compat = true,
-		perishable_compat = true,
 
 		config = {
 			extra = {
@@ -169,11 +167,9 @@ else -- if blockbuster is not available
 		atlas = 'cooking',
 		pos = { x = 0, y = 0 },
 		cost = 8,
-		unlocked = true,
+
 		discovered = true,
 		blueprint_compat = false,
-		eternal_compat = true,
-		perishable_compat = true,
 
 		config = {
 			extra = {

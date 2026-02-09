@@ -19,10 +19,8 @@ SMODS.Joker {
     pos = { x = 0, y = 1 },
     soul_pos = { x = 0, y = 2, },
     cost = 10,
-    unlocked = true,
+
     discovered = true,
-    eternal_compat = true,
-    perishable_compat = true,
     blueprint_compat = true,
 
     config = {

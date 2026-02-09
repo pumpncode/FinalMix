@@ -11,12 +11,10 @@ SMODS.Joker {
 	rarity = 3,
 	atlas = 'KHJokers',
 	pos = { x = 3, y = 0 },
-	cost = 6,
-	unlocked = true,
+	cost = 8,
+
 	discovered = true,
-	blueprint_compat = true,
-	eternal_compat = false,
-	perishable_compat = true,
+	blueprint_compat = false,
 	config = {
 		extra = {
 		}
