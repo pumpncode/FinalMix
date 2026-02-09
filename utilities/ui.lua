@@ -26,6 +26,39 @@ SMODS.current_mod.ui_config = {
 
 -- Adds cards to mod page, credits to N' who made JoyousSpring, check them out!
 KH.custom_ui = function(modNodes)
+    local logo = {
+
+        n = G.UIT.R,
+        config = {
+            align = 'cm',
+            colour = { 0, 0, 0, 0 },
+            r = 0.3,
+            padding = 0.25
+        },
+        nodes = {
+            {
+                n = G.UIT.R,
+                config = { align = 'cm' },
+                nodes = {
+                    {
+                        n = G.UIT.O,
+                        config = {
+                            object = SMODS.create_sprite(
+                                0, 0,
+                                6, 2,
+                                'kh_logo',
+                                { x = 0, y = 0 }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    table.insert(modNodes, 2, logo)
+
+
     G.kh_desc_area = CardArea(
         G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
         4.25 * G.CARD_W,
