@@ -155,8 +155,8 @@ else -- if blockbuster is not available
 		name = 'Let Him Cook',
 		key = 'lethimcook_alt',
 		loc_vars = function(self, info_queue, card)
-			info_queue[#info_queue + 1] = { key = "kh_lhceffect", set = "Other" }
-			info_queue[#info_queue + 1] = { key = "kh_no_blockbuster", set = "Other" }
+			--info_queue[#info_queue + 1] = { key = "kh_lhceffect", set = "Other" }
+			--info_queue[#info_queue + 1] = { key = "kh_no_blockbuster", set = "Other" }
 			return {
 				vars = {
 					card.ability.extra.x_mult, --1

@@ -88,8 +88,8 @@ else
         name = 'Axel',
         key = 'axel_alt',
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue + 1] = { key = "kh_no_blockbuster", set = "Other" }
-            info_queue[#info_queue + 1] = { key = "kh_axleffect", set = "Other" }
+            --info_queue[#info_queue + 1] = { key = "kh_no_blockbuster", set = "Other" }
+            --info_queue[#info_queue + 1] = { key = "kh_axleffect", set = "Other" }
             if card.area == G.jokers then
                 local target = G.jokers.cards[1]
                 local compatible = not target.edition
