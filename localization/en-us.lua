@@ -382,13 +382,13 @@ return {
 				name = '{E:kh_pulse}Luxord',
 				text = {
 					{
-						'Loses {C:chips}-#3#{} Chips for every',
+						'{C:chips}-#3#{} Chips for every',
 						'{C:attention}second{} passed this round,',
 
 					},
 					{
 						'Chips increase by {X:chips,C:white}X1.5{}',
-						'when a {C:attention}Boss Blind{} is defeated.',
+						'when {C:attention}Boss Blind{} is defeated.',
 						"{C:inactive,s:0.8,E:1}I'd rather we just skip the formalities",
 					},
 
