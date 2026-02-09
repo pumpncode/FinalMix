@@ -26,7 +26,7 @@ SMODS.current_mod.ui_config = {
 
 -- Adds cards to mod page, credits to N' who made JoyousSpring, check them out!
 KH.custom_ui = function(modNodes)
-    local logo = {
+    modNodes[#modNodes + 1] = {
 
         n = G.UIT.R,
         config = {
@@ -55,9 +55,6 @@ KH.custom_ui = function(modNodes)
             }
         }
     }
-
-    table.insert(modNodes, 2, logo)
-
 
     G.kh_desc_area = CardArea(
         G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2, G.ROOM.T.h,
