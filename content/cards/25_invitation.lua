@@ -3,6 +3,7 @@ SMODS.Joker {
     key = "invitation",
 
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
         local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.base, card.ability.extra.odds,
             'j_kh_invitation')
         return {

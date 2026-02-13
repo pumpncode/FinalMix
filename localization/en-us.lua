@@ -518,11 +518,15 @@ return {
 			j_kh_magnet = {
 				name = '{E:kh_pulse}Munny Magnet',
 				text = {
-					"{C:attention}Steel{} cards are moved",
-					"to the top of",
-					"your {C:attention}full deck{}",
-					"and give {C:money}$#1#{}",
-					"when triggered",
+					{
+						"{C:attention}Steel Cards{} are moved",
+						"to the top of",
+						"your {C:attention}full deck{}",
+					},
+					{
+						"{C:attention}Steel Cards{} give",
+						"{C:money}$#1#{} when triggered",
+					},
 				},
 			},
 
