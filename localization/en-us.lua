@@ -197,24 +197,12 @@ return {
 				},
 			},
 
-			j_kh_axel_alt = {
-				name = '{E:kh_pulse}Axel',
-				text = {
-					"Add {C:dark_edition}Foil{}, {C:dark_edition}Holographic{},",
-					"or {C:dark_edition}Polychrome{} edition",
-					"to leftmost {C:attention}Joker{}",
-					"when {C:attention}Boss Blind{} is defeated",
-					"{C:inactive,s:0.8,E:1}Got it Memorized?",
-
-				},
-			},
-
 			j_kh_axel = {
 				name = '{E:kh_pulse}Axel',
 				text = {
-					"{C:white,X:enhanced}X2{} values of leftmost {C:attention}Joker{}",
-					"and applies a {C:spectral}Perishable{} sticker",
-					"when {C:attention}Boss Blind{} is defeated",
+					"{C:attention}Flips{} all {C:planet}Planet{} cards",
+					"Multiply base levelling",
+					"amount by {X:planet,C:white}X1.5{}",
 					"{C:inactive,s:0.8,E:1}Got it Memorized?",
 
 				},
@@ -409,24 +397,86 @@ return {
 					"{C:inactive,s:0.8,E:1}KH4 when???",
 				}
 			},
-
-			j_kh_helpwanted = {
+			j_kh_helpwanted_default = {
 				name = "{E:kh_pulse}Help Wanted!",
 				text = {
 					{
 						"Complete a task to earn a prize!",
 						"New task appears after completion",
 						"{C:red,E:2,s:1}When no tasks remain,",
-						"{C:red,E:2,s:1}Self Destructs and earn $15"
+						"{C:red,E:2,s:1}Self Destructs"
 					},
 					{
-						"{C:attention}Current Task:{} #1#",
-						"{C:attention}Current Prize:{} #2#",
+						"{C:attention}Task:{} {C:legendary}???{}",
+						"{C:attention}Prize:{} {C:legendary}???{}",
 						"{C:inactive,s:0.8,E:1}Maybe... today we'll finally hit the beach!"
 					},
 				}
 			},
-
+			j_kh_helpwanted_play_face = {
+				name = { "{E:kh_pulse}Help Wanted!", "{C:attention,s:0.8}Grand Stander" },
+				text = {
+					{
+						"Complete a task to earn a prize!",
+						"New task appears after completion",
+						"{C:red,E:2,s:1}When no tasks remain,",
+						"{C:red,E:2,s:1}Self Destructs"
+					},
+					{
+						"{C:attention}Task:{} Score {C:attention}7{} {C:inactive}(#2#){} {C:attention}Face{} cards",
+						"{C:attention}Prize:{} {C:blue}+1{} Hand",
+						"{C:inactive,s:0.8,E:1}Maybe... today we'll finally hit the beach!"
+					},
+				}
+			},
+			j_kh_helpwanted_shopping = {
+				name = { "{E:kh_pulse}Help Wanted!", "{C:attention,s:0.8}Poster Duty" },
+				text = {
+					{
+						"Complete a task to earn a prize!",
+						"New task appears after completion",
+						"{C:red,E:2,s:1}When no tasks remain,",
+						"{C:red,E:2,s:1}Self Destructs"
+					},
+					{
+						"{C:attention}Task:{} Spent {C:money}$20{} {C:inactive}(#3#){} in a single shop",
+						"{C:attention}Prize:{} {C:attention}+1{} Shop Slot",
+						"{C:inactive,s:0.8,E:1}Maybe... today we'll finally hit the beach!"
+					},
+				}
+			},
+			j_kh_helpwanted_wheel = {
+				name = { "{E:kh_pulse}Help Wanted!", "{C:inactive,s:0.8}Cargo Climb" },
+				text = {
+					{
+						"Complete a task to earn a prize!",
+						"New task appears after completion",
+						"{C:red,E:2,s:1}When no tasks remain,",
+						"{C:red,E:2,s:1}Self Destructs"
+					},
+					{
+						"{C:attention}Task:{} {C:green}Successfully{} trigger {C:tarot}Wheel of Fortune{}",
+						"{C:attention}Prize:{} Add {C:dark_edition}Negative{} to this Joker",
+						"{C:inactive,s:0.8,E:1}Maybe... today we'll finally hit the beach!"
+					},
+				}
+			},
+			j_kh_helpwanted_discard = {
+				name = { "{E:kh_pulse}Help Wanted!", "{C:attention,s:0.8}Junk Sweep" },
+				text = {
+					{
+						"Complete a task to earn a prize!",
+						"New task appears after completion",
+						"{C:red,E:2,s:1}When no tasks remain,",
+						"{C:red,E:2,s:1}Self Destructs"
+					},
+					{
+						"{C:attention}Task:{} Discard {C:attention}30{} {C:inactive}(#4#){} cards",
+						"{C:attention}Prize:{} {C:attention}+1{} Hand Size",
+						"{C:inactive,s:0.8,E:1}Maybe... today we'll finally hit the beach!"
+					},
+				}
+			},
 			j_kh_munnypouch = {
 				name = '{E:kh_pulse}Munny Pouch',
 				text = {
@@ -683,32 +733,6 @@ return {
 					"is installed."
 				}
 			},
-			kh_lhceffect = {
-				name = "Alternate Effect",
-				text = {
-					"When an adjacent",
-					"{C:attention}Joker{} is triggered,",
-					"increase it's values",
-					"by {X:enhanced,C:white}X0.05{}",
-				}
-			},
-			kh_axleffect = {
-				name = 'Alternate Effect',
-				text = {
-					"{X:enhanced,C:white}X2{} values of",
-					"leftmost {C:attention}Joker{}",
-					"when {C:attention}Boss Blind{} is defeated",
-
-				},
-			},
-			kh_unstackable = {
-				name = "Unstackable",
-				text = {
-					"Cannot double a {C:attention}Joker{}",
-					"That is {C:enhanced}perishable{}.",
-				}
-			},
-
 			kh_perishable = {
 				name = "Perishable",
 				text = {
@@ -720,24 +744,34 @@ return {
 			kh_play_face = {
 				name = "Grand Stander",
 				text = {
-					"Score 7 {C:attention{}Face{} cards",
+					"Score {C:attention}7{} {C:attention{}Face{} cards",
 					"to get {C:attention}+1{} {C:blue}Hand{}"
 				}
 			},
 
-			kh_drawing = {
+			kh_wheel = {
 				name = "Cargo Climb",
 				text = {
-					"Draw {C:attention}20{} cards in a single round",
-					"to get {C:attention}+1{} {C:green}Hand Size{}",
+					"{C:green}Successfully{} trigger",
+					"{C:tarot}Wheel of Fortune{}",
+					"To add {C:dark_edition}Negative{} edition",
+					"to this Joker",
 				}
 			},
 
 			kh_shopping = {
 				name = "Poster Duty",
 				text = {
-					"Spend {C:money{}${}20 in one shop",
+					"Spend {C:money}$20{} in one shop",
 					"to get {C:attention}+1{} Shop Slot"
+				}
+			},
+
+			kh_discard = {
+				name = "Junk Sweep",
+				text = {
+					"Discard {C:attention}30{} cards",
+					"to get {C:attention}+1{} Hand Size"
 				}
 			},
 

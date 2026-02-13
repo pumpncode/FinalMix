@@ -1,76 +1,21 @@
-local task_rewards = {
-
-    play_face = function(card)
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.4,
-            func = function()
-                card_eval_status_text(card, 'extra', nil, nil, nil,
-                    { message = "+" .. tostring(1) .. " Hand", colour = G.C.BLUE })
-
-                G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
-                ease_hands_played(1)
-
-                return true
-            end
-        }))
-        delay(0.6)
-    end,
-
-    shopping = function(card)
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                card_eval_status_text(card, 'extra', nil, nil, nil,
-                    { message = "+" .. tostring(1) .. " Shop slot", colour = G.C.BLUE })
-                change_shop_size(1)
-                return true
-            end
-        }))
-    end,
-
-    drawing = function(card)
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.4,
-            func = function()
-                card_eval_status_text(card, 'extra', nil, nil, nil,
-                    { message = "+" .. tostring(1) .. " Hand Size", colour = G.C.BLUE })
-                G.hand:change_size(1)
-                return true
-            end
-        }))
-        delay(0.6)
-    end,
-
-}
-
 SMODS.Joker {
     key = 'helpwanted',
     name = "Help Wanted!",
 
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = { key = "kh_play_face", set = "Other" }
-        info_queue[#info_queue + 1] = { key = "kh_drawing", set = "Other" }
-        info_queue[#info_queue + 1] = { key = "kh_shopping", set = "Other" }
-        local task_desc = "None"
-        local reward_desc = "None"
-        local prog = card.ability.progress
-
-        if card.ability.current_task == "play_face" then
-            task_desc = "Score 7 [" .. prog .. "]  face cards"
-            reward_desc = "+1 Hand"
-        elseif card.ability.current_task == "shopping" then
-            task_desc = "Spend $20 [" .. prog .. "] in one shop"
-            reward_desc = "+1 Shop Slot"
-        elseif card.ability.current_task == "drawing" then
-            task_desc = "Draw 20 [" .. prog .. "] cards in a single round"
-            reward_desc = "+1 Hand Size"
+        for task, completed in pairs(card.ability.extra.tasks) do
+            if not completed then
+                info_queue[#info_queue + 1] = { key = "kh_" .. task, set = "Other" }
+            end
         end
 
         return {
+            key = self.key .. '_' .. (card.ability.extra.current_task or "default"),
             vars = {
-                task_desc,
-                reward_desc
+                card.ability.extra.current_task,
+                card.ability.extra.faces_played,
+                card.ability.extra.money_remaining,
+                card.ability.extra.discards_remaining
             }
         }
     end,
@@ -84,33 +29,36 @@ SMODS.Joker {
     blueprint_compat = false,
 
     config = {
-        current_task = nil,
-        progress = 0,
-        task_done = {},
+        extra = {
+            tasks = {
+                ["play_face"] = false,
+                ["shopping"] = false,
+                ["wheel"] = false,
+                ["discard"] = false
+            },
+            current_task = nil,
+            progress = 0,
+            faces_played = 7,
+            money_remaining = 20,
+            discards_remaining = 30,
+        }
     },
 
     calculate = function(self, card, context)
-        local completed = card.ability.task_done
-
-        if not card.ability.current_task then
-            local task_pool = { "play_face", "shopping", "drawing" }
-
-
+        if not card.ability.extra.current_task then
             local filtered_pool = {}
-            for _, task in ipairs(task_pool) do
-                if not completed[task] then
-                    table.insert(filtered_pool, task)
+            for task_name, completed in pairs(card.ability.extra.tasks) do
+                if not completed then
+                    table.insert(filtered_pool, task_name)
                 end
             end
 
             if #filtered_pool > 0 then
-                card.ability.current_task = pseudorandom_element(filtered_pool, pseudoseed("tasks"))
-                card.ability.progress = 0
-            else
-                card.ability.current_task = nil
+                card.ability.extra.current_task = pseudorandom_element(filtered_pool, pseudoseed("tasks"))
+                card.ability.extra.progress = 0
             end
 
-            if #filtered_pool <= 0 and not context.repetition then -- maybe also just throw $15 dollars in
+            if #filtered_pool <= 0 and context.main_eval and not context.blueprint then
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         play_sound('tarot1')
@@ -123,7 +71,6 @@ SMODS.Joker {
                             delay = 0.3,
                             blockable = false,
                             func = function()
-                                ease_dollars(math.min(15, G.GAME.dollars), true)
                                 G.jokers:remove_card(card)
                                 card:remove()
                                 card = nil
@@ -138,102 +85,103 @@ SMODS.Joker {
             end
         end
 
+        if card.ability.extra.current_task then
+            local current_task = card.ability.extra.current_task
 
-        if card.ability.current_task then
-            local c = card.ability.current_task
-
-            if c == "play_face" and card.ability.progress < 7 then
+            if current_task == "play_face" and card.ability.extra.faces_played > 0 then
                 if context.individual and context.cardarea == G.play and context.other_card:is_face() then
-                    card.ability.progress = card.ability.progress + 1
+                    card.ability.extra.faces_played = card.ability.extra.faces_played - 1
                     SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.FILTER }, card)
                 end
 
-                if card.ability.progress >= 7 then
-                    local task_key = card.ability.current_task
-                    card.ability.current_task = nil
+                if card.ability.extra.faces_played <= 0 then
+                    card.ability.extra.faces_played = 7
+                    local task_key = card.ability.extra.current_task
+                    card.ability.extra.tasks[task_key] = true
+                    -- win thing here
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.4,
+                        func = function()
+                            card_eval_status_text(card, 'extra', nil, nil, nil,
+                                { message = "+" .. tostring(1) .. " Hand", colour = G.C.BLUE })
 
-                    if task_rewards[task_key] then
-                        task_rewards[task_key](card)
-                    end
+                            G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
+                            ease_hands_played(1)
 
-                    completed[task_key] = true
-                    card.ability.task_done = completed
+                            return true
+                        end
+                    }))
+                    delay(0.6)
 
+                    card.ability.extra.current_task = nil
                     SMODS.calculate_effect({ message = localize('kh_complete'), colour = G.C.FILTER }, card)
                 end
             end
 
-            if c == "drawing" and card.ability.progress < 20 then
-                if context.hand_drawn then
-                    local drawn = #context.hand_drawn
-                    card.ability.progress = card.ability.progress + drawn
-                    SMODS.calculate_effect({ message = localize('k_upgrade_ex'), colour = G.C.FILTER }, card)
-                end
-
-                if card.ability.progress >= 20 then
-                    local task_key = card.ability.current_task
-                    card.ability.current_task = nil
-
-                    task_rewards[task_key](card)
-
-                    completed[task_key] = true
-                    card.ability.task_done = completed
-
-                    SMODS.calculate_effect({ message = localize('kh_complete'), colour = G.C.FILTER }, card)
-                end
-
-                if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-                    card.ability.progress = 0
-                    return {
-                        message = localize('k_reset'),
-                        colour = G.C.RED
-                    }
-                end
-            end
-            if c == "shopping" then
-                -- Buying a Joker
-                if context.buying_card and context.card and context.card.cost then
-                    card.ability.progress = card.ability.progress + context.card.cost
-                    context.card.cost = 0
-                end
-
-                --Buying a booster pack
-                if context.open_booster and context.card and context.card.cost then
-                    card.ability.progress = card.ability.progress + context.card.cost
-                    context.card.cost = 0
-                end
-                -- Buying a Voucher
-                if context.buying_card and context.card and context.card.ability and context.card.ability.set == 'Voucher' and context.card.cost then
-                    card.ability.progress = card.ability.progress + context.card.cost
-                    context.card.cost = 0
-                end
-
-                -- Rerolling the shop
-                if context.reroll_shop then
-                    card.ability.progress = card.ability.progress + (G.GAME.current_round.reroll_cost - 1)
-                end
-
-                if card.ability.progress >= 20 then
-                    local task_key = card.ability.current_task
-                    card.ability.current_task = nil
-
-                    if task_rewards[task_key] then
-                        task_rewards[task_key](card)
-                    end
-                    card.ability.progress = 0
-
-                    completed[task_key] = true
-                    card.ability.task_done = completed
-
-                    SMODS.calculate_effect({ message = localize('kh_complete'), colour = G.C.FILTER }, card)
-                end
-                -- Resetting after exit shop
+            if current_task == "shopping" then
                 if context.ending_shop then
-                    card.ability.progress = 0
-                    return {
-                        message = localize('k_reset'),
-                        colour = G.C.RED
-                    }
+                    card.ability.extra.money_remaining = 20
+                    SMODS.calculate_effect({ message = localize('k_reset') }, card)
+                end
+
+                if context.money_altered and context.amount < 0 then
+                    card.ability.extra.money_remaining = card.ability.extra.money_remaining + context.amount
+                    SMODS.calculate_effect({ message = localize('k_upgrade_ex') }, card)
+                end
+
+                if card.ability.extra.money_remaining <= 0 then
+                    card.ability.extra.money_remaining = 20
+                    local task_key = card.ability.extra.current_task
+                    card.ability.extra.tasks[task_key] = true
+
+                    -- win thing here
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            card_eval_status_text(card, 'extra', nil, nil, nil,
+                                { message = "+" .. tostring(1) .. " Shop slot", colour = G.C.BLUE })
+                            change_shop_size(1)
+                            return true
+                        end
+                    }))
+
+                    card.ability.extra.current_task = nil
+                    SMODS.calculate_effect({ message = localize('kh_complete'), colour = G.C.FILTER }, card)
+                end
+            end
+
+            if current_task == "wheel" then
+                if context.pseudorandom_result and context.result and context.identifier == "wheel_of_fortune" then
+                    local task_key = card.ability.extra.current_task
+                    card.ability.extra.tasks[task_key] = true
+
+                    -- win thing here
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        func = function()
+                            card:set_edition('e_negative', true)
+                            return true
+                        end
+                    }))
+
+                    card.ability.extra.current_task = nil
+                    SMODS.calculate_effect({ message = localize('kh_complete'), colour = G.C.FILTER }, card)
+                end
+            end
+            if current_task == "discard" then
+                if context.discard and not context.blueprint then
+                    if card.ability.extra.discards_remaining <= 1 then
+                        local task_key = card.ability.extra.current_task
+                        card.ability.extra.tasks[task_key] = true
+
+                        -- win thing here
+                        G.hand:change_size(1)
+
+                        card.ability.extra.current_task = nil
+                        SMODS.calculate_effect({ message = localize('kh_complete'), colour = G.C.FILTER }, card)
+                    else
+                        card.ability.extra.discards_remaining = card.ability.extra.discards_remaining - 1
+                    end
                 end
             end
         end
